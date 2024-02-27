@@ -7,6 +7,7 @@ import {
   Header,
   SecondCrudCollection,
   ThirdCrudCollection,
+  Users,
 } from './components/index';
 import styles from './styles.module.css';
 
@@ -16,6 +17,7 @@ function App() {
       <Header />
       <Routes>
         <Route path={'/'} element={<h1>Hello dolbaeb</h1>} />
+        <Route path={'/users'} element={<Users />} />
         <Route path={'/crud-collection'} element={<CrudCollection />} />
         <Route path={'/second-crud-collection'} element={<SecondCrudCollection />} />
         <Route path={'/third-crud-collection'} element={<ThirdCrudCollection />} />
