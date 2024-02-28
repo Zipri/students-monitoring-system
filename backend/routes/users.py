@@ -2,14 +2,14 @@ from app import app, mongo
 from flask import jsonify, request
 from bson.objectid import ObjectId
 
-# Получение списка всех пользователей
+## Получение списка всех пользователей
 @app.route('/users', methods=['GET'])
 def get_users():
     users = mongo.db.users.find()
     result = [{'id': str(user['_id']), 'username': user['username'], 'email': user['email'], 'role': user['role'], 'group': user.get('group', None)} for user in users]
     return jsonify(result)
 
-# Добавление нового пользователя
+## Добавление нового пользователя
 # interface AddUserParams {
 #   username: string;
 #   email: string;
@@ -29,7 +29,7 @@ def add_user():
     result = collection.insert_one(data)
     return jsonify({'result': str(result.inserted_id)})
 
-# Обновление данных пользователя по идентификатору
+## Обновление данных пользователя по идентификатору
 @app.route('/users/update/<id>', methods=['PUT'])
 def update_user(id):
     data = request.json
@@ -39,7 +39,7 @@ def update_user(id):
         return jsonify({'error': 'User not found or data not changed'}), 404
     return jsonify({'modified_count': result.modified_count})
 
-# Удаление пользователя по идентификатору
+## Удаление пользователя по идентификатору
 @app.route('/users/delete/<id>', methods=['DELETE'])
 def delete_user(id):
     collection = mongo.db.users
@@ -47,6 +47,23 @@ def delete_user(id):
     if result.deleted_count == 0:
         return jsonify({'error': 'User not found'}), 404
     return jsonify({'deleted_count': result.deleted_count})
+
+## Возвращает всех студентов заданной группы
+@app.route('/users/group/<group_name>', methods=['GET'])
+def get_users_by_group(group_name):
+    # Используем метод find() для поиска всех пользователей, у которых поле 'group' соответствует заданному group_name и роль 'student'
+    users = mongo.db.users.find({"group": group_name, "role": "student"})
+    # Преобразуем результат в список словарей для последующей сериализации в JSON
+    result = [{
+        'id': str(user['_id']),
+        'username': user['username'],
+        'email': user['email'],
+        'role': user['role'],
+        'group': user['group']
+    } for user in users]
+    # Возвращаем результат в виде JSON
+    return jsonify(result)
+
 
 # Добавление нескольких пользователей
 # @app.route('/users/add_many', methods=['POST'])

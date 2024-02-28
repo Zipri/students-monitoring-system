@@ -19,18 +19,31 @@ function generateRandomWord(length) {
 }
 
 const Users = () => {
+  // ## Добавление нового пользователя
   const [addedUserName, setAddedUser] = useState('');
   const [addedUserEmail, setAddedEmail] = useState('');
   const [addedUserRole, setAddedRole] = useState('');
   const [addedUserGroup, setAddedGroup] = useState('');
+  // ## Обновление данных пользователя по идентификатору
   const [updatedUser, setUpdatedUser] = useState('');
   const [updatedUserId, setUpdatedUserId] = useState('');
+  // ## Получение списка всех пользователей
   const [users, setUsers] = useState([]);
+  // ## Возвращает всех студентов заданной группы
+  const [group, setGroup] = useState('');
+  const [groupies, setGroupies] = useState([]);
 
   const handleGenerate = () => {
     setAddedUser(generateRandomWord(8));
     setAddedEmail(generateRandomWord(4));
     setAddedRole(generateRandomWord(6));
+    setAddedGroup(generateRandomWord(3));
+  };
+
+  const handleStudentGenerate = () => {
+    setAddedUser(generateRandomWord(8));
+    setAddedEmail(generateRandomWord(4));
+    setAddedRole('student');
     setAddedGroup(generateRandomWord(3));
   };
 
@@ -87,6 +100,16 @@ const Users = () => {
     }
   };
 
+  // Возвращает всех студентов заданной группы
+  const getUsersByGroup = async () => {
+    try {
+      const response = await axios.get(`${URL}/users/group/${group}`);
+      setGroupies(response.data);
+    } catch (error) {
+      console.error('Ошибка при получении данных:', error);
+    }
+  };
+
   useEffect(() => {
     fetchItems();
   }, []);
@@ -105,10 +128,13 @@ const Users = () => {
           className={styles.input}
         />
         <button onClick={handleGenerate} className={styles.btn_main}>
-          Сгенерировать
+          Generate
+        </button>
+        <button onClick={handleStudentGenerate} className={styles.btn_main}>
+          Студент
         </button>
       </div>
-      <div className={`${styles.flex_column}`} style={{ width: '24rem' }}>
+      <div className={`${styles.flex_column}`} style={{ width: '26rem' }}>
         <input
           type="text"
           value={addedUserEmail}
@@ -157,13 +183,39 @@ const Users = () => {
       </div>
 
       <div className={styles.header_medium}>Get / Delete</div>
-      <div>
-        <button onClick={fetchItems} className={styles.btn_main}>
-          Загрузить элементы
-        </button>
-        {!!users.length && (
+      <div className={`${styles.flex} ${styles.flex_between}`}>
+        <div>
+          <button onClick={fetchItems} className={styles.btn_main}>
+            Загрузить элементы
+          </button>
+          {!!users.length && (
+            <ul className={`${styles.flex_column} ${styles.list}`}>
+              {users.map((item, index) => (
+                <li key={index} className={`${styles.flex} ${styles.flex_gap_medium}`}>
+                  <em className={styles.italic}>{item.id}:</em> {item.group}/{item.username}
+                  <button onClick={() => deleteItem(item.id)} className={styles.btn_danger}>
+                    x
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+        <div>
+          <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
+            <input
+              type="text"
+              value={group}
+              onChange={(e) => setGroup(e.target.value)}
+              placeholder="Введите группу"
+              className={styles.input}
+            />
+            <button onClick={getUsersByGroup} className={styles.btn_main}>
+              Загрузить элементы
+            </button>
+          </div>
           <ul className={`${styles.flex_column} ${styles.list}`}>
-            {users.map((item, index) => (
+            {groupies.map((item, index) => (
               <li key={index} className={`${styles.flex} ${styles.flex_gap_medium}`}>
                 <em className={styles.italic}>{item.id}:</em> {item.username}
                 <button onClick={() => deleteItem(item.id)} className={styles.btn_danger}>
@@ -172,7 +224,7 @@ const Users = () => {
               </li>
             ))}
           </ul>
-        )}
+        </div>
       </div>
     </div>
   );
