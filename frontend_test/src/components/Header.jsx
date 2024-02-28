@@ -26,6 +26,16 @@ const Header = () => {
         users
       </NavLink>
       <NavLink
+        to={'/projects'}
+        className={({ isActive }) =>
+          isActive
+            ? `${styles.btn_home_active} ${styles.btn_home}`
+            : `${styles.btn_main} ${styles.btn_home}`
+        }
+      >
+        projects
+      </NavLink>
+      <NavLink
         to={'/crud-collection'}
         className={({ isActive }) =>
           isActive

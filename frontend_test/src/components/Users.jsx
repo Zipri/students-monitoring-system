@@ -116,7 +116,7 @@ const Users = () => {
 
   return (
     <div className={`${styles.flex_column}`}>
-      <h1 className={styles.header_large}>Менеджер элементов</h1>
+      <h1 className={styles.header_large}>Менеджер Пользователей</h1>
 
       <div className={styles.header_medium}>Add</div>
       <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
