@@ -63,5 +63,35 @@ def get_project_by_id(id):
         return jsonify(result)
     else:
         return jsonify({'error': 'Project not found'}), 404
+    
+## Эндпоинт для получения проектов по названию, дате или статусу
+@app.route('/projects/search', methods=['GET'])
+def search_projects():
+    # Получаем параметры запроса
+    title = request.args.get('title')
+    deadline = request.args.get('deadline')
+    status = request.args.get('status')
+
+    # Формируем критерии фильтрации на основе полученных параметров
+    query = {}
+    if title:
+        query['title'] = {"$regex": title, "$options": "i"}  # Регистронезависимый поиск
+    if deadline:
+        query['deadline'] = deadline  # Поиск по точной дате
+    if status:
+        query['status'] = status  # Поиск по статусу
+
+    projects = mongo.db.projects.find(query)
+    result = [{
+        'id': str(project['_id']),
+        'title': project['title'],
+        'description': project.get('description', 'Описание отсутствует'),
+        'deadline': project.get('deadline', 'Срок сдачи не указан'),
+        'status': project.get('status', 'Статус не указан'),
+        'assignedStudents': project.get('assignedStudents', []),
+        'assignedTeacher': project.get('assignedTeacher', 'Преподаватель не назначен')
+    } for project in projects]
+
+    return jsonify(result)
 
 

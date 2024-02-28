@@ -63,6 +63,27 @@ const Projects = () => {
   // Список всех проектов
   const [projects, setProjects] = useState([]);
 
+  // Эндпоинт для получения проектов по названию, дате или статусу
+  const [title, setTitle] = useState('');
+  const [deadline, setDeadline] = useState('');
+  const [status, setStatus] = useState('');
+  const [searchedProjects, setSearchedProjects] = useState([]);
+
+  const searchProjects = async () => {
+    const params = new URLSearchParams();
+
+    if (title) params.append('title', title);
+    if (deadline) params.append('deadline', deadline);
+    if (status) params.append('status', status);
+
+    try {
+      const response = await axios.get(`http://127.0.0.1:5000/projects/search?${params}`);
+      setSearchedProjects(response.data);
+    } catch (error) {
+      console.error('Ошибка при получении проектов:', error);
+    }
+  };
+
   // Получение списка всех проектов
   const fetchProjects = async () => {
     try {
@@ -126,7 +147,7 @@ const Projects = () => {
   }, []);
 
   return (
-    <div className={`${styles.flex_column}`}>
+    <div className={`${styles.flex_column} ${styles.container}`}>
       <h1 className={styles.header_large}>Управление проектами</h1>
 
       <div className={`${styles.flex} ${styles.flex_between}`}>
@@ -227,6 +248,65 @@ const Projects = () => {
               Обновить проект
             </button>
           </div>
+        </div>
+      </div>
+
+      <div className={`${styles.flex_column} ${styles.flex_gap_medium}`} style={{ width: '35rem' }}>
+        <div className={styles.header_medium}>Поиск проектов</div>
+        <div className={`${styles.flex} ${styles.flex_gap_medium}`} style={{ width: '80vw' }}>
+          <input
+            className={styles.input}
+            type="text"
+            placeholder="Название проекта"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <input
+            className={styles.input}
+            type="date"
+            placeholder="Срок сдачи"
+            value={deadline}
+            onChange={(e) => setDeadline(e.target.value)}
+          />
+          <select
+            className={styles.input}
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          >
+            <option value="" defaultValue disabled hidden>
+              Выберите статус
+            </option>
+            <option value="В процессе">В процессе</option>
+            <option value="Завершен">Завершен</option>
+            <option value="Отложен">Отложен</option>
+          </select>
+          <button
+            onClick={() => {
+              setStatus('');
+              setDeadline('');
+              setTitle('');
+            }}
+            className={styles.btn_danger}
+          >
+            x
+          </button>
+          <button onClick={searchProjects} className={styles.btn_empty} style={{ width: '5rem' }}>
+            Поиск
+          </button>
+        </div>
+        <div className={`${styles.flex_column} ${styles.list}`} style={{ width: '86vw' }}>
+          {searchedProjects.map((project) => (
+            <div key={project.id} className={`${styles.flex} ${styles.flex_gap_medium}`}>
+              <p className={styles.italic}>{project.id}:</p>
+              <p>{project.title}</p>
+              <p>{project.description}</p>
+              <p>{project.deadline}</p>
+              <p>{project.status}</p>
+              <button onClick={() => deleteProject(project.id)} className={styles.btn_danger}>
+                x
+              </button>
+            </div>
+          ))}
         </div>
       </div>
 

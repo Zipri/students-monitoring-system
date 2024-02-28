@@ -35,7 +35,7 @@ const Header = () => {
       >
         projects
       </NavLink>
-      <NavLink
+      {/* <NavLink
         to={'/crud-collection'}
         className={({ isActive }) =>
           isActive
@@ -64,7 +64,7 @@ const Header = () => {
         }
       >
         ThirdCrudCollection
-      </NavLink>
+      </NavLink> */}
     </div>
   );
 };
