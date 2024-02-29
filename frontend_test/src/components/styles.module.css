@@ -5,7 +5,6 @@
 
 .list {
     height: 20rem;
-    margin-top: 1rem;
     padding: 1rem;
     border-radius: 1rem;
     overflow-x: auto;
@@ -94,6 +93,7 @@
 .header_large {
     font-size: 2rem;
     word-break: break-word;
+    text-align: center;
 }
 
 .header_medium {
@@ -104,6 +104,10 @@
 .flex {
     display: flex;
     align-items: center;
+}
+
+.flex_gap_small {
+    gap: .5rem !important;
 }
 
 .flex_gap_medium {

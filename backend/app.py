@@ -17,3 +17,4 @@ from routes.item_collection2_routes import *
 from routes.item_collection3_routes import *
 from routes.users import *
 from routes.projects import *
+from routes.tasks import *

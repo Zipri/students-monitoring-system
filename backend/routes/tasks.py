@@ -49,7 +49,7 @@ def delete_task(id):
 ## Получение задач по идентификатору проекта
 @app.route('/tasks/project/<projectId>', methods=['GET'])
 def get_tasks_by_project(projectId):
-    tasks = mongo.db.tasks.find({'projectId': ObjectId(projectId)})
+    tasks = mongo.db.tasks.find({'projectId': projectId})
     result = [{
         'id': str(task['_id']),
         'projectId': str(task['projectId']),

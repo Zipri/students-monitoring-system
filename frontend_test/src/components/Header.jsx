@@ -35,6 +35,16 @@ const Header = () => {
       >
         projects
       </NavLink>
+      <NavLink
+        to={'/tasks'}
+        className={({ isActive }) =>
+          isActive
+            ? `${styles.btn_home_active} ${styles.btn_home}`
+            : `${styles.btn_main} ${styles.btn_home}`
+        }
+      >
+        tasks
+      </NavLink>
       {/* <NavLink
         to={'/crud-collection'}
         className={({ isActive }) =>

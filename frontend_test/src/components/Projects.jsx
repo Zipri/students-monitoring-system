@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+
 import axios from 'axios';
+
 import styles from './styles.module.css';
 
 const URL = 'http://127.0.0.1:5000';
@@ -143,7 +145,7 @@ const Projects = () => {
   };
 
   useEffect(() => {
-    fetchProjects();
+    searchProjects();
   }, []);
 
   return (
@@ -310,7 +312,7 @@ const Projects = () => {
         </div>
       </div>
 
-      <div className={`${styles.flex_column} ${styles.flex_gap_medium}`} style={{ width: '35rem' }}>
+      {/* <div className={`${styles.flex_column} ${styles.flex_gap_medium}`} style={{ width: '35rem' }}>
         <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
           <div className={styles.header_medium}>Список проектов</div>
           <button onClick={fetchProjects} className={styles.btn_empty} style={{ width: '15rem' }}>
@@ -331,7 +333,7 @@ const Projects = () => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
