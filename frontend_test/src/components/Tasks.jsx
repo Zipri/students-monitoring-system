@@ -19,8 +19,29 @@ const Tasks = () => {
     deadline: '',
   });
 
-  // Список всех проектов
+  // ## Обновление данных задачи по идентификатору
+  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTaskData, setEditingTaskData] = useState({
+    title: '',
+    description: '',
+    status: '',
+    priority: '',
+    deadline: '',
+  });
+
+  // ## Список всех проектов
   const [projects, setProjects] = useState([]);
+
+  // ## фильтровать задачи (tasks) по всем предоставленным параметрам
+  const [filterParams, setFilterParams] = useState({
+    id: '',
+    projectId: '',
+    title: '',
+    description: '',
+    status: '',
+    priority: '',
+    deadline: '',
+  });
 
   // Получение списка всех проектов
   const fetchProjects = async () => {
@@ -42,6 +63,27 @@ const Tasks = () => {
     }
   };
 
+  // Получение всех задач
+  const filterTasks = async () => {
+    try {
+      const nonEmptyParams = Object.entries(filterParams).reduce((acc, [key, value]) => {
+        if (value) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {});
+
+      const response = await axios.get(`${baseURL}/tasks/filter`, { params: nonEmptyParams });
+      setTasks(response.data);
+    } catch (error) {
+      console.error('Ошибка при фильтрации задач:', error);
+    }
+  };
+
+  const handleFilterChange = (e) => {
+    setFilterParams({ ...filterParams, [e.target.name]: e.target.value });
+  };
+
   // Добавление новой задачи
   const addTask = async () => {
     try {
@@ -58,9 +100,9 @@ const Tasks = () => {
   };
 
   // Обновление задачи
-  const updateTask = async (id, updatedData) => {
+  const updateTask = async () => {
     try {
-      const response = await axios.put(`${baseURL}/tasks/update/${id}`, updatedData);
+      const response = await axios.put(`${baseURL}/tasks/update/${editingTaskId}`, editingTaskData);
       console.log('Задача обновлена:', response.data);
       fetchTasks(); // Перезагрузка списка задач
     } catch (error) {
@@ -195,7 +237,6 @@ const Tasks = () => {
               onChange={(e) => setNewTask({ ...newTask, deadline: e.target.value })}
             />
             <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
-              {' '}
               <button className={styles.btn_main} onClick={generateTaskData} type="button">
                 Сгенерировать данные
               </button>
@@ -262,16 +303,174 @@ const Tasks = () => {
         </div>
       </div>
 
+      <div className={`${styles.flex_column} ${styles.flex_gap_small}`}>
+        <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
+          <input
+            className={styles.input}
+            name="id"
+            value={filterParams.id}
+            onChange={handleFilterChange}
+            placeholder="ID задачи"
+          />
+          <input
+            className={styles.input}
+            name="projectId"
+            value={filterParams.projectId}
+            onChange={handleFilterChange}
+            placeholder="ID проекта"
+          />
+          <input
+            className={styles.input}
+            name="title"
+            value={filterParams.title}
+            onChange={handleFilterChange}
+            placeholder="Название"
+          />
+          <input
+            className={styles.input}
+            name="description"
+            value={filterParams.description}
+            onChange={handleFilterChange}
+            placeholder="Описание"
+          />
+        </div>
+        <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
+          <select
+            className={styles.input}
+            value={filterParams.status}
+            onChange={(e) => setFilterParams({ ...filterParams, status: e.target.value })}
+          >
+            <option value="" defaultValue disabled hidden>
+              Выберите статус
+            </option>
+            <option value="новая">Новая</option>
+            <option value="в работе">В работе</option>
+            <option value="завершена">Завершена</option>
+          </select>
+          <input
+            className={styles.input}
+            name="priority"
+            value={filterParams.priority}
+            onChange={handleFilterChange}
+            placeholder="Приоритет"
+          />
+          <input
+            className={styles.input}
+            type="date"
+            name="deadline"
+            value={filterParams.deadline}
+            onChange={handleFilterChange}
+            placeholder="Дедлайн"
+          />
+          <button className={styles.btn_main} onClick={filterTasks}>
+            Фильтровать
+          </button>
+          <button
+            className={styles.btn_danger}
+            onClick={() => {
+              setFilterParams({
+                id: '',
+                projectId: '',
+                title: '',
+                description: '',
+                status: '',
+                priority: '',
+                deadline: '',
+              });
+              fetchTasks();
+            }}
+          >
+            Сбросить
+          </button>
+        </div>
+      </div>
+
       <div className={`${styles.flex_column} ${styles.flex_gap_medium}`} style={{ width: '35rem' }}>
-        <div className={`${styles.flex_column} ${styles.list}`} style={{ width: '86vw' }}>
+        <div
+          className={`${styles.flex_column} ${styles.list}`}
+          style={{ width: '86vw', height: '17rem' }}
+        >
           {tasks.map((task) => (
             <div key={task.id} className={`${styles.flex} ${styles.flex_gap_medium}`}>
-              <p className={styles.italic}>{task.id}:</p>
-              <p>{task.title}</p>
-              <p>{task.description}</p>
-              <p>{task.status}</p>
-              <p>{task.priority}</p>
-              <p>{task.deadline}</p>
+              {editingTaskId === task.id ? (
+                <>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Название"
+                    value={editingTaskData.title}
+                    onChange={(e) =>
+                      setEditingTaskData({ ...editingTaskData, title: e.target.value })
+                    }
+                  />
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Описание"
+                    value={editingTaskData.description}
+                    onChange={(e) =>
+                      setEditingTaskData({ ...editingTaskData, description: e.target.value })
+                    }
+                  />
+                  <select
+                    className={styles.input}
+                    value={editingTaskData.status}
+                    onChange={(e) =>
+                      setEditingTaskData({ ...editingTaskData, status: e.target.value })
+                    }
+                  >
+                    <option value="" defaultValue disabled hidden>
+                      Выберите статус
+                    </option>
+                    <option value="новая">Новая</option>
+                    <option value="в работе">В работе</option>
+                    <option value="завершена">Завершена</option>
+                  </select>
+                  <input
+                    className={styles.input}
+                    type="text"
+                    placeholder="Приоритет"
+                    value={editingTaskData.priority}
+                    onChange={(e) =>
+                      setEditingTaskData({ ...editingTaskData, priority: e.target.value })
+                    }
+                  />
+                  <button
+                    onClick={() => {
+                      setEditingTaskId('');
+                      updateTask();
+                    }}
+                    className={styles.btn_second}
+                  >
+                    V
+                  </button>
+                </>
+              ) : (
+                <>
+                  <p className={styles.italic}>{task.id}:</p>
+                  <p>{task.title}</p>
+                  <p>{task.description}</p>
+                  <p>{task.status}</p>
+                  <p>{task.priority}</p>
+                  <p>{task.deadline}</p>
+                  <button
+                    onClick={() => {
+                      setEditingTaskId(task.id);
+                      setEditingTaskData({
+                        title: task.title,
+                        description: task.description,
+                        status: task.status,
+                        priority: task.priority,
+                        deadline: task.deadline,
+                      });
+                    }}
+                    className={styles.btn_main}
+                  >
+                    /
+                  </button>
+                </>
+              )}
+
               <button onClick={() => deleteTask(task.id)} className={styles.btn_danger}>
                 x
               </button>

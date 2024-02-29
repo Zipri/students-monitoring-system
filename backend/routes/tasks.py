@@ -8,7 +8,7 @@ def get_tasks():
     tasks = mongo.db.tasks.find()
     result = [{
         'id': str(task['_id']),
-        'projectId': str(task['projectId']),
+        'projectId': str(task['projectId']), ## TODO сделать его тоже ObjectId
         'title': task['title'],
         'description': task['description'],
         'status': task['status'],
@@ -74,4 +74,40 @@ def get_tasks_by_status(status):
         'priority': task['priority'],
         'deadline': task['deadline']
     } for task in tasks]
+    return jsonify(result)
+
+## эндпоинт, который позволяет фильтровать задачи (tasks) по всем предоставленным параметрам
+@app.route('/tasks/filter', methods=['GET'])
+def filter_tasks():
+    query = {}
+
+    # Фильтры для запроса
+    if 'id' in request.args:
+        query['_id'] = ObjectId(request.args['id'])
+    if 'projectId' in request.args:
+        query['projectId'] = request.args['projectId']
+    if 'title' in request.args:
+        query['title'] = {"$regex": request.args['title'], "$options": "i"}  # Поиск по подстроке, регистронезависимый
+    if 'description' in request.args:
+        query['description'] = {"$regex": request.args['description'], "$options": "i"}  # Поиск по подстроке, регистронезависимый
+    if 'status' in request.args:
+        query['status'] = request.args['status']
+    if 'priority' in request.args:
+        query['priority'] = request.args['priority']
+    if 'deadline' in request.args:
+        # Предполагается, что дедлайн передаётся в формате YYYY-MM-DD
+        # Необходимо преобразовать строку в объект даты, если в вашей базе даты хранятся в соответствующем формате
+        query['deadline'] = request.args['deadline']
+
+    tasks = mongo.db.tasks.find(query)
+    result = [{
+        'id': str(task['_id']),
+        'projectId': str(task['projectId']),
+        'title': task['title'],
+        'description': task['description'],
+        'status': task['status'],
+        'priority': task['priority'],
+        'deadline': task['deadline']
+    } for task in tasks]
+
     return jsonify(result)
