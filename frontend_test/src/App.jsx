@@ -2,15 +2,7 @@ import React from 'react';
 
 import { Route, Routes } from 'react-router-dom';
 
-import {
-  CrudCollection,
-  Header,
-  SecondCrudCollection,
-  ThirdCrudCollection,
-  Users,
-  Projects,
-  Tasks,
-} from './components/index';
+import { Comments, Header, Projects, Tasks, Users } from './components/index';
 import styles from './styles.module.css';
 
 function App() {
@@ -22,9 +14,7 @@ function App() {
         <Route path={'/users'} element={<Users />} />
         <Route path={'/projects'} element={<Projects />} />
         <Route path={'/tasks'} element={<Tasks />} />
-        <Route path={'/crud-collection'} element={<CrudCollection />} />
-        <Route path={'/second-crud-collection'} element={<SecondCrudCollection />} />
-        <Route path={'/third-crud-collection'} element={<ThirdCrudCollection />} />
+        <Route path={'/comments'} element={<Comments />} />
         <Route path={'*'} element={<h1>Хорош хуйней страдать</h1>} />
       </Routes>
     </div>

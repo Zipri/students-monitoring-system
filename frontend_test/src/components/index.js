@@ -1,17 +1,7 @@
-import CrudCollection from './CrudCollection';
+import Comments from './Comments';
 import Header from './Header';
 import Projects from './Projects';
-import SecondCrudCollection from './SecondCrudCollection';
-import ThirdCrudCollection from './ThirdCrudCollection';
-import Users from './Users';
 import Tasks from './Tasks';
+import Users from './Users';
 
-export {
-  CrudCollection,
-  Header,
-  Projects,
-  SecondCrudCollection,
-  ThirdCrudCollection,
-  Users,
-  Tasks,
-};
+export { Comments, Header, Projects, Tasks, Users };

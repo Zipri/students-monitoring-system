@@ -45,36 +45,16 @@ const Header = () => {
       >
         tasks
       </NavLink>
-      {/* <NavLink
-        to={'/crud-collection'}
-        className={({ isActive }) =>
-          isActive
-            ? `${styles.btn_home_active} ${styles.btn_home}`
-            : `${styles.btn_main} ${styles.btn_home}`
-        }
-      >
-        CrudCollection
-      </NavLink>
       <NavLink
-        to={'/second-crud-collection'}
+        to={'/comments'}
         className={({ isActive }) =>
           isActive
             ? `${styles.btn_home_active} ${styles.btn_home}`
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        SecondCrudCollection
+        comments
       </NavLink>
-      <NavLink
-        to={'/third-crud-collection'}
-        className={({ isActive }) =>
-          isActive
-            ? `${styles.btn_home_active} ${styles.btn_home}`
-            : `${styles.btn_main} ${styles.btn_home}`
-        }
-      >
-        ThirdCrudCollection
-      </NavLink> */}
     </div>
   );
 };

@@ -8,7 +8,7 @@ def get_tasks():
     tasks = mongo.db.tasks.find()
     result = [{
         'id': str(task['_id']),
-        'projectId': str(task['projectId']), ## TODO сделать его тоже ObjectId
+        'projectId': str(task['projectId']), # TODO сделать его тоже ObjectId
         'title': task['title'],
         'description': task['description'],
         'status': task['status'],
@@ -95,7 +95,7 @@ def filter_tasks():
     if 'priority' in request.args:
         query['priority'] = request.args['priority']
     if 'deadline' in request.args:
-        # Предполагается, что дедлайн передаётся в формате YYYY-MM-DD
+        # Предполагается, что дедлайн передаётся в формате YYYY-MM-DD # TODO на самом деле нет - проверить
         # Необходимо преобразовать строку в объект даты, если в вашей базе даты хранятся в соответствующем формате
         query['deadline'] = request.args['deadline']
 
