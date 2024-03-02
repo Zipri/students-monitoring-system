@@ -52,7 +52,23 @@ def delete_user(id):
 @app.route('/users/group/<group_name>', methods=['GET'])
 def get_users_by_group(group_name):
     # Используем метод find() для поиска всех пользователей, у которых поле 'group' соответствует заданному group_name и роль 'student'
-    users = mongo.db.users.find({"group": group_name, "role": "student"})
+    users = mongo.db.users.find({"group": group_name, "role": "Студент"})
+    # Преобразуем результат в список словарей для последующей сериализации в JSON
+    result = [{
+        'id': str(user['_id']),
+        'username': user['username'],
+        'email': user['email'],
+        'role': user['role'],
+        'group': user['group']
+    } for user in users]
+    # Возвращаем результат в виде JSON
+    return jsonify(result)
+
+## Возвращает всех заданной роли
+@app.route('/users/role/<role_name>', methods=['GET'])
+def get_users_by_role(role_name):
+    # Используем метод find() для поиска всех пользователей, у которых поле 'role' соответствует заданному role_name
+    users = mongo.db.users.find({"role": role_name})
     # Преобразуем результат в список словарей для последующей сериализации в JSON
     result = [{
         'id': str(user['_id']),

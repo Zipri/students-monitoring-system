@@ -94,4 +94,57 @@ def search_projects():
 
     return jsonify(result)
 
+## Получение проектов по ID преподавателя
+@app.route('/projects/teacher/<teacher_id>', methods=['GET'])
+def get_projects_by_teacher(teacher_id):
+    # Ищем проекты, где assignedTeacher равен teacher_id
+    projects = mongo.db.projects.find({"assignedTeacher": teacher_id})
+    result = [{
+        'id': str(project['_id']),
+        'title': project['title'],
+        'description': project.get('description', 'Описание отсутствует'),
+        'deadline': project.get('deadline', 'Срок сдачи не указан'),
+        'status': project.get('status', 'Статус не указан'),
+        'assignedStudents': project.get('assignedStudents', []),
+        'assignedTeacher': project.get('assignedTeacher', 'Преподаватель не назначен')
+    } for project in projects]
+    return jsonify(result)
+
+## Получение проектов по ID студента
+@app.route('/projects/student/<student_id>', methods=['GET'])
+def get_projects_by_student(student_id):
+    # Используем $elemMatch для фильтрации проектов, где student_id входит в массив assignedStudents
+    projects = mongo.db.projects.find({"assignedStudents": student_id})
+    result = [{
+        'id': str(project['_id']),
+        'title': project['title'],
+        'description': project['description'],
+        'deadline': project['deadline'],
+        'status': project['status'],
+        'assignedStudents': project['assignedStudents'],
+        'assignedTeacher': project['assignedTeacher']
+    } for project in projects]
+    return jsonify(result)
+
+## Эндпоинт, который возвращает список проектов, назначенных студентам конкретной группы
+@app.route('/projects/group/<group_name>', methods=['GET'])
+def get_projects_by_group(group_name):
+    # Находим всех студентов в указанной группе
+    students = mongo.db.users.find({"group": group_name})
+    student_ids = [student['_id'] for student in students]
+
+    # Ищем проекты, назначенные найденным студентам
+    projects = mongo.db.projects.find({"assignedStudents": {"$in": student_ids}})
+    result = [{
+        'id': str(project['_id']),
+        'title': project['title'],
+        'description': project['description'],
+        'deadline': project['deadline'],
+        'status': project['status'],
+        'assignedStudents': [str(student_id) for student_id in project['assignedStudents']],
+        'assignedTeacher': str(project['assignedTeacher']) if 'assignedTeacher' in project else None
+    } for project in projects]
+
+    return jsonify(result)
+
 
