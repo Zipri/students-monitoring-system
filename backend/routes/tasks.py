@@ -2,7 +2,8 @@ from app import app, mongo
 from flask import jsonify, request
 from bson.objectid import ObjectId
 
-## Получение списка всех задач
+##region CRUD
+# Получение списка всех задач
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
     tasks = mongo.db.tasks.find()
@@ -17,7 +18,7 @@ def get_tasks():
     } for task in tasks]
     return jsonify(result)
 
-## Добавление новой задачи
+# Добавление новой задачи
 @app.route('/tasks/add', methods=['POST'])
 def add_task():
     data = request.json
@@ -27,7 +28,7 @@ def add_task():
     result = collection.insert_one(data)
     return jsonify({'result': str(result.inserted_id)})
 
-## Обновление данных задачи по идентификатору
+# Обновление данных задачи по идентификатору
 @app.route('/tasks/update/<id>', methods=['PUT'])
 def update_task(id):
     data = request.json
@@ -37,7 +38,7 @@ def update_task(id):
         return jsonify({'error': 'Task not found or data not changed'}), 404
     return jsonify({'modified_count': result.modified_count})
 
-## Удаление задачи по идентификатору
+# Удаление задачи по идентификатору
 @app.route('/tasks/delete/<id>', methods=['DELETE'])
 def delete_task(id):
     collection = mongo.db.tasks
@@ -45,6 +46,7 @@ def delete_task(id):
     if result.deleted_count == 0:
         return jsonify({'error': 'Task not found'}), 404
     return jsonify({'deleted_count': result.deleted_count})
+##endregion
 
 ## Получение задач по идентификатору проекта
 @app.route('/tasks/project/<projectId>', methods=['GET'])

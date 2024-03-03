@@ -13,7 +13,7 @@ const Header = () => {
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        Home
+        Описание
       </NavLink>
       <NavLink
         to={'/users'}
@@ -23,7 +23,7 @@ const Header = () => {
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        users
+        Пользователи
       </NavLink>
       <NavLink
         to={'/projects'}
@@ -33,7 +33,7 @@ const Header = () => {
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        projects
+        Проекты
       </NavLink>
       <NavLink
         to={'/tasks'}
@@ -43,7 +43,7 @@ const Header = () => {
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        tasks
+        Задачи
       </NavLink>
       <NavLink
         to={'/comments'}
@@ -53,7 +53,7 @@ const Header = () => {
             : `${styles.btn_main} ${styles.btn_home}`
         }
       >
-        comments
+        Комментарии
       </NavLink>
     </div>
   );

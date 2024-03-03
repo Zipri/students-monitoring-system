@@ -64,6 +64,7 @@ const Projects = () => {
 
   // Список всех проектов
   const [projects, setProjects] = useState([]);
+  console.log(projects);
 
   // Эндпоинт для получения проектов по названию, дате или статусу
   const [title, setTitle] = useState('');
@@ -150,7 +151,7 @@ const Projects = () => {
 
   return (
     <div className={`${styles.flex_column} ${styles.container}`}>
-      <h1 className={styles.header_large}>Управление проектами</h1>
+      {/* <h1 className={styles.header_large}>Управление проектами</h1> */}
 
       <div className={`${styles.flex} ${styles.flex_between}`}>
         <div

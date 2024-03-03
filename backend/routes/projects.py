@@ -2,7 +2,8 @@ from app import app, mongo
 from flask import jsonify, request
 from bson.objectid import ObjectId
 
-## Получение списка всех проектов
+##region CRUD
+# Получение списка всех проектов
 @app.route('/projects', methods=['GET'])
 def get_projects():
     projects = mongo.db.projects.find()
@@ -17,7 +18,7 @@ def get_projects():
     } for project in projects]
     return jsonify(result)
 
-## Добавление нового проекта
+# Добавление нового проекта
 @app.route('/projects/add', methods=['POST'])
 def add_project():
     data = request.json
@@ -27,7 +28,7 @@ def add_project():
     result = collection.insert_one(data)
     return jsonify({'result': str(result.inserted_id)})
 
-## Обновление данных проекта по идентификатору
+# Обновление данных проекта по идентификатору
 @app.route('/projects/update/<id>', methods=['PUT'])
 def update_project(id):
     data = request.json
@@ -37,7 +38,7 @@ def update_project(id):
         return jsonify({'error': 'Project not found or data not changed'}), 404
     return jsonify({'modified_count': result.modified_count})
 
-## Удаление проекта по идентификатору
+# Удаление проекта по идентификатору
 @app.route('/projects/delete/<id>', methods=['DELETE'])
 def delete_project(id):
     collection = mongo.db.projects
@@ -45,6 +46,7 @@ def delete_project(id):
     if result.deleted_count == 0:
         return jsonify({'error': 'Project not found'}), 404
     return jsonify({'deleted_count': result.deleted_count})
+##endregion
 
 ## Получение детальной информации о проекте
 @app.route('/projects/<id>', methods=['GET'])

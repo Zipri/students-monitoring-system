@@ -174,7 +174,7 @@ const Tasks = () => {
 
   return (
     <div className={`${styles.flex_column} ${styles.container}`}>
-      <h1 className={styles.header_large}>Управление задачами</h1>
+      {/* <h1 className={styles.header_large}>Управление задачами</h1> */}
 
       <div className={`${styles.flex} ${styles.flex_gap_medium}`}>
         <div

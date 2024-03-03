@@ -3,7 +3,8 @@ from flask import jsonify, request
 from bson.objectid import ObjectId
 from datetime import datetime
 
-## Получение всех комментариев
+##region CRUD
+# Получение всех комментариев
 @app.route('/comments', methods=['GET'])
 def get_comments():
     comments = mongo.db.comments.find()
@@ -16,7 +17,7 @@ def get_comments():
     } for comment in comments]
     return jsonify(result)
 
-## Добавление нового комментария
+# Добавление нового комментария
 @app.route('/comments/add', methods=['POST'])
 def add_comment():
     data = request.json
@@ -28,7 +29,7 @@ def add_comment():
     result = collection.insert_one(data)
     return jsonify({'result': str(result.inserted_id)})
 
-## Обновление комментария по идентификатору
+# Обновление комментария по идентификатору
 @app.route('/comments/update/<id>', methods=['PUT'])
 def update_comment(id):
     data = request.json
@@ -38,7 +39,7 @@ def update_comment(id):
         return jsonify({'error': 'Comment not found or data not changed'}), 404
     return jsonify({'modified_count': result.modified_count})
 
-## Удаление комментария по идентификатору
+# Удаление комментария по идентификатору
 @app.route('/comments/delete/<id>', methods=['DELETE'])
 def delete_comment(id):
     collection = mongo.db.comments
@@ -46,6 +47,7 @@ def delete_comment(id):
     if result.deleted_count == 0:
         return jsonify({'error': 'Comment not found'}), 404
     return jsonify({'deleted_count': result.deleted_count})
+##endregion
 
 ## Получение комментариев по идентификатору задачи
 @app.route('/comments/task/<taskId>', methods=['GET'])

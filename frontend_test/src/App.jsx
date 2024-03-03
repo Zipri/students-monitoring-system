@@ -10,7 +10,10 @@ function App() {
     <div className={styles.App}>
       <Header />
       <Routes>
-        <Route path={'/'} element={<h1>Hello dolbaeb</h1>} />
+        <Route
+          path={'/'}
+          element={<h1>Веб-приложение для мониторинга выполнения учебных проектов в вузе</h1>}
+        />
         <Route path={'/users'} element={<Users />} />
         <Route path={'/projects'} element={<Projects />} />
         <Route path={'/tasks'} element={<Tasks />} />
