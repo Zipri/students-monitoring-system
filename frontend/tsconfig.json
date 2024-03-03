@@ -1,0 +1,56 @@
+{
+  "compilerOptions": {
+    // Определяет версию ECMAScript для генерации выходного кода. "esnext" указывает на последнюю версию.
+    "target": "ESNext",
+    // Определяет систему модулей: "esnext" для использования ECMAScript модулей.
+    "module": "ESNext",
+    // Использует определения полей класса современным способом.
+    "useDefineForClassFields": true,
+    // Указывает компилятору TypeScript, какие библиотеки типов должны быть включены в компиляцию вашего проекта.
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+     // Пропускает проверку типов в объявлениях файлов .d.ts для ускорения сборки.
+    "skipLibCheck": true,
+    // Указывает TypeScript компилировать файлы JavaScript вместе с TypeScript-файлами в вашем проекте.
+    // "allowJs": true,
+
+    /* Bundler mode */
+    // Имитирует разрешение модулей для работы с импортами.
+    // "moduleResolution": "node",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    // Отключает генерацию выходных файлов, полезно при использовании с другими инструментами, которые выполняют транспиляцию
+    "noEmit": true,
+    // Метод преобразования в JS
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    // Включает строгую проверку на null и undefined.
+    "strictNullChecks": true, 
+    // Запрещает неявный тип any, требует явного объявления типов.
+    "noImplicitAny": true, 
+    // Строгая проверка типов для параметров и возвращаемых значений функций.
+    "strictFunctionTypes": true, 
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Extended */
+    // Позволяет использовать вспомогательные функции из tslib для уменьшения размера кода.
+    "importHelpers": true, 
+    // Позволяет импортировать модули с использованием синтаксиса default import, даже если модуль экспортирует объект.
+    "allowSyntheticDefaultImports": true, 
+    // Включает совместимость с экспортами CommonJS для использования default imports.
+    "esModuleInterop": true, 
+
+    /* MobX */
+    // Включает поддержку экспериментальных декораторов, которые используются в MobX.
+    "experimentalDecorators": true, 
+    // Включает генерацию метаданных для декораторов, используется вместе с библиотеками рефлексии.
+    "emitDecoratorMetadata": true 
+  },
+  "include": ["src"],
+  "references": [{ "path": "./tsconfig.node.json" }]
+}
