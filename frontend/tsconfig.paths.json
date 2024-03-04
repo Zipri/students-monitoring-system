@@ -5,6 +5,7 @@
             "@api": ["model/api"],
             "@api/types": ["model/api/types"],
             "@services": ["model/services"],
+            "@control": ["control"],
             "@config/app": ["config/appConfig"]
         }
     }
