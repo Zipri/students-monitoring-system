@@ -4,15 +4,19 @@ import { useEffect, useState } from 'react';
 
 import viteLogo from '/vite.svg';
 
+import { ProjectsApi, TasksApi } from '@api';
+
 import reactLogo from './assets/react.svg';
-import { ProjectsApi } from './model/api';
 
 const App = () => {
   const [count, setCount] = useState(0);
+
   const projectsApi = new ProjectsApi();
+  const tasksApi = new TasksApi();
 
   useEffect(() => {
     projectsApi.getList();
+    tasksApi.getList();
   }, []);
 
   return (

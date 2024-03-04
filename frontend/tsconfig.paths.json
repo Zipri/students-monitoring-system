@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@api": ["model/api"],
+            "@api/types": ["model/api/types"],
+            "@services": ["model/services"],
+            "@config/app": ["config/appConfig"]
+        }
+    }
+}

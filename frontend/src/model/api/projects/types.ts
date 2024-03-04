@@ -1,4 +1,10 @@
-import { TDate, TUid } from '../types';
+import {
+  TDate,
+  TResponseDeletedCount,
+  TResponseModifiedCount,
+  TResponseResult,
+  TUid,
+} from '@api/types';
 
 export enum ProjectsStatusesEnum {
   planning = 'В планировании',
@@ -33,15 +39,15 @@ export type TGetListProjectsResponse = TProject[];
 // Post record
 export type TPostProjectsParams = TProjectAdd;
 export type TPostProjectsRequest = TProjectAdd;
-export type TPostProjectsResponse = { result: TUid };
+export type TPostProjectsResponse = TResponseResult;
 
 // Put record
 export type TPutProjectsParams = { id: TUid; data: TProjectUpdate };
 export type TPutProjectsRequest = TProjectUpdate;
-export type TPutProjectsResponse = { modified_count: number };
+export type TPutProjectsResponse = TResponseModifiedCount;
 
 // Delete record
-export type TDeleteProjectsResponse = { deleted_count: number };
+export type TDeleteProjectsResponse = TResponseDeletedCount;
 
 // Get record
 export type TGetProjectsResponse = TProject;

@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-import { BACKEND_URL } from '../../../config';
-import { TUid } from '../types';
+import { TUid } from '@api/types';
+import { BACKEND_URL } from '@config/app';
+
 import {
   TDeleteProjectsResponse,
   TGetListByGroupProjectsResponse,
