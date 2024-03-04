@@ -4,7 +4,7 @@ import { ProjectsApi, TasksApi } from '@api';
 import { useStores } from '@control';
 
 const App = () => {
-  const {} = useStores();
+  const { user } = useStores();
 
   const projectsApi = new ProjectsApi();
   const tasksApi = new TasksApi();
@@ -12,6 +12,8 @@ const App = () => {
   useEffect(() => {
     projectsApi.getList();
     tasksApi.getList();
+
+    user.getAllUsers();
   }, []);
 
   return <>Hello dolbaeb</>;

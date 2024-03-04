@@ -49,7 +49,7 @@
     // Включает поддержку экспериментальных декораторов, которые используются в MobX.
     "experimentalDecorators": true, 
     // Включает генерацию метаданных для декораторов, используется вместе с библиотеками рефлексии.
-    "emitDecoratorMetadata": true 
+    "emitDecoratorMetadata": false 
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }],

@@ -95,6 +95,7 @@ def get_users_by_group(group_name):
     return jsonify(result)
 
 ## Возвращает всех заданной роли
+@app.route('/users/role/<role_name>', methods=['GET'])
 def get_users_by_role(role_name):
     users = mongo.db.users.find({"role": role_name})
     result = [user_to_json(user) for user in users]
