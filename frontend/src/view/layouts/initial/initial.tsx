@@ -1,3 +1,6 @@
+import { observer } from 'mobx-react-lite';
+import { ProgressSpinner } from 'primereact/progressspinner';
+
 import styles from './styles.module.scss';
 
 const InitialLayout = () => {
@@ -5,10 +8,10 @@ const InitialLayout = () => {
     <div className={styles.wrapper}>
       <div>
         <h1>EduTrack</h1>
-        {/* <ProgressSpinner /> */}
+        <ProgressSpinner />
       </div>
     </div>
   );
 };
 
-export default InitialLayout;
+export default observer(InitialLayout);

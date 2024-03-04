@@ -1,4 +1,5 @@
 import { UsersApi } from '@api';
+import { TUserAdd } from 'model/api/users/types';
 
 class UsersService {
   private baseApi!: UsersApi;
@@ -19,6 +20,15 @@ class UsersService {
   loginUser = async (email: string, password: string) => {
     try {
       const response = await this.baseApi.login({ email, password });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  registrationUser = async (data: TUserAdd) => {
+    try {
+      const response = await this.baseApi.postRecord(data);
       return response;
     } catch (error) {
       throw error;

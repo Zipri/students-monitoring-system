@@ -52,7 +52,7 @@ export type TGetListUsersResponse = TUser[];
 // Post record: Ответ на добавление нового пользователя
 export type TPostUsersParams = TUserAdd;
 export type TPostUsersRequest = TUserAdd;
-export type TPostUsersResponse = TResponseResult;
+export type TPostUsersResponse = TUser;
 
 // Put record: Ответ на обновление пользователя
 export type TPutUsersParams = { id: TUid; data: TUserUpdate };
@@ -65,7 +65,7 @@ export type TDeleteUsersResponse = TResponseDeletedCount;
 // Login: Ответ на вход пользователя
 export type TLoginParams = TUserLogin;
 export type TLoginRequest = TUserLogin;
-export type TLoginResponse = { token: string } | TResponseError;
+export type TLoginResponse = TUser & { token?: string };
 
 // Ответ на получение пользователей по группе
 export type TGetListUsersByGroupResponse = TUser[];

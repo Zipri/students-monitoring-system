@@ -1,5 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-import { TUser, UsersRolesEnum } from 'model/api/users/types';
+import { TUser, TUserAdd, UsersRolesEnum } from 'model/api/users/types';
 import { UsersService } from 'model/services/users';
 
 const initialUserInfo: TUser = {
@@ -23,19 +23,19 @@ class UserStore {
     this.usersService = usersService;
   };
 
-  getAllUsers = async () => {
+  login = async (email: string, password: string) => {
     try {
-      const response = await this.usersService.getListItems();
-      console.log(response);
+      const response = await this.usersService.loginUser(email, password);
+      this.updateInfo(response);
     } catch (error) {
       console.error(error);
     }
   };
 
-  login = async (email: string, password: string) => {
+  registration = async (data: TUserAdd) => {
     try {
-      const response = await this.usersService.loginUser(email, password);
-      console.log(response);
+      const response = await this.usersService.registrationUser(data);
+      this.updateInfo(response);
     } catch (error) {
       console.error(error);
     }

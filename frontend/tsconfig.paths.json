@@ -8,7 +8,8 @@
             "@control": ["control"],
             "@config/app": ["config/appConfig"],
             "@theme/*": ["view/theme/*"],
-            "@layouts/*": ["view/layouts/*"]
+            "@layouts/*": ["view/layouts/*"],
+            "@view/common/*": ["view/common/*"]
         }
     }
 }
