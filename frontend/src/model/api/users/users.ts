@@ -54,7 +54,7 @@ class UsersApi {
 
   login = async (params: TLoginParams) => {
     const response = await axios.post<TLoginRequest, TLoginResponse>(
-      'login',
+      `${BACKEND_URL}/login`,
       params
     );
     return response;

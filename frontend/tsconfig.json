@@ -51,7 +51,7 @@
     // Включает генерацию метаданных для декораторов, используется вместе с библиотеками рефлексии.
     "emitDecoratorMetadata": false 
   },
-  "include": ["src"],
+  "include": ["src", "node_modules/primereact"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "extends": "./tsconfig.paths.json"
 }

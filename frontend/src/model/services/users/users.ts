@@ -15,6 +15,15 @@ class UsersService {
       throw error;
     }
   };
+
+  loginUser = async (email: string, password: string) => {
+    try {
+      const response = await this.baseApi.login({ email, password });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default UsersService;

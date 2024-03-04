@@ -1,0 +1,146 @@
+@import './variables';
+
+@mixin table-button {
+    [class~='p-button'] {
+        background-color: $secondary-button-color;
+        border-color: $secondary-button-color;
+        color: #000000;
+        font-weight: 600;
+
+        &:hover {
+            background-color: $secondary-button-color-hover;
+            border-color: $secondary-button-color-hover;
+            color: #000000;
+        }
+
+        svg {
+            font-size: 1rem;
+        }
+
+        [class~='pi'] {
+            font-size: 1rem;
+        }
+    }
+}
+
+@mixin link-button {
+    display: flex;
+    align-items: center;
+
+    [class~='p-button'] {
+        gap: 0.5rem;
+        flex-direction: row-reverse;
+
+        padding: 0.5rem;
+
+        border: 0;
+        color: $blue-color;
+        background-color: transparent;
+    }
+}
+
+@mixin link-element {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+
+    padding: 0.5rem;
+
+    font-size: 10.5px;
+    font-weight: 600;
+
+    border: 0;
+    border-radius: $main-radius;
+    color: $blue-color;
+    background-color: transparent;
+
+    cursor: pointer;
+
+    &:hover {
+        background-color: rgba(59, 130, 246, 0.04);
+    }
+}
+
+@mixin custom-scrollbars {
+    overflow-y: auto;
+    --scrollbar-foreground: #{var(--blue-300)};
+    --scrollbar-background: #{var(--blue-100)};
+    --scrollbar-size: 6px;
+    scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+
+    &::-webkit-scrollbar {
+        width: var(--scrollbar-size);
+        height: var(--scrollbar-size);
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-foreground);
+        border-radius: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: var(--scrollbar-background);
+        border-radius: 6px;
+    }
+
+    @supports not selector(::-webkit-scrollbar) {
+        scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+        scrollbar-width: thin;
+    }
+}
+
+@mixin no-select {
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+@mixin small-modal-footer {
+    [class~='p-dialog-footer'] {
+        margin-bottom: $modal-padding;
+    }
+}
+
+@mixin button-form-right-helper {
+    background-color: var(--surface-0) !important;
+    border-color: var(--surface-400);
+    border-left: 1px solid transparent;
+    color: var(--text-color);
+
+    &:hover {
+        border-color: var(--primary-color) !important;
+        color: var(--text-color) !important;
+    }
+}
+
+@mixin page-header-title {
+    padding: 1rem 0;
+    margin: 0;
+
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+@mixin pulsating-border {
+    [class~='p-component'] {
+        border-radius: $main-radius;
+        animation: pulse 1s infinite;
+        transition: box-shadow;
+    }
+}
+
+@mixin simple-pulsating-border {
+    border-radius: $main-radius;
+    animation: pulse 1s infinite;
+    transition: box-shadow;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 0 1px 0 $blue-color;
+    }
+    50% {
+        box-shadow: 0 0 3px 1px $blue-color;
+    }
+}

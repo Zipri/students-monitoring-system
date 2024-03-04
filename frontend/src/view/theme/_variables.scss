@@ -1,0 +1,36 @@
+$global-font-size: 12px;
+
+$topbar-gap: 6px;
+$topbar-icon-size: 1.3rem;
+$topbar-text-color: white;
+$topbar-button-background-color: #374151;
+$topbar-orange-color: #f59e0b;
+$topbar-height: 56px;
+
+$navmenu-width-closed: 4.8rem;
+$navmenu-width-opened: 18.4rem;
+
+$layout-background-color-dark: #1e293b;
+
+$block-background-color: #659ddd3d;
+
+$secondary-button-color: #f1f2f4;
+$secondary-button-color-hover: darken($secondary-button-color, 5);
+
+$modal-padding: 1.5rem; // 18px
+$common-padding-in-modal: 9px;
+
+$main-radius: 6px;
+// $grey-border-color: #dce0e4;
+$grey-border-color: #d1d5db;
+$grey-input-color: rgb(206, 212, 218);
+$gray-modal-background: lighten($grey-border-color, 5);
+
+$main-background-color: #f3f3f3;
+$blue-color: #3b81f4;
+
+$transparent-overlay-color: #ffffff59;
+
+$archived-color: #fffbeb;
+
+$table-header-height: 23px;

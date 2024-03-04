@@ -32,6 +32,15 @@ class UserStore {
     }
   };
 
+  login = async (email: string, password: string) => {
+    try {
+      const response = await this.usersService.loginUser(email, password);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   @action
   updateInfo = (info: TUser) => {
     this.info = info;

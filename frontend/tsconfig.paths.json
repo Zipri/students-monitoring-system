@@ -6,7 +6,9 @@
             "@api/types": ["model/api/types"],
             "@services": ["model/services"],
             "@control": ["control"],
-            "@config/app": ["config/appConfig"]
+            "@config/app": ["config/appConfig"],
+            "@theme/*": ["view/theme/*"],
+            "@layouts/*": ["view/layouts/*"]
         }
     }
 }

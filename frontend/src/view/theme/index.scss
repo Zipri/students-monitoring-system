@@ -1,0 +1,53 @@
+@use 'primereact/resources/primereact.min.css';
+@use 'primereact/resources/themes/lara-light-blue/theme.css';
+@use 'primeflex/primeflex.min.css';
+
+@import './variables';
+@import './mixins';
+
+html {
+    font-size: $global-font-size;
+    font-family: var(--font-family);
+}
+
+body {
+    margin: 0;
+    height: 100vh;
+
+    .root {
+        height: 100%;
+    }
+}
+
+[class~='p-button'] {
+    &:focus {
+        //border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+}
+
+[class~='p-accordion-header-link'] {
+    &:focus {
+        //border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+}
+
+[class~='p-dropdown-panel'] {
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) !important;
+    outline: 1px solid #0000003b;
+}
+
+[class~='p-column-title'] {
+    width: 100% !important;
+}
+
+[class~='p-dropdown-items-wrapper'] {
+    @include custom-scrollbars;
+}
+
+[class~='p-datepicker-trigger'] {
+    @include button-form-right-helper;
+}
