@@ -1,6 +1,9 @@
 from app import app, mongo
 from flask import jsonify, request
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash
+# import jwt
+# from datetime import datetime, timedelta
 
 # Helper functions
 def validate_user_data(data, update=False):
@@ -36,8 +39,13 @@ def get_users():
 def add_user():
     data = request.json
     errors = validate_user_data(data)
+    if 'password' not in data or not data['password']:
+        errors.append('password is required.')
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
+    # Хеширование пароля перед сохранением
+    hashed_password = generate_password_hash(data['password'])
+    data['password'] = hashed_password  # Замените простой текст хешем
     result = mongo.db.users.insert_one(data)
     return jsonify({'result': str(result.inserted_id)})
 
@@ -61,6 +69,23 @@ def delete_user(id):
         return jsonify({'error': 'User not found'}), 404
     return jsonify({'deleted_count': result.deleted_count})
 ##endregion
+
+## Реализация входа в систему
+@app.route('/login', methods=['POST'])
+def login_user():
+    data = request.json
+    user = mongo.db.users.find_one({'email': data['email']})
+
+    if user and check_password_hash(user['password'], data['password']):
+        # Генерация токена
+        # token = jwt.encode({
+        #     'user_id': str(user['_id']),
+        #     'exp': datetime.utcnow() + timedelta(hours=1)
+        # }, app.config['SECRET_KEY'])
+
+        return jsonify({'token': 'token'}), 200
+    else:
+        return jsonify({'error': 'Invalid email or password'}), 401
 
 ## Возвращает всех студентов заданной группы
 @app.route('/users/group/<group_name>', methods=['GET'])
