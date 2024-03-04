@@ -21,6 +21,10 @@ class UserStore {
 
   init = (usersService: UsersService) => {
     this.usersService = usersService;
+
+    const storedInfo = localStorage.getItem('user-info');
+    const initialValue = storedInfo ? JSON.parse(storedInfo) : initialUserInfo;
+    this.info = initialValue;
   };
 
   login = async (email: string, password: string) => {
@@ -31,6 +35,8 @@ class UserStore {
       console.error(error);
     }
   };
+
+  logout = () => this.updateInfo(initialUserInfo);
 
   registration = async (data: TUserAdd) => {
     try {
@@ -44,6 +50,7 @@ class UserStore {
   @action
   updateInfo = (info: TUser) => {
     this.info = info;
+    localStorage.setItem('user-info', JSON.stringify(info));
   };
 }
 

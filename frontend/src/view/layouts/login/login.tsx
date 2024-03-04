@@ -61,7 +61,7 @@ const LoginLayout = () => {
       <div className="flex flex-column gap-2">
         <CustomToast />
         <h1>EduTrack</h1>
-        <Accordion activeIndex={1}>
+        <Accordion activeIndex={0}>
           <AccordionTab header="Вход">
             <div className="flex flex-column gap-2">
               <InputText
