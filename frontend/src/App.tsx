@@ -1,13 +1,19 @@
 import './App.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import viteLogo from '/vite.svg';
 
 import reactLogo from './assets/react.svg';
+import { ProjectsApi } from './model/api';
 
-function App() {
+const App = () => {
   const [count, setCount] = useState(0);
+  const projectsApi = new ProjectsApi();
+
+  useEffect(() => {
+    projectsApi.getList();
+  }, []);
 
   return (
     <>
@@ -33,6 +39,6 @@ function App() {
       </p>
     </>
   );
-}
+};
 
 export default App;
