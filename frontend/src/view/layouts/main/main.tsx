@@ -1,11 +1,11 @@
 import { observer } from 'mobx-react-lite';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { CustomToast } from '@view/common/toast';
 import { Projects } from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
+import { CustomToast } from '@view/common';
 
 const MainLayout = () => {
   return (

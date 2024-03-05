@@ -7,12 +7,11 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 
+import { TUid } from '@api/types';
 import { useStores } from '@control';
-import { CustomToast } from '@view/common/toast';
+import { CustomToast } from '@view/common';
 
 import styles from './styles.module.scss';
-import { toJS } from 'mobx';
-import { TUid } from '@api/types';
 
 const roles = Object.values(UsersRolesEnum);
 const emptyNewUser: TUserRegistration = {

@@ -21,16 +21,6 @@ const App = () => {
   const { user } = useStores();
   const { info } = user;
 
-  const projectsApi = new ProjectsApi();
-  const tasksApi = new TasksApi();
-
-  useEffect(() => {
-    projectsApi.getList();
-    tasksApi.getList();
-  }, []);
-
-  console.log('App', toJS(info));
-
   const currentLayout = () => {
     switch (true) {
       case !info.id.length:

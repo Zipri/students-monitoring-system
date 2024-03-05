@@ -10,7 +10,7 @@
             "@config/app": ["config/appConfig"],
             "@theme/*": ["view/theme/*"],
             "@layouts/*": ["view/layouts/*"],
-            "@view/common/*": ["view/common/*"],
+            "@view/common": ["view/common"],
             "@view/pieces": ["view/pieces"],
             "@view/pages": ["view/pages"]
         }
