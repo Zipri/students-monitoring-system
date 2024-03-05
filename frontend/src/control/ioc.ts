@@ -22,7 +22,7 @@ class RootStore {
   init() {
     const { services } = this;
 
-    this.user.init(services.users);
+    this.user.init(services.users, services.groups);
   }
 }
 

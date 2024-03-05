@@ -93,6 +93,52 @@ def login_user():
         return jsonify(user_data), 200
     else:
         return jsonify({'error': 'Invalid email or password'}), 401
+    
+## Регистрация в систему
+@app.route('/registration', methods=['POST'])
+def registration():
+    data = request.json
+    group_id = data.pop('groupId', None)  # Извлекаем groupId из данных запроса и удаляем его из словаря
+    errors = validate_user_data(data)
+    if mongo.db.users.find_one({'username': data['username']}):
+        return jsonify({'error': 'User with this name already exists'}), 400
+    if errors:
+        return jsonify({'error': 'Validation failed', 'messages': errors}), 400
+    if not group_id:
+        return jsonify({'error': 'Missing required groupId'}), 400
+    
+    # Хеширование пароля перед сохранением
+    hashed_password = generate_password_hash(data['password'])
+    data['password'] = hashed_password
+    result = mongo.db.users.insert_one(data)
+    new_user_id = result.inserted_id
+    
+    if new_user_id:
+        # Находим группу по groupId и добавляем в неё нового пользователя
+        group = mongo.db.groups.find_one({'_id': ObjectId(group_id)})
+        if not group:
+            return jsonify({'error': 'Group not found'}), 404
+        
+        new_student = {
+            'userId': str(new_user_id),
+            'username': data['username'],
+            'email': data['email']
+        }
+        
+        updated_students = group.get('students', [])
+        updated_students.append(new_student)
+        
+        mongo.db.groups.update_one(
+            {'_id': ObjectId(group_id)},
+            {'$set': {'students': updated_students}}
+        )
+        
+        user = mongo.db.users.find_one({'_id': new_user_id})
+        user_data = user_to_json(user)
+        return jsonify(user_data), 201
+    else:
+        return jsonify({'error': 'User was not added successfully'}), 500
+
 
 ## Возвращает всех студентов заданной группы
 @app.route('/users/group/<group_name>', methods=['GET'])

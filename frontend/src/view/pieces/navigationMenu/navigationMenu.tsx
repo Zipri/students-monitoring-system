@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { classNames } from 'primereact/utils';
 import { Button } from 'primereact/button';
 
+// TODO накинуть прав
 const NavigationMenu = () => {
   const [isOpened, setIsOpened] = useState(false);
 
