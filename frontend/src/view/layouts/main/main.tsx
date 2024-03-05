@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite';
+import { Button } from 'primereact/button';
+
+import { useStores } from '@control';
+import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
-import { useStores } from '@control';
-import { Button } from 'primereact/button';
 
 const MainLayout = () => {
   const { user } = useStores();
@@ -10,9 +12,12 @@ const MainLayout = () => {
 
   return (
     <div className={styles.wrapper}>
-      <div className="flex flex-column gap-2">
-        <h1>V EduTrack V</h1>
-        <Button severity="danger" onClick={logout} label="Выйти" />
+      <TopBar />
+      <NavigationMenu />
+      <div className={styles.content}>
+        <div className="flex flex-column gap-2">
+          <h1>V EduTrack V</h1>
+        </div>
       </div>
     </div>
   );

@@ -1,0 +1,75 @@
+@import '../../theme/variables';
+
+.menu {
+    position: fixed;
+    z-index: 3;
+
+    height: 100%;
+    padding: 8px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: .5rem;
+
+    background-color: $layout-background-color;
+    transition: width 0.5s ease;
+    color: white;
+
+    .divider {
+        background-color: white;
+        height: 1px;
+        width: 100%;
+        margin: 4px 0;
+    }
+
+    .navmenuButton {
+        color: white !important;
+        white-space: nowrap !important;
+    
+        background-color: transparent;
+
+        border: 1px solid white;
+    
+        &:hover {
+            background-color: lighten(
+                $color: white,
+                $amount: 15
+            ) !important;
+
+            color: $main-color !important;
+
+            [class~='pi'] {
+                color: $main-color !important;
+            }
+        }
+    
+        [class~='pi'] {
+            font-size: 1rem;
+        }
+    }
+
+    &.opened {
+        width: $navmenu-width-opened;
+    }
+
+    &.closed {
+        width: $navmenu-width-closed;
+    }
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    gap: .5rem;
+
+    overflow-y: scroll;
+    scrollbar-width: none; //фикс для лисы
+    flex: 1;
+}
+
+.container::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}

@@ -1,17 +1,30 @@
+// ----------------------------------------- common -----------------------------------------
 $global-font-size: 12px;
+$main-radius: 6px;
 
-$topbar-gap: 6px;
-$topbar-icon-size: 1.3rem;
-$topbar-text-color: white;
-$topbar-button-background-color: #374151;
-$topbar-orange-color: #f59e0b;
-$topbar-height: 56px;
+// $main-color: #007BFF;
+// $main-color: #3e9bff;
+$main-color: #3b81f4;
+$accent-color: #FFC107;
+$accent-color-dark: #ff7707;
 
-$navmenu-width-closed: 4.8rem;
-$navmenu-width-opened: 18.4rem;
+// ----------------------------------------- layout -----------------------------------------
+$layout-background-color: $main-color;
+$main-background-color: #D1D3D4;
 
-$layout-background-color-dark: #1e293b;
+// ----------------------------------------- topbar -----------------------------------------
+// $topbar-gap: 6px;
+// $topbar-icon-size: 1.3rem;
+// $topbar-text-color: white;
+// $topbar-button-background-color: #374151;
+// $topbar-orange-color: #f59e0b;
+$topbar-height: 4.6rem;
 
+// ----------------------------------------- navmenu -----------------------------------------
+$navmenu-width-closed: 4.4rem;
+$navmenu-width-opened: 16.4rem;
+
+// ----------------------------------------- another -----------------------------------------
 $block-background-color: #659ddd3d;
 
 $secondary-button-color: #f1f2f4;
@@ -20,7 +33,6 @@ $secondary-button-color-hover: darken($secondary-button-color, 5);
 $modal-padding: 1.5rem; // 18px
 $common-padding-in-modal: 9px;
 
-$main-radius: 6px;
 // $grey-border-color: #dce0e4;
 $grey-border-color: #d1d5db;
 $grey-input-color: rgb(206, 212, 218);

@@ -1,0 +1,30 @@
+@import '../../theme/variables';
+
+.topBar {
+    color: white;
+
+    height: $topbar-height;
+    overflow: hidden;
+    padding: 0 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    gap: 1rem;
+
+    .logo {
+        padding: .5rem;
+
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        border-radius: $main-radius;
+        background-color: white;
+        color: $accent-color-dark;
+    }
+
+    // padding-left: 0px;
+
+    // margin-left: $navmenu-width-closed;
+}
