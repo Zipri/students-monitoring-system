@@ -41,7 +41,7 @@ const EllipsisText: FC<Props> = ({
         styles[`ellipsisText${linesCount}Lines`],
         { [styles.ellipsisBreakAll]: hardBreak }
       )}
-      title={title}
+      title={title || (children as string)}
     >
       {children}
     </span>

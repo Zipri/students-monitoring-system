@@ -38,6 +38,18 @@ const Projects = () => {
           return <EllipsisText>{record.status}</EllipsisText>;
         },
       },
+      {
+        header: 'Ответственный',
+        style: { width: '25rem' },
+        body: (record: TProject) => {
+          return (
+            <div className="flex flex-column gap-1">
+              <EllipsisText>{record.assignedTeacher.username}</EllipsisText>
+              <EllipsisText>{record.assignedTeacher.email}</EllipsisText>
+            </div>
+          );
+        },
+      },
     ];
   }, []);
 
@@ -55,7 +67,7 @@ const Projects = () => {
           style={{
             maxWidth: '100%',
             minWidth: '100%',
-            // maxHeight: '20rem',
+            maxHeight: '30rem',
           }}
           className={`fadein animation-duration-500 ${styles.table}`}
           showGridlines

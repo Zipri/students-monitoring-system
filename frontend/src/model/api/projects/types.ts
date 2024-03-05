@@ -13,14 +13,27 @@ export enum ProjectsStatusesEnum {
   postponed = 'Отложен',
 }
 
+export type TAssignedStudent = {
+  id: TUid;
+  email: string;
+  group: string;
+  username: string;
+};
+
+export type TAssignedTeacher = {
+  id: TUid;
+  email: string;
+  username: string;
+};
+
 export type TProject = {
   id: TUid;
   title: string;
   description?: string;
   deadline: TDate;
   status: ProjectsStatusesEnum;
-  assignedStudents?: string[];
-  assignedTeacher: string;
+  assignedStudents?: TAssignedStudent[];
+  assignedTeacher: TAssignedTeacher;
 };
 
 export type TProjectAdd = Omit<TProject, 'id'>;
