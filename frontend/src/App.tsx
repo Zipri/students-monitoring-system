@@ -1,15 +1,25 @@
-import './App.css';
+import './view/theme/index.scss';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
-import viteLogo from '/vite.svg';
+import { configure, toJS } from 'mobx';
+import { observer } from 'mobx-react-lite';
 
 import { ProjectsApi, TasksApi } from '@api';
+import { useStores } from '@control';
+import { InitialLayout } from '@layouts/initial';
+import { LoginLayout } from '@layouts/login';
+import { MainLayout } from '@layouts/main';
 
-import reactLogo from './assets/react.svg';
+//настройка для того, чтобы MobX не показывал предупреждения о
+//том, что экшены не могут быть асинхронными (могут, это легаси)
+configure({
+  enforceActions: 'never',
+});
 
 const App = () => {
-  const [count, setCount] = useState(0);
+  const { user } = useStores();
+  const { info } = user;
 
   const projectsApi = new ProjectsApi();
   const tasksApi = new TasksApi();
@@ -19,30 +29,22 @@ const App = () => {
     tasksApi.getList();
   }, []);
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR! It's Working
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+  console.log('App', toJS(info));
+
+  const currentLayout = () => {
+    switch (true) {
+      case !info.id.length:
+        return <LoginLayout />;
+
+      case !!info.id.length:
+        return <MainLayout />;
+
+      default:
+        return <InitialLayout />;
+    }
+  };
+
+  return currentLayout();
 };
 
-export default App;
+export default observer(App);

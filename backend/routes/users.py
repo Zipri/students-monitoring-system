@@ -1,6 +1,9 @@
 from app import app, mongo
 from flask import jsonify, request
 from bson.objectid import ObjectId
+from werkzeug.security import generate_password_hash, check_password_hash
+# import jwt
+# from datetime import datetime, timedelta
 
 # Helper functions
 def validate_user_data(data, update=False):
@@ -38,8 +41,18 @@ def add_user():
     errors = validate_user_data(data)
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
+    # Hashing the password before saving
+    hashed_password = generate_password_hash(data['password'])
+    data['password'] = hashed_password  # Replace plain text with hash
     result = mongo.db.users.insert_one(data)
-    return jsonify({'result': str(result.inserted_id)})
+    # Retrieve the user to return all data except the password
+    user = mongo.db.users.find_one({'_id': result.inserted_id})
+    if user:
+        user_data = user_to_json(user)
+        return jsonify(user_data), 201
+    else:
+        return jsonify({'error': 'User was not added successfully'}), 500
+
 
 # Обновление данных пользователя по идентификатору
 @app.route('/users/update/<id>', methods=['PUT'])
@@ -62,6 +75,25 @@ def delete_user(id):
     return jsonify({'deleted_count': result.deleted_count})
 ##endregion
 
+## Реализация входа в систему
+@app.route('/login', methods=['POST'])
+def login_user():
+    data = request.json
+    user = mongo.db.users.find_one({'email': data['email']})
+
+    if user and check_password_hash(user['password'], data['password']):
+        # Генерация токена
+        # token = jwt.encode({
+        #     'user_id': str(user['_id']),
+        #     'exp': datetime.utcnow() + timedelta(hours=1)
+        # }, app.config['SECRET_KEY'])
+
+        user_data = user_to_json(user)  # Use the function to exclude password
+        user_data['token'] = 'token'  # Replace 'token' with the actual token variable after generating the JWT token
+        return jsonify(user_data), 200
+    else:
+        return jsonify({'error': 'Invalid email or password'}), 401
+
 ## Возвращает всех студентов заданной группы
 @app.route('/users/group/<group_name>', methods=['GET'])
 def get_users_by_group(group_name):
@@ -70,6 +102,7 @@ def get_users_by_group(group_name):
     return jsonify(result)
 
 ## Возвращает всех заданной роли
+@app.route('/users/role/<role_name>', methods=['GET'])
 def get_users_by_role(role_name):
     users = mongo.db.users.find({"role": role_name})
     result = [user_to_json(user) for user in users]

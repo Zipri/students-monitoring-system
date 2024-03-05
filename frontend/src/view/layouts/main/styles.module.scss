@@ -1,0 +1,22 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.wrapper {
+    height: 100vh;
+    background-color: $layout-background-color;
+
+    .content {
+        @include custom-scrollbars;
+
+        height: calc(100vh - $topbar-height);
+        padding: 1rem;
+        margin-left: $navmenu-width-closed;
+
+        border-top-left-radius: $main-radius;
+        background-color: $main-background-color;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
