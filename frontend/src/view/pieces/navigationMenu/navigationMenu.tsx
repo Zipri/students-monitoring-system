@@ -1,8 +1,11 @@
-import { observer } from 'mobx-react-lite';
-import styles from './styles.module.scss';
 import { useState } from 'react';
-import { classNames } from 'primereact/utils';
+
+import { observer } from 'mobx-react-lite';
 import { Button } from 'primereact/button';
+import { classNames } from 'primereact/utils';
+
+import styles from './styles.module.scss';
+import LinkButton from './linkButton';
 
 // TODO накинуть прав
 const NavigationMenu = () => {
@@ -39,33 +42,30 @@ const NavigationMenu = () => {
       />
       <div className={styles.divider} />
       <div className={styles.container}>
-        <Button
-          //   onClick={onOpenButtonClick}
-          label={isOpened ? 'Системные настройки' : undefined}
-          tooltip={isOpened ? undefined : 'Системные настройки'}
-          tooltipOptions={{ showDelay: 50 }}
-          text
-          className={styles.navmenuButton}
+        <LinkButton
+          isOpened={isOpened}
+          title="Системные настройки"
+          link="system-settings"
           icon="pi pi-cog"
         />
-        <Button
-          //   onClick={onOpenButtonClick}
-          label={isOpened ? 'Пользователь' : undefined}
-          tooltip={isOpened ? undefined : 'Пользователь'}
-          tooltipOptions={{ showDelay: 50 }}
-          text
-          className={styles.navmenuButton}
+        <LinkButton
+          isOpened={isOpened}
+          title="Пользователь"
+          link="user"
           icon="pi pi-user"
         />
         <div className={styles.divider} />
-        <Button
-          //   onClick={onOpenButtonClick}
-          label={isOpened ? 'Проекты' : undefined}
-          tooltip={isOpened ? undefined : 'Проекты'}
-          tooltipOptions={{ showDelay: 50 }}
-          text
-          className={styles.navmenuButton}
+        <LinkButton
+          isOpened={isOpened}
+          title="Проекты"
+          link="projects"
           icon="pi pi-book"
+        />
+        <LinkButton
+          isOpened={isOpened}
+          title="Мой канбан"
+          link="kanban"
+          icon="pi pi-th-large"
         />
       </div>
     </nav>

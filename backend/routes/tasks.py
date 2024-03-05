@@ -28,7 +28,7 @@ def task_to_json(task):
         'description': task.get('description', 'No description provided'),
         'status': task['status'],
         'priority': task['priority'],
-        'deadline': task['deadline']
+        'deadline': task.get('deadline', 'No deadline')  # Предоставление значения по умолчанию
     }
 
 ##region CRUD
