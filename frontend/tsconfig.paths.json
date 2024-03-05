@@ -5,7 +5,13 @@
             "@api": ["model/api"],
             "@api/types": ["model/api/types"],
             "@services": ["model/services"],
-            "@config/app": ["config/appConfig"]
+            "@control": ["control"],
+            "@stores/common": ["control/stores/common"],
+            "@config/app": ["config/appConfig"],
+            "@theme/*": ["view/theme/*"],
+            "@layouts/*": ["view/layouts/*"],
+            "@view/common/*": ["view/common/*"],
+            "@view/pieces": ["view/pieces"]
         }
     }
 }

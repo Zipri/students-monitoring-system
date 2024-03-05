@@ -6,8 +6,4 @@ export type TDate = string;
 export type TResponseResult = { result: TUid };
 export type TResponseModifiedCount = { modified_count: number };
 export type TResponseDeletedCount = { deleted_count: number };
-
-export enum usersRolesEnum {
-  student = 'Студент',
-  teacher = 'Преподаватель',
-}
+export type TResponseError = { error: string };
