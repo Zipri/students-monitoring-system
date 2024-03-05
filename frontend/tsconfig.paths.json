@@ -6,6 +6,7 @@
             "@api/types": ["model/api/types"],
             "@services": ["model/services"],
             "@control": ["control"],
+            "@stores/common": ["control/stores/common"],
             "@config/app": ["config/appConfig"],
             "@theme/*": ["view/theme/*"],
             "@layouts/*": ["view/layouts/*"],

@@ -1,34 +1,38 @@
-import { ChangeEventHandler, useState } from 'react';
+import { useState } from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { TUserAdd, UsersRolesEnum } from 'model/api/users/types';
+import { TUserRegistration, UsersRolesEnum } from 'model/api/users/types';
 import { Accordion, AccordionTab } from 'primereact/accordion';
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 
 import { useStores } from '@control';
 import { CustomToast } from '@view/common/toast';
 
 import styles from './styles.module.scss';
-import { Dropdown } from 'primereact/dropdown';
+import { toJS } from 'mobx';
+import { TUid } from '@api/types';
 
 const roles = Object.values(UsersRolesEnum);
-const emptyNewUser: TUserAdd = {
+const emptyNewUser: TUserRegistration = {
   username: '',
   email: '',
   password: '',
   role: UsersRolesEnum.student,
   group: undefined,
+  groupId: undefined,
 };
 
 const LoginLayout = () => {
   const { user, toast } = useStores();
-  const { login, registration } = user;
+  const { login, registration, getStudentGroups, groups, loadingDropdown } =
+    user;
 
   const [email, setEmail] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
 
-  const [newUser, setNewUser] = useState<TUserAdd>(emptyNewUser);
+  const [newUser, setNewUser] = useState<TUserRegistration>(emptyNewUser);
 
   const handleLogin = () => {
     if (email && password) {
@@ -40,9 +44,10 @@ const LoginLayout = () => {
 
   const handRegistration = () => {
     const groupCondition =
-      newUser.role === UsersRolesEnum.student ? !!newUser.group : true;
+      newUser.role === UsersRolesEnum.student
+        ? !!newUser.group || !!newUser.groupId
+        : true;
 
-    console.log(newUser);
     if (
       newUser.email.length &&
       newUser.password.length &&
@@ -54,6 +59,10 @@ const LoginLayout = () => {
     } else {
       toast.error('Должны быть заполнены все обязательные поля');
     }
+  };
+
+  const getGroupNameById = (id: TUid) => {
+    return groups.find((group) => group.id === id)?.name;
   };
 
   return (
@@ -101,15 +110,25 @@ const LoginLayout = () => {
                 value={newUser.role}
                 options={roles}
                 onChange={(e) => setNewUser({ ...newUser, role: e.value })}
+                onShow={getStudentGroups}
               />
               {newUser.role === UsersRolesEnum.student && (
-                <InputText
-                  name="group"
+                <Dropdown
+                  placeholder="Выберите группу"
+                  value={newUser.groupId}
+                  options={groups}
+                  optionLabel="name"
+                  optionValue="id"
                   onChange={(e) =>
-                    setNewUser({ ...newUser, group: e.target.value })
+                    setNewUser({
+                      ...newUser,
+                      groupId: e.value,
+                      group: getGroupNameById(e.value),
+                    })
                   }
-                  placeholder="Введите группу"
-                  type="text"
+                  loading={loadingDropdown.value}
+                  onShow={getStudentGroups}
+                  filter
                 />
               )}
               <InputText

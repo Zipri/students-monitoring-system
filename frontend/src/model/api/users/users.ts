@@ -17,6 +17,9 @@ import {
   TPutUsersParams,
   TPutUsersRequest,
   TPutUsersResponse,
+  TRegistrationParams,
+  TRegistrationRequest,
+  TRegistrationResponse,
 } from './types';
 
 const LOCAL_URL = `${BACKEND_URL}/users`;
@@ -27,7 +30,7 @@ class UsersApi {
       undefined,
       AxiosResponse<TGetListUsersResponse>
     >(LOCAL_URL);
-    return response;
+    return response.data;
   };
 
   postRecord = async (data: TPostUsersParams) => {
@@ -43,7 +46,7 @@ class UsersApi {
       TPutUsersRequest,
       AxiosResponse<TPutUsersResponse>
     >(`${LOCAL_URL}/update/${params.id}`, params.data);
-    return response;
+    return response.data;
   };
 
   deleteRecord = async (id: TUid) => {
@@ -51,7 +54,7 @@ class UsersApi {
       undefined,
       AxiosResponse<TDeleteUsersResponse>
     >(`${LOCAL_URL}/update/${id}`);
-    return response;
+    return response.data;
   };
 
   login = async (params: TLoginParams) => {
@@ -62,12 +65,20 @@ class UsersApi {
     return response.data;
   };
 
+  registration = async (params: TRegistrationParams) => {
+    const response = await axios.post<
+      TRegistrationRequest,
+      AxiosResponse<TRegistrationResponse>
+    >(`${BACKEND_URL}/registration`, params);
+    return response.data;
+  };
+
   getListByGroup = async (group: string) => {
     const response = await axios.get<
       undefined,
       AxiosResponse<TGetListUsersByGroupResponse>
     >(`${LOCAL_URL}/group/${group}`);
-    return response;
+    return response.data;
   };
 
   getListByRole = async (role: string) => {
@@ -75,7 +86,7 @@ class UsersApi {
       undefined,
       AxiosResponse<TGetListUsersByRoleResponse>
     >(`${LOCAL_URL}/role/${role}`);
-    return response;
+    return response.data;
   };
 }
 

@@ -38,6 +38,17 @@ export type TUserLogin = {
   password: string;
 };
 
+export type TUserRegistration = {
+  username: string;
+  email: string;
+  /** Пароль требуется только при добавлении пользователя и хэшируется на бэке */
+  password: string;
+  role: UsersRolesEnum;
+  /** Может быть не указан для ролей, отличных от студента */
+  group?: string;
+  groupId?: TUid;
+};
+
 export type TGetUsersByGroupParams = {
   group_name: string;
 };
@@ -66,6 +77,11 @@ export type TDeleteUsersResponse = TResponseDeletedCount;
 export type TLoginParams = TUserLogin;
 export type TLoginRequest = TUserLogin;
 export type TLoginResponse = TUser & { token?: string };
+
+// Registration
+export type TRegistrationParams = TUserRegistration;
+export type TRegistrationRequest = TUserRegistration;
+export type TRegistrationResponse = TUser;
 
 // Ответ на получение пользователей по группе
 export type TGetListUsersByGroupResponse = TUser[];
