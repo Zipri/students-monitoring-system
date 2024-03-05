@@ -1,0 +1,43 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.chipListWrapper {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+
+    .header {
+        margin-right: 0.5rem;
+    }
+}
+
+.moreLabel {
+    @include link-button;
+
+    justify-content: center;
+}
+
+.tooltipChip {
+    max-width: 350px;
+    margin-bottom: 0.2rem;
+    word-break: break-word;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+}
+
+.overlay {
+    @include custom-scrollbars;
+    
+    padding: .5rem !important;
+    overflow-y: auto;
+
+    width: 15rem;
+    max-height: 20rem;
+}
+
+.ellipsisText {
+    word-break: break-all;
+}

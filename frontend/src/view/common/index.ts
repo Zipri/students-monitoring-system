@@ -1,4 +1,5 @@
+import { ChipList } from './chipList';
 import { EllipsisText } from './ellipsisText';
 import { CustomToast } from './toast';
 
-export { EllipsisText, CustomToast };
+export { ChipList, CustomToast, EllipsisText };

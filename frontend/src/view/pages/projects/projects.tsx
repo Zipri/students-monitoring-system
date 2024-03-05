@@ -8,7 +8,7 @@ import { DataTable } from 'primereact/datatable';
 import { ProgressSpinner } from 'primereact/progressspinner';
 
 import { useStores } from '@control';
-import { EllipsisText } from '@view/common';
+import { ChipList, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
 
@@ -26,7 +26,7 @@ const Projects = () => {
       },
       {
         header: 'Срок сдачи',
-        style: { width: '25rem' },
+        style: { width: '15rem' },
         body: (record: TProject) => {
           return <EllipsisText>{record.deadline}</EllipsisText>;
         },
@@ -47,6 +47,28 @@ const Projects = () => {
               <EllipsisText>{record.assignedTeacher.username}</EllipsisText>
               <EllipsisText>{record.assignedTeacher.email}</EllipsisText>
             </div>
+          );
+        },
+      },
+      {
+        header: 'Студенты',
+        style: { width: '25rem' },
+        body: (record: TProject) => {
+          return (
+            <ChipList
+              key={`table-projects-Студенты-${record.id}`}
+              id={record.id}
+              maxListChips={2}
+              showTooltip
+              disableMoreButton
+              //   chipSize="s"
+              chipItems={
+                record.assignedStudents?.map((i) => ({
+                  id: i.id,
+                  name: i.username,
+                })) || []
+              }
+            />
           );
         },
       },

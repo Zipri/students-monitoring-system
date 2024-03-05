@@ -1,0 +1,40 @@
+@import '../../../theme/variables';
+
+
+.chipWrapper {
+  [class~='p-chip'] {
+    padding: .5rem;
+    background-color: #f6f7f8;
+    border: 1px solid $grey-border-color;
+    border-radius: $main-radius;
+  }
+
+  [class~='p-chip-text'] {
+    margin: 0;
+  }
+}
+
+.chipWrapperFullWidth {
+  [class~='p-chip'] {
+    width: 100%;
+  }
+}
+
+.smallChip {
+  [class~='p-chip'] {
+    padding: .3rem;
+    font-size: 10px;
+  }
+}
+
+.mediumSmallChip {
+  [class~='p-chip'] {
+    font-size: 11px;
+  }
+}
+
+.largeChip {
+  [class~='p-chip'] {
+    font-size: 15px;
+  }
+}
