@@ -26,7 +26,7 @@ class RootStore {
     const { services } = this;
 
     this.user.init(services.users, services.groups);
-    this.projects.init(services.projects);
+    this.projects.init(services.projects, services.users);
   }
 }
 

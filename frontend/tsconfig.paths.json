@@ -11,6 +11,7 @@
             "@theme/*": ["view/theme/*"],
             "@layouts/*": ["view/layouts/*"],
             "@view/common": ["view/common"],
+            "@view/form": ["view/common-form"],
             "@view/pieces": ["view/pieces"],
             "@view/pages": ["view/pages"]
         }

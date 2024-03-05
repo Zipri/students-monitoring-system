@@ -13,7 +13,7 @@ import { CustomToast } from '@view/common';
 
 import styles from './styles.module.scss';
 
-const roles = Object.values(UsersRolesEnum);
+const roles = Object.values(UsersRolesEnum); // FIXME SKV вынести в конфиг
 const emptyNewUser: TUserRegistration = {
   username: '',
   email: '',
@@ -109,7 +109,6 @@ const LoginLayout = () => {
                 value={newUser.role}
                 options={roles}
                 onChange={(e) => setNewUser({ ...newUser, role: e.value })}
-                onShow={getStudentGroups}
               />
               {newUser.role === UsersRolesEnum.student && (
                 <Dropdown

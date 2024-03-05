@@ -44,6 +44,7 @@ export type TProjectSearchParams = {
   title?: string;
   deadline?: TDate;
   status?: ProjectsStatusesEnum;
+  assignedTeacher?: TUid;
 };
 
 // Get list

@@ -1,4 +1,5 @@
 import { ProjectsApi } from '@api';
+import { TProjectSearchParams } from 'model/api/projects/types';
 
 class ProjectsService {
   private baseApi!: ProjectsApi;
@@ -10,6 +11,15 @@ class ProjectsService {
   getListItems = async () => {
     try {
       const response = await this.baseApi.getList();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  searchList = async (params: TProjectSearchParams) => {
+    try {
+      const response = await this.baseApi.searchList(params);
       return response;
     } catch (error) {
       throw error;

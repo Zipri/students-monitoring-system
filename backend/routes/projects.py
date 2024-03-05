@@ -114,6 +114,7 @@ def search_projects():
     title = request.args.get('title')
     deadline = request.args.get('deadline')
     status = request.args.get('status')
+    assignedTeacher = request.args.get('assignedTeacher')
     # Формируем критерии фильтрации на основе полученных параметров
     query = {}
     if title:
@@ -122,6 +123,8 @@ def search_projects():
         query['deadline'] = deadline  # Поиск по точной дате
     if status:
         query['status'] = status  # Поиск по статусу
+    if assignedTeacher:
+        query['assignedTeacher'] = assignedTeacher
     # Ищем проекты по запросу
     projects = mongo.db.projects.find(query)
     result = [project_to_json(project) for project in projects]
