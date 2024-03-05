@@ -5,7 +5,7 @@
 
     height: $topbar-height;
     overflow: hidden;
-    padding: 0 1rem;
+    padding: 0 $topbar-padding;
 
     display: flex;
     align-items: center;
@@ -23,8 +23,4 @@
         background-color: white;
         color: $accent-color-dark;
     }
-
-    // padding-left: 0px;
-
-    // margin-left: $navmenu-width-closed;
 }
