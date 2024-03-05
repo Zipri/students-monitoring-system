@@ -13,6 +13,7 @@ def ping():
 
 # from routes import *
 from routes.users import *
+from routes.groups import *
 from routes.projects import *
 from routes.tasks import *
 from routes.comments import *
