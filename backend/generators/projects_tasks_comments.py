@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from faker import Faker
 from bson.objectid import ObjectId
 import random
-from datetime import datetime
+from datetime import datetime, timedelta
 
 fake = Faker()
 
@@ -14,15 +14,24 @@ db = client['skeleton-python-mongo']
 teachers = list(db.users.find({'role': 'Преподаватель'}))
 students = list(db.users.find({'role': 'Студент'}))
 
+# Функция для генерации рандомной даты в течение следующих 6 месяцев
+def generate_random_future_date():
+    today = datetime.now()
+    # Случайное количество дней до 182 дней (примерно полгода)
+    random_days = random.randint(1, 182)
+    future_date = today + timedelta(days=random_days)
+    return future_date
+
 # Функция для создания проектов
 def create_projects(teachers, students):
     projects = []
-    for i in range(10):  # Создаем 10 проектов для примера
+    for i in range(20):  # Создаем 10 проектов для примера
         teacher = random.choice(teachers)
         assigned_students = random.sample(students, k=random.randint(1, 5))  # От 1 до 5 учеников на проект
         project = {
             'title': fake.sentence(nb_words=6),
             'description': fake.text(max_nb_chars=200),
+            'deadline': generate_random_future_date(),
             'status': random.choice(['В планировании', 'В процессе']),
             'assignedTeacher': str(teacher['_id']),
             'assignedStudents': [str(student['_id']) for student in assigned_students]

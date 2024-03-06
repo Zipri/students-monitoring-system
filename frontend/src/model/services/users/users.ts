@@ -1,4 +1,4 @@
-import { TUserRegistration } from 'model/api/users/types';
+import { TUserRegistration, UsersRolesEnum } from 'model/api/users/types';
 
 import { UsersApi } from '@api';
 
@@ -12,6 +12,15 @@ class UsersService {
   getListItems = async () => {
     try {
       const response = await this.baseApi.getList();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getTeachers = async () => {
+    try {
+      const response = await this.baseApi.getListByRole(UsersRolesEnum.teacher);
       return response;
     } catch (error) {
       throw error;

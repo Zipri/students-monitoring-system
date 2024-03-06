@@ -20,6 +20,9 @@ body {
 }
 
 [class~='p-button'] {
+    // font-weight: 800 !important;
+    // font-size: 1.2rem;
+
     &:focus {
         //border: none !important;
         outline: none !important;

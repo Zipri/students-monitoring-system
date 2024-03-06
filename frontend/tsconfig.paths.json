@@ -7,11 +7,14 @@
             "@services": ["model/services"],
             "@control": ["control"],
             "@stores/common": ["control/stores/common"],
+            "@stores/manager": ["control/storeManager"],
             "@config/app": ["config/appConfig"],
             "@theme/*": ["view/theme/*"],
             "@layouts/*": ["view/layouts/*"],
-            "@view/common/*": ["view/common/*"],
-            "@view/pieces": ["view/pieces"]
+            "@view/common": ["view/common"],
+            "@view/form": ["view/common-form"],
+            "@view/pieces": ["view/pieces"],
+            "@view/pages": ["view/pages"]
         }
     }
 }

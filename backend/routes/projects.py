@@ -24,16 +24,39 @@ def validate_project_data(data, update=False):
     
     return errors
 
+def get_user_info(user_id):
+    """Возвращает информацию о пользователе по его ID."""
+    user = mongo.db.users.find_one({'_id': ObjectId(user_id)})
+    if user:
+        if user['role'] == 'Студент':
+            return {
+                'id': str(user['_id']),
+                'username': user['username'],
+                'email': user['email'],
+                'group': user.get('group', None)
+            }
+        
+        return {
+            'id': str(user['_id']),
+            'username': user['username'],
+            'email': user['email'],
+        }
+    return None
+
 def project_to_json(project):
     """Convert a project document to a JSON-serializable format."""
+    # Получаем информацию о преподавателе
+    assignedTeacher_info = get_user_info(project.get('assignedTeacher'))
+    # Получаем информацию о студентах
+    assignedStudents_info = [get_user_info(student_id) for student_id in project.get('assignedStudents', [])]
     return {
         'id': str(project['_id']),
         'title': project['title'],
         'description': project.get('description', 'No description provided'),
         'deadline': project.get('deadline', 'No deadline provided'),
         'status': project.get('status', 'No status provided'),
-        'assignedStudents': project.get('assignedStudents', []),
-        'assignedTeacher': project.get('assignedTeacher', 'No teacher assigned')
+        'assignedStudents': assignedStudents_info,
+        'assignedTeacher': assignedTeacher_info
     }
 
 ##region CRUD
@@ -91,6 +114,7 @@ def search_projects():
     title = request.args.get('title')
     deadline = request.args.get('deadline')
     status = request.args.get('status')
+    assignedTeacher = request.args.get('assignedTeacher')
     # Формируем критерии фильтрации на основе полученных параметров
     query = {}
     if title:
@@ -99,6 +123,8 @@ def search_projects():
         query['deadline'] = deadline  # Поиск по точной дате
     if status:
         query['status'] = status  # Поиск по статусу
+    if assignedTeacher:
+        query['assignedTeacher'] = assignedTeacher
     # Ищем проекты по запросу
     projects = mongo.db.projects.find(query)
     result = [project_to_json(project) for project in projects]

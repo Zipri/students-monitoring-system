@@ -7,14 +7,13 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 
+import { TUid } from '@api/types';
 import { useStores } from '@control';
-import { CustomToast } from '@view/common/toast';
+import { CustomToast } from '@view/common';
 
 import styles from './styles.module.scss';
-import { toJS } from 'mobx';
-import { TUid } from '@api/types';
 
-const roles = Object.values(UsersRolesEnum);
+const roles = Object.values(UsersRolesEnum); // FIXME SKV вынести в конфиг
 const emptyNewUser: TUserRegistration = {
   username: '',
   email: '',
@@ -110,7 +109,6 @@ const LoginLayout = () => {
                 value={newUser.role}
                 options={roles}
                 onChange={(e) => setNewUser({ ...newUser, role: e.value })}
-                onShow={getStudentGroups}
               />
               {newUser.role === UsersRolesEnum.student && (
                 <Dropdown
