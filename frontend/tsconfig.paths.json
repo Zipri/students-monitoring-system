@@ -9,6 +9,7 @@
             "@stores/common": ["control/stores/common"],
             "@stores/manager": ["control/storeManager"],
             "@config/app": ["config/appConfig"],
+            "@config": ["config/config"],
             "@theme/*": ["view/theme/*"],
             "@layouts/*": ["view/layouts/*"],
             "@view/common": ["view/common"],

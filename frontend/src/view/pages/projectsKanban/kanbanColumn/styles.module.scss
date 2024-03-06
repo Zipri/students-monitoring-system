@@ -19,8 +19,8 @@
         font-size: 1.2rem;
         font-weight: 600;
 
-        background-color: $accent-color;
-        border: 1px solid $accent-color;
+        background-color: $darken-grey;
+        border: 1px solid $darken-grey;
 
         border-radius: $main-radius $main-radius 0 0;
         padding: .5rem;
@@ -38,7 +38,7 @@
         height: 100%;
 
         background-color: white;
-        border: 1px solid $accent-color;
+        border: 1px solid $darken-grey;
 
         padding: 1rem;
         border-radius: 0 0 $main-radius $main-radius;

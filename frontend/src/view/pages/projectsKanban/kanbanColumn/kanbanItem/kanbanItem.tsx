@@ -3,8 +3,13 @@ import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
 import { Draggable } from 'react-beautiful-dnd';
+
+import { projectsKanbanColorSchema } from '@config';
+import { ChipList, CustomDivider, EllipsisText } from '@view/common';
+
 import styles from './styles.module.scss';
-import { ChipList, CustomDivider } from '@view/common';
+
+const colorSchema = projectsKanbanColorSchema;
 
 type TProjectsKanbanItem = {
   project: TProject;
@@ -21,12 +26,20 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
         >
-          <div className={styles.header}>{project.title}</div>
-          <div className={styles.content}>
+          <div
+            className={styles.header}
+            style={colorSchema[project.status].header}
+          >
+            <EllipsisText maxLines={1}>{project.title}</EllipsisText>
+          </div>
+          <div
+            className={styles.content}
+            style={colorSchema[project.status].content}
+          >
             <CustomDivider title="Срок сдачи" />
             <div>{project.deadline}</div>
             <CustomDivider title="Описание" />
-            <div>{project.description}</div>
+            <EllipsisText maxLines={3}>{project.description}</EllipsisText>
             <CustomDivider title="Ответственный" />
             <div>{project.assignedTeacher.username}</div>
             <div>{project.assignedTeacher.email}</div>

@@ -15,20 +15,25 @@
         align-items: center;
         justify-content: center;
 
-        background-color: $darken-grey;
-        border: 1px solid $darken-grey;
-
         border-radius: $main-radius $main-radius 0 0;
         padding: .5rem;
+    }
+
+    .greenHeader {
+        background-color: green;
+        border: 1px solid green;
+    }
+
+    .yellowHeader {
+        background-color: green;
+        border: 1px solid green;
     }
 
     .content {
         @include custom-scrollbars;
         
         width: 100%;
-
         background-color: white;
-        border: 1px solid $darken-grey;
 
         padding: 1rem;
         border-radius: 0 0 $main-radius $main-radius;
