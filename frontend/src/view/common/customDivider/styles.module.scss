@@ -1,0 +1,15 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.divider {
+    background-color: $darken-grey;
+    height: 1px;
+    width: 100%;
+    margin: .5rem 0;
+}
+
+.title {
+    color: $darken-grey;
+    white-space: nowrap;
+    margin: .5rem 0;
+}

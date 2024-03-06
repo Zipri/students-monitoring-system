@@ -53,12 +53,12 @@ export type TGetListProjectsResponse = TProject[];
 // Post record
 export type TPostProjectsParams = TProjectAdd;
 export type TPostProjectsRequest = TProjectAdd;
-export type TPostProjectsResponse = TResponseResult;
+export type TPostProjectsResponse = TProject;
 
 // Put record
 export type TPutProjectsParams = { id: TUid; data: TProjectUpdate };
 export type TPutProjectsRequest = TProjectUpdate;
-export type TPutProjectsResponse = TResponseModifiedCount;
+export type TPutProjectsResponse = TProject;
 
 // Delete record
 export type TDeleteProjectsResponse = TResponseDeletedCount;

@@ -1,0 +1,41 @@
+@import '../../../../theme/mixins';
+@import '../../../../theme/variables';
+
+.itemWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+
+    .header {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: $main-radius $main-radius 0 0;
+        padding: .5rem;
+    }
+
+    .greenHeader {
+        background-color: green;
+        border: 1px solid green;
+    }
+
+    .yellowHeader {
+        background-color: green;
+        border: 1px solid green;
+    }
+
+    .content {
+        @include custom-scrollbars;
+        
+        width: 100%;
+        background-color: white;
+
+        padding: 1rem;
+        border-radius: 0 0 $main-radius $main-radius;
+    }
+}

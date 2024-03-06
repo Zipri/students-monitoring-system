@@ -2,9 +2,7 @@
 @import '../../../theme/variables';
 
 .formWrapper {
-    background-color: white;
-    border-radius: $main-radius;
-    padding: 1rem;
+    @include common-wrapper;
 
     display: flex;
     flex-direction: column;
