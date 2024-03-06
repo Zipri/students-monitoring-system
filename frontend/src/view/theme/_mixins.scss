@@ -1,5 +1,11 @@
 @import './variables';
 
+@mixin common-wrapper {
+    background-color: white;
+    border-radius: $main-radius;
+    padding: 1rem;
+}
+
 @mixin table-button {
     [class~='p-button'] {
         background-color: $secondary-button-color;

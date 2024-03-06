@@ -2,9 +2,7 @@
 @import '../../../theme/variables';
 
 .tableWrapper {
-    background-color: white;
-    border-radius: $main-radius;
-    padding: 1rem;
+    @include common-wrapper;
 
     height: calc(100vh - $topbar-height - 90px);
 
