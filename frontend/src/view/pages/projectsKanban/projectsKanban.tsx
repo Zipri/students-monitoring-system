@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useStores } from '@control';
 
@@ -11,10 +11,16 @@ import styles from './styles.module.scss';
 
 const ProjectsKanban = () => {
   const { projectsKanban } = useStores();
-  const { userProjects, userInfo, getUserProjects } = projectsKanban;
+  const { userProjects, userInfo, getUserProjects, changeStatus } =
+    projectsKanban;
 
-  const onDragEnd = (result: any) => {
-    console.log(result);
+  const onDragEnd: OnDragEndResponder = (result) => {
+    if (result.destination?.droppableId) {
+      changeStatus(
+        result.draggableId,
+        result.destination.droppableId as ProjectsStatusesEnum
+      );
+    }
   };
 
   // Группируем проекты по статусам
@@ -34,19 +40,17 @@ const ProjectsKanban = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.kanbanWrapper}>
-        {Object.entries(ProjectsStatusesEnum).map(
-          ([statusKey, statusValue]) => {
-            const projects = projectsByStatus[statusValue] || [];
-            return (
-              <ProjectsKanbanColumn
-                key={statusKey}
-                columnId={statusKey}
-                title={statusValue}
-                projects={projects}
-              />
-            );
-          }
-        )}
+        {Object.values(ProjectsStatusesEnum).map((statusValue) => {
+          const projects = projectsByStatus[statusValue] || [];
+          return (
+            <ProjectsKanbanColumn
+              key={statusValue}
+              columnId={statusValue}
+              title={statusValue}
+              projects={projects}
+            />
+          );
+        })}
       </div>
     </DragDropContext>
   );

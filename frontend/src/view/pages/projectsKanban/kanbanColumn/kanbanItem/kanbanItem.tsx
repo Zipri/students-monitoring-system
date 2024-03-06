@@ -8,6 +8,7 @@ import { projectsKanbanColorSchema } from '@config';
 import { ChipList, CustomDivider, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
+import { Button } from 'primereact/button';
 
 const colorSchema = projectsKanbanColorSchema;
 
@@ -57,6 +58,11 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                 })) || []
               }
             />
+            <CustomDivider />
+            <div className="flex align-items-center justify-content-end gap-2">
+              <Button outlined label="Редактировать" />
+              <Button outlined label="Открыть" />
+            </div>
           </div>
         </div>
       )}

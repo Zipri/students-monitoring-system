@@ -1,4 +1,8 @@
-import { TProjectSearchParams } from 'model/api/projects/types';
+import {
+  ProjectsStatusesEnum,
+  TProjectSearchParams,
+  TProjectUpdate,
+} from 'model/api/projects/types';
 import { UsersRolesEnum } from 'model/api/users/types';
 
 import { ProjectsApi } from '@api';
@@ -38,6 +42,24 @@ class ProjectsService {
         const response = await this.baseApi.searchListByTeacherId(id);
         return response;
       }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  changeRecord = async (id: TUid, data: TProjectUpdate) => {
+    try {
+      const response = await this.baseApi.putRecord({ id, data });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  changeProjectStatus = async (id: TUid, status: ProjectsStatusesEnum) => {
+    try {
+      const response = await this.changeRecord(id, { status });
+      return response;
     } catch (error) {
       throw error;
     }

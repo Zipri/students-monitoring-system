@@ -1,10 +1,11 @@
 import { action, makeObservable, observable } from 'mobx';
-import { TProject } from 'model/api/projects/types';
+import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
 import { ProjectsService } from 'model/services/projects';
 
 import { Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
 import { TUser } from 'model/api/users/types';
+import { TUid } from '@api/types';
 
 class ProjectsKanbanStore {
   private projectsService!: ProjectsService;
@@ -38,6 +39,27 @@ class ProjectsKanbanStore {
       this.updateUserProjects(response);
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getUserProjects');
+    } finally {
+      this.loading.stop();
+    }
+  };
+
+  changeStatus = async (id: TUid, status: ProjectsStatusesEnum) => {
+    try {
+      this.loading.start();
+      const response = await this.projectsService.changeProjectStatus(
+        id,
+        status
+      );
+      const newUserProjects = this.userProjects.map((item) => {
+        if (item.id !== id) return item;
+        return {
+          ...response,
+        };
+      });
+      this.updateUserProjects(newUserProjects);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода changeStatus');
     } finally {
       this.loading.stop();
     }

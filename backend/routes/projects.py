@@ -75,7 +75,10 @@ def add_project():
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
     result = mongo.db.projects.insert_one(data)
-    return jsonify({'result': str(result.inserted_id)})
+    new_project_id = result.inserted_id
+    # Получаем добавленный проект
+    new_project = mongo.db.projects.find_one({'_id': new_project_id})
+    return jsonify(project_to_json(new_project)), 201
 
 # Обновление данных проекта по идентификатору
 @app.route('/projects/update/<id>', methods=['PUT'])
@@ -87,7 +90,9 @@ def update_project(id):
     result = mongo.db.projects.update_one({'_id': ObjectId(id)}, {'$set': data})
     if result.modified_count == 0:
         return jsonify({'error': 'Project not found or data not changed'}), 404
-    return jsonify({'modified_count': result.modified_count})
+    # Получаем обновлённый проект
+    updated_project = mongo.db.projects.find_one({'_id': ObjectId(id)})
+    return jsonify(project_to_json(updated_project)), 200
 
 # Удаление проекта по идентификатору
 @app.route('/projects/delete/<id>', methods=['DELETE'])

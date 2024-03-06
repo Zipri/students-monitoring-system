@@ -34,10 +34,10 @@ export const projectsKanbanColorSchema = {
   [ProjectsStatusesEnum.postponed]: {
     header: {
       backgroundColor: '#FBD38D',
-      border: '1px solid #fffaf0',
+      border: '1px solid #FBD38D',
     },
     content: {
-      backgroundColor: '#FBD38D',
+      backgroundColor: '#fffaf0',
       border: '1px solid #FBD38D',
     },
   },
