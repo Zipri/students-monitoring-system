@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import { Projects } from '@view/pages';
+import { Projects, ProjectsKanban } from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
@@ -29,6 +29,7 @@ const MainLayout = () => {
               }
             />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/projects-kanban" element={<ProjectsKanban />} />
             <Route
               path="*"
               element={

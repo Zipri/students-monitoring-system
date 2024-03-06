@@ -64,7 +64,7 @@ const NavigationMenu = () => {
         <LinkButton
           isOpened={isOpened}
           title="Мой канбан"
-          link="kanban"
+          link="projects-kanban"
           icon="pi pi-th-large"
         />
       </div>

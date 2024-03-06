@@ -1,3 +1,4 @@
+import { ErrorHandlerStore } from './errorHandler';
 import { Loading } from './loading';
 
-export { Loading };
+export { ErrorHandlerStore, Loading };

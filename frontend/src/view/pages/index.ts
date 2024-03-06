@@ -1,3 +1,4 @@
 import { Projects } from './projects';
+import { ProjectsKanban } from './projectsKanban';
 
-export { Projects };
+export { Projects, ProjectsKanban };

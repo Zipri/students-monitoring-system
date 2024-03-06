@@ -5,6 +5,7 @@ import { ProjectsService } from 'model/services/projects';
 import { UsersService } from 'model/services/users';
 
 import { Loading } from '@stores/common';
+import { StoreManager } from '@stores/manager';
 
 const emptyFormData = {
   title: undefined,
@@ -16,6 +17,7 @@ const emptyFormData = {
 class ProjectsStore {
   private projectsService!: ProjectsService;
   private usersService!: UsersService;
+  private manager!: StoreManager;
 
   @observable
   projectsList: TProject[] = [];
@@ -32,9 +34,14 @@ class ProjectsStore {
     makeObservable(this);
   }
 
-  init = (projectsService: ProjectsService, usersService: UsersService) => {
+  init = (
+    projectsService: ProjectsService,
+    usersService: UsersService,
+    manager: StoreManager
+  ) => {
     this.projectsService = projectsService;
     this.usersService = usersService;
+    this.manager = manager;
   };
 
   getTeachers = async () => {
@@ -45,7 +52,7 @@ class ProjectsStore {
       const response = await this.usersService.getTeachers();
       this.teachers.push(...response);
     } catch (error) {
-      console.error(error);
+      this.manager.callBackendError(error, 'Ошибка метода getTeachers');
     } finally {
       this.loadingDropdown.stop();
     }
@@ -57,7 +64,7 @@ class ProjectsStore {
       const response = await this.projectsService.getListItems();
       this.updateProjectsList(response);
     } catch (error) {
-      console.error(error);
+      this.manager.callBackendError(error, 'Ошибка метода getListData');
     } finally {
       this.loading.stop();
     }
@@ -69,7 +76,10 @@ class ProjectsStore {
       const response = await this.projectsService.searchList(params);
       this.updateProjectsList(response);
     } catch (error) {
-      console.error(error);
+      this.manager.callBackendError(
+        error,
+        'Ошибка регистрации метода filterListData'
+      );
     } finally {
       this.loading.stop();
     }
@@ -80,7 +90,10 @@ class ProjectsStore {
       this.updateInitialFormData(emptyFormData);
       await this.filterListData(emptyFormData);
     } catch (error) {
-      console.error(error);
+      this.manager.callBackendError(
+        error,
+        'Ошибка регистрации метода resetFilters'
+      );
     }
   };
 
