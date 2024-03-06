@@ -7,6 +7,7 @@
             "@services": ["model/services"],
             "@control": ["control"],
             "@stores/common": ["control/stores/common"],
+            "@stores/modals": ["control/stores/modals"],
             "@stores/manager": ["control/storeManager"],
             "@config/app": ["config/appConfig"],
             "@config": ["config/config"],

@@ -31,22 +31,32 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
           {/* {title === ProjectsStatusesEnum.planning && (
             <Button text icon="pi pi-plus" tooltip="Добавить проект" />
           )} */}
-          {title === ProjectsStatusesEnum.planning && (
+          {/* {title === ProjectsStatusesEnum.planning && (
             <Button outlined label="Добавить" />
-          )}
+          )} */}
         </div>
 
-        <div className={styles.content}>
-          {/* {title === ProjectsStatusesEnum.planning && (
+        <div className={styles.contentWrapper}>
+          <div className={styles.content}>
+            {/* {title === ProjectsStatusesEnum.planning && (
             <Button style={{ width: '100%' }} outlined label="Добавить" />
           )} */}
-          {projects.map((project, index) => (
-            <ProjectsKanbanItem
-              key={project.id}
-              project={project}
-              index={index}
+            {projects.map((project, index) => (
+              <ProjectsKanbanItem
+                key={project.id}
+                project={project}
+                index={index}
+              />
+            ))}
+          </div>
+
+          {title === ProjectsStatusesEnum.planning && (
+            <Button
+              style={{ width: '100%' }}
+              severity="success"
+              label="Добавить проект"
             />
-          ))}
+          )}
         </div>
 
         {provided.placeholder}

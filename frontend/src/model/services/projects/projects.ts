@@ -1,5 +1,6 @@
 import {
   ProjectsStatusesEnum,
+  TProjectAdd,
   TProjectSearchParams,
   TProjectUpdate,
 } from 'model/api/projects/types';
@@ -33,6 +34,7 @@ class ProjectsService {
     }
   };
 
+  // TODO переименовать
   getListById = async (id: TUid, role: UsersRolesEnum) => {
     try {
       if (role === UsersRolesEnum.student) {
@@ -42,6 +44,24 @@ class ProjectsService {
         const response = await this.baseApi.searchListByTeacherId(id);
         return response;
       }
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getRecordById = async (id: TUid) => {
+    try {
+      const response = await this.baseApi.getRecord(id);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  addRecord = async (data: TProjectAdd) => {
+    try {
+      const response = await this.baseApi.postRecord(data);
+      return response;
     } catch (error) {
       throw error;
     }
