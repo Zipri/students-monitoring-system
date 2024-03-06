@@ -35,7 +35,11 @@ class StoreManager {
   };
 
   callBackendError = (error: any, analog: string) => {
-    return this.root.errorHandler.backendError(error as AxiosError, analog);
+    this.root.errorHandler.backendError(error as AxiosError, analog);
+  };
+
+  getUserInfo = () => {
+    return this.root.user.info;
   };
 }
 

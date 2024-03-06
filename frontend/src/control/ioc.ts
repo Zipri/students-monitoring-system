@@ -6,6 +6,7 @@ import { StoreManager } from './storeManager';
 import { ProjectsStore } from './stores/projects';
 import { ToastStore } from './stores/toast';
 import { UserStore } from './stores/user';
+import { ProjectsKanbanStore } from './stores/projectsKanban';
 
 const { services } = LogicRoot;
 
@@ -24,6 +25,8 @@ class RootStore {
   public user = new UserStore();
   /** страница проектов */
   public projects = new ProjectsStore();
+  /** страница всех проектов пользователя на одной канбан доске */
+  public projectsKanban = new ProjectsKanbanStore();
 
   constructor() {
     this.init();
@@ -36,6 +39,7 @@ class RootStore {
 
     this.user.init(services.users, services.groups, manager);
     this.projects.init(services.projects, services.users, manager);
+    this.projectsKanban.init(services.projects, manager);
   }
 }
 
