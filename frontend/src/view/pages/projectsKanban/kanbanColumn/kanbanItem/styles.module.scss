@@ -1,0 +1,36 @@
+@import '../../../../theme/mixins';
+@import '../../../../theme/variables';
+
+.itemWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 100%;
+
+    .header {
+        width: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        background-color: $darken-grey;
+        border: 1px solid $darken-grey;
+
+        border-radius: $main-radius $main-radius 0 0;
+        padding: .5rem;
+    }
+
+    .content {
+        @include custom-scrollbars;
+        
+        width: 100%;
+
+        background-color: white;
+        border: 1px solid $darken-grey;
+
+        padding: 1rem;
+        border-radius: 0 0 $main-radius $main-radius;
+    }
+}
