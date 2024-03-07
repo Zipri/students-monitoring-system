@@ -1,6 +1,12 @@
+import {
+  TaskStatusEnum,
+  TTaskFilterParams,
+  TTaskUpdate,
+} from 'model/api/tasks/types';
+
 import { TasksApi } from '@api';
 import { TUid } from '@api/types';
-import { TTaskFilterParams } from 'model/api/tasks/types';
+import { getBackendDate } from '@view/utils';
 
 class TasksService {
   private baseApi!: TasksApi;
@@ -30,6 +36,28 @@ class TasksService {
   getListByProjectId = async (id: TUid) => {
     try {
       const response = await this.baseApi.getListByProjectId(id);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  changeRecord = async (id: TUid, data: TTaskUpdate) => {
+    try {
+      const response = await this.baseApi.putRecord({
+        id,
+        //@ts-expect-error не соответствие типов с UI
+        data: { ...data, deadline: getBackendDate(data.deadline) || '' },
+      });
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  changeTaskStatus = async (id: TUid, status: TaskStatusEnum) => {
+    try {
+      const response = await this.changeRecord(id, { status });
       return response;
     } catch (error) {
       throw error;

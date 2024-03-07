@@ -47,12 +47,12 @@ export type TGetListTasksResponse = TTask[];
 // Post record: Для добавления новой задачи
 export type TPostTasksParams = TTaskAdd;
 export type TPostTasksRequest = TTaskAdd;
-export type TPostTasksResponse = TResponseResult;
+export type TPostTasksResponse = TTask;
 
 // Put record: Для обновления задачи
 export type TPutTasksParams = { id: TUid; data: TTaskUpdate };
 export type TPutTasksRequest = TTaskUpdate;
-export type TPutTasksResponse = TResponseModifiedCount;
+export type TPutTasksResponse = TTask;
 
 // Delete record: Для удаления задачи
 export type TDeleteTasksResponse = TResponseDeletedCount;

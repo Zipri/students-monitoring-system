@@ -1,3 +1,3 @@
-import ProjectsKanbanItem from './kanbanItem';
+import TasksKanbanItem from './kanbanItem';
 
-export { ProjectsKanbanItem };
+export { TasksKanbanItem };

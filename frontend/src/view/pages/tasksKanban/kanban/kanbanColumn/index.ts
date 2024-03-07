@@ -1,3 +1,3 @@
-import ProjectsKanbanColumn from './kanbanColumn';
+import TasksKanbanColumn from './kanbanColumn';
 
-export { ProjectsKanbanColumn };
+export { TasksKanbanColumn };

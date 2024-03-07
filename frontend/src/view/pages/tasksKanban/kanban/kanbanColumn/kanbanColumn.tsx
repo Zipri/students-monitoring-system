@@ -1,25 +1,26 @@
 import { FC } from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
+import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { Button } from 'primereact/button';
+import { classNames } from 'primereact/utils';
 import { Droppable } from 'react-beautiful-dnd';
+
+import { useStores } from '@control';
+
+import { TasksKanbanItem } from './kanbanItem';
 import styles from './styles.module.scss';
 
-import { ProjectsKanbanItem } from './kanbanItem';
-import { Button } from 'primereact/button';
-import { useStores } from '@control';
-import { classNames } from 'primereact/utils';
-
-type TProjectsKanbanColumn = {
+type TTasksKanbanColumn = {
   columnId: string;
   title: string;
-  projects: TProject[];
+  tasks: TTask[];
 };
 
-const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
+const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
   columnId,
   title,
-  projects,
+  tasks,
 }) => {
   const { projectsKanbanModal, projectsKanban } = useStores();
 
@@ -36,27 +37,22 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
           <div className={styles.contentWrapper}>
             <div
               className={classNames(styles.content, {
-                [styles.contentOfPlanning]:
-                  title === ProjectsStatusesEnum.planning,
+                [styles.contentOfPlanning]: title === TaskStatusEnum.new,
               })}
             >
-              {projects.map((project, index) => (
-                <ProjectsKanbanItem
-                  key={project.id}
-                  project={project}
-                  index={index}
-                />
+              {tasks.map((task, index) => (
+                <TasksKanbanItem key={task.id} task={task} index={index} />
               ))}
             </div>
 
-            {title === ProjectsStatusesEnum.planning && (
+            {title === TaskStatusEnum.new && (
               <Button
-                onClick={() =>
-                  projectsKanbanModal.openCreate(projectsKanban.getUserProjects)
-                }
+                // onClick={() =>
+                //   projectsKanbanModal.openCreate(projectsKanban.getUserProjects)
+                // }
                 style={{ width: '100%' }}
                 severity="success"
-                label="Добавить проект"
+                label="Добавить задачу"
               />
             )}
           </div>
@@ -68,4 +64,4 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
   );
 };
 
-export default observer(ProjectsKanbanColumn);
+export default observer(TasksKanbanColumn);

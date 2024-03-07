@@ -1,44 +1,49 @@
+import { useStores } from '@control';
 import { observer } from 'mobx-react-lite';
-import { OnDragEndResponder } from 'react-beautiful-dnd';
+import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
+import styles from './styles.module.scss';
+import { TasksKanbanColumn } from './kanbanColumn';
 
 const TasksKanbanPart = () => {
-  // const onDragEnd: OnDragEndResponder = (result) => {
-  //   if (result.destination?.droppableId) {
-  //     changeStatus(
-  //       result.draggableId,
-  //       result.destination.droppableId as ProjectsStatusesEnum
-  //     );
-  //   }
-  // };
+  const { tasksKanban } = useStores();
+  const { projectTasks, changeStatus } = tasksKanban;
 
-  // // Группируем проекты по статусам
-  // const projectsByStatus = userProjects.reduce(
-  //   (acc: { [key: string]: TProject[] }, project: TProject) => {
-  //     const { status } = project;
-  //     acc[status] = acc[status] ? [...acc[status], project] : [project];
-  //     return acc;
-  //   },
-  //   {}
-  // );
+  const onDragEnd: OnDragEndResponder = (result) => {
+    if (result.destination?.droppableId) {
+      changeStatus(
+        result.draggableId,
+        result.destination.droppableId as TaskStatusEnum
+      );
+    }
+  };
+
+  // Группируем проекты по статусам
+  const projectsByStatus = projectTasks.reduce(
+    (acc: { [key: string]: TTask[] }, project: TTask) => {
+      const { status } = project;
+      acc[status] = acc[status] ? [...acc[status], project] : [project];
+      return acc;
+    },
+    {}
+  );
 
   return (
-    <div>
-      {/* <DragDropContext onDragEnd={onDragEnd}>
-        <div className={styles.kanbanWrapper}>
-          {Object.values(ProjectsStatusesEnum).map((statusValue) => {
-            const projects = projectsByStatus[statusValue] || [];
-            return (
-              <ProjectsKanbanColumn
-                key={statusValue}
-                columnId={statusValue}
-                title={statusValue}
-                projects={projects}
-              />
-            );
-          })}
-        </div>
-      </DragDropContext> */}
-    </div>
+    <DragDropContext onDragEnd={onDragEnd}>
+      <div className={styles.kanbanWrapper}>
+        {Object.values(TaskStatusEnum).map((statusValue) => {
+          const tasks = projectsByStatus[statusValue] || [];
+          return (
+            <TasksKanbanColumn
+              key={statusValue}
+              columnId={statusValue}
+              title={statusValue}
+              tasks={tasks}
+            />
+          );
+        })}
+      </div>
+    </DragDropContext>
   );
 };
 

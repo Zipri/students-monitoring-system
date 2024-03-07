@@ -1,4 +1,5 @@
 import { ProjectsStatusesEnum } from 'model/api/projects/types';
+import { TaskStatusEnum } from 'model/api/tasks/types';
 
 export const projectsKanbanColorSchema = {
   [ProjectsStatusesEnum.planning]: {
@@ -39,6 +40,39 @@ export const projectsKanbanColorSchema = {
     content: {
       backgroundColor: '#fffaf0',
       border: '1px solid #FBD38D',
+    },
+  },
+};
+
+export const tasksKanbanColorSchema = {
+  [TaskStatusEnum.new]: {
+    header: {
+      backgroundColor: '#7FBCD2',
+      border: '1px solid #7FBCD2',
+    },
+    content: {
+      backgroundColor: '#ebf8ff',
+      border: '1px solid #7FBCD2',
+    },
+  },
+  [TaskStatusEnum.working]: {
+    header: {
+      backgroundColor: '#9AE6B4',
+      border: '1px solid #9AE6B4',
+    },
+    content: {
+      backgroundColor: '#f0fff4',
+      border: '1px solid #9AE6B4',
+    },
+  },
+  [TaskStatusEnum.done]: {
+    header: {
+      backgroundColor: '#CBD5E0',
+      border: '1px solid #CBD5E0',
+    },
+    content: {
+      backgroundColor: '#f7fafc',
+      border: '1px solid #CBD5E0',
     },
   },
 };

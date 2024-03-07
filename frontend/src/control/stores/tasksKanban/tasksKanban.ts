@@ -1,6 +1,6 @@
 import { action, makeObservable, observable } from 'mobx';
 import { TFilterListProjectsParams, TProject } from 'model/api/projects/types';
-import { TTask } from 'model/api/tasks/types';
+import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
 import { TUser } from 'model/api/users/types';
 import { ProjectsService } from 'model/services/projects';
 import { TasksService } from 'model/services/tasks';
@@ -76,6 +76,24 @@ class TasksKanbanStore {
       this.updateProjectTasks(response);
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getProjectTasks');
+    } finally {
+      this.tasksLoading.stop();
+    }
+  };
+
+  changeStatus = async (id: TUid, status: TaskStatusEnum) => {
+    try {
+      this.tasksLoading.start();
+      const response = await this.tasksService.changeTaskStatus(id, status);
+      const newProjectTasks = this.projectTasks.map((item) => {
+        if (item.id !== id) return item;
+        return {
+          ...response,
+        };
+      });
+      this.updateProjectTasks(newProjectTasks);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода changeStatus');
     } finally {
       this.tasksLoading.stop();
     }

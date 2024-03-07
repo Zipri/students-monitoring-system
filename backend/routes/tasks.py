@@ -47,7 +47,10 @@ def add_task():
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
     result = mongo.db.tasks.insert_one(data)
-    return jsonify({'result': str(result.inserted_id)})
+    new_task_id = result.inserted_id
+    # Получаем добавленный проект
+    new_task = mongo.db.tasks.find_one({'_id': new_task_id})
+    return jsonify(task_to_json(new_task)), 201
 
 # Обновление данных задачи по идентификатору
 @app.route('/tasks/update/<id>', methods=['PUT'])
@@ -57,9 +60,14 @@ def update_task(id):
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
     result = mongo.db.tasks.update_one({'_id': ObjectId(id)}, {'$set': data})
-    if result.modified_count == 0:
-        return jsonify({'error': 'Task not found or data not changed'}), 404
-    return jsonify({'modified_count': result.modified_count})
+    if result.matched_count == 0:
+        return jsonify({'error': 'Task not found'}), 404
+    # Получаем обновленную задачу
+    updated_task = mongo.db.tasks.find_one({'_id': ObjectId(id)})
+    if updated_task:
+        return jsonify(task_to_json(updated_task)), 200
+    else:
+        return jsonify({'error': 'Task not found after update'}), 404
 
 
 # Удаление задачи по идентификатору
