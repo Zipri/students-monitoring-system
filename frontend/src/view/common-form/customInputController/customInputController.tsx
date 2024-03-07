@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-// import { getFormErrorMessage } from 'utils';
 import { InputText, InputTextProps } from 'primereact/inputtext';
 import {
   Control,
@@ -8,6 +7,8 @@ import {
   FieldErrors,
   RegisterOptions,
 } from 'react-hook-form';
+
+import { getFormErrorMessage } from '@view/utils';
 
 import { FormLabel } from '../formLabel';
 
@@ -54,8 +55,8 @@ const InputController: FC<TCustomInputController> = ({
                   bold
                   required={!!rules}
                 />
-                {/* {!!error?.message?.length &&
-                  getFormErrorMessage(errors, field.name)} */}
+                {!!error?.message?.length &&
+                  getFormErrorMessage(errors, field.name)}
               </div>
             )}
             <InputText

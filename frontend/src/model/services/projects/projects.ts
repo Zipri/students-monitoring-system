@@ -8,6 +8,7 @@ import { UsersRolesEnum } from 'model/api/users/types';
 
 import { ProjectsApi } from '@api';
 import { TUid } from '@api/types';
+import { adaptBackendDate, getBackendDate } from '@view/utils';
 
 class ProjectsService {
   private baseApi!: ProjectsApi;
@@ -58,9 +59,28 @@ class ProjectsService {
     }
   };
 
+  getFormDataById = async (id: TUid) => {
+    try {
+      const response = await this.baseApi.getRecord(id);
+      return {
+        ...response,
+        assignedTeacher: response.assignedTeacher.id,
+        assignedStudents: response.assignedStudents?.map((i) => i.id),
+        deadline: adaptBackendDate(response.deadline),
+      };
+    } catch (error) {
+      throw error;
+    }
+  };
+
   addRecord = async (data: TProjectAdd) => {
     try {
-      const response = await this.baseApi.postRecord(data);
+      const response = await this.baseApi.postRecord({
+        ...data,
+        //@ts-expect-error не соответствие типов с UI
+        deadline: getBackendDate(data.deadline) || '',
+        status: ProjectsStatusesEnum.planning,
+      });
       return response;
     } catch (error) {
       throw error;
@@ -69,7 +89,11 @@ class ProjectsService {
 
   changeRecord = async (id: TUid, data: TProjectUpdate) => {
     try {
-      const response = await this.baseApi.putRecord({ id, data });
+      const response = await this.baseApi.putRecord({
+        id,
+        //@ts-expect-error не соответствие типов с UI
+        data: { ...data, deadline: getBackendDate(data.deadline) || '' },
+      });
       return response;
     } catch (error) {
       throw error;

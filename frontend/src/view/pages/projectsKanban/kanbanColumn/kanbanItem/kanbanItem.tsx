@@ -9,6 +9,7 @@ import { ChipList, CustomDivider, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
 import { Button } from 'primereact/button';
+import { useStores } from '@control';
 
 const colorSchema = projectsKanbanColorSchema;
 
@@ -18,6 +19,8 @@ type TProjectsKanbanItem = {
 };
 
 const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
+  const { projectsKanbanModal, projectsKanban } = useStores();
+
   return (
     <Draggable key={project.id} draggableId={project.id} index={index}>
       {(provided, snapshot) => (
@@ -60,7 +63,16 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
             />
             <CustomDivider />
             <div className="flex align-items-center justify-content-end gap-2">
-              <Button outlined label="Редактировать" />
+              <Button
+                outlined
+                label="Редактировать"
+                onClick={() =>
+                  projectsKanbanModal.openEdit(
+                    project.id,
+                    projectsKanban.getUserProjects
+                  )
+                }
+              />
               <Button outlined label="Открыть" />
             </div>
           </div>

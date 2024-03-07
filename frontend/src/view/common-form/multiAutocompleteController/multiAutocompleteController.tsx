@@ -1,6 +1,8 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
-import { Dropdown, DropdownProps } from 'primereact/dropdown';
+import { observer } from 'mobx-react-lite';
+import { DropdownProps } from 'primereact/dropdown';
+import { MultiSelect, MultiSelectProps } from 'primereact/multiselect';
 import {
   Control,
   Controller,
@@ -8,40 +10,46 @@ import {
   RegisterOptions,
 } from 'react-hook-form';
 
+import { TShort } from '@api/types';
+import { AutocompleteControllerStore } from '@stores/common';
 import { getFormErrorMessage } from '@view/utils';
 
 import { FormLabel } from '../';
 
-type TDropdownController = {
+type TMultiAutocompleteController = {
   name: string;
   caption?: string;
   placeholder?: string;
-  options: Record<string, any>[] | string[];
-  optionLabel?: string;
   control: Control<Record<string, any>, any>;
+  autocompleteController: AutocompleteControllerStore;
   errors: FieldErrors<Record<string, any>>;
   rules?: Omit<
     RegisterOptions<Record<string, any>, string>,
     'disabled' | 'valueAsNumber' | 'valueAsDate' | 'setValueAs'
   >;
-  dropdownProps?: DropdownProps;
-  onOpen?: (event: React.MouseEvent<HTMLElement, MouseEvent>) => void;
+  multiSelectProps?: MultiSelectProps;
   disabled?: boolean;
+  width?: string;
 };
 
-const DropdownController: FC<TDropdownController> = ({
+const MultiAutocompleteController: FC<TMultiAutocompleteController> = ({
   name,
   caption,
   placeholder,
-  options,
-  optionLabel,
   control,
   errors,
   rules,
-  onOpen,
   disabled,
-  dropdownProps,
+  multiSelectProps,
+  autocompleteController,
+  width,
 }) => {
+  const [options, setOptions] = useState<TShort[]>([]);
+
+  useEffect(() => {
+    setOptions(autocompleteController.list);
+  }, [autocompleteController.list]);
+
   return (
     <Controller
       name={name}
@@ -49,13 +57,8 @@ const DropdownController: FC<TDropdownController> = ({
       control={control}
       rules={rules}
       render={({ field, fieldState: { error } }) => {
-        const adaptiveOptions = options.length
-          ? options
-          : field.value
-            ? [field.value]
-            : [];
         return (
-          <div className="flex flex-column gap-2">
+          <div className="flex flex-column gap-2" style={{ width }}>
             {caption && (
               <div className="flex justify-content-between flex-wrap">
                 <FormLabel
@@ -68,14 +71,12 @@ const DropdownController: FC<TDropdownController> = ({
                   getFormErrorMessage(errors, field.name)}
               </div>
             )}
-            <Dropdown
+            <MultiSelect
               id={field.name}
               placeholder={placeholder}
-              optionLabel={optionLabel}
-              options={adaptiveOptions}
+              options={options}
               value={field.value}
               onChange={(e) => field.onChange(e.target.value)}
-              onMouseDown={onOpen}
               style={
                 !!error?.message?.length
                   ? {
@@ -84,7 +85,11 @@ const DropdownController: FC<TDropdownController> = ({
                   : undefined
               }
               disabled={disabled}
-              {...dropdownProps}
+              filter
+              onShow={autocompleteController.getOptions}
+              optionLabel={'name'}
+              optionValue={'id'}
+              {...multiSelectProps}
             />
           </div>
         );
@@ -93,4 +98,4 @@ const DropdownController: FC<TDropdownController> = ({
   );
 };
 
-export default DropdownController;
+export default observer(MultiAutocompleteController);

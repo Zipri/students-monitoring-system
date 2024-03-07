@@ -1,14 +1,15 @@
 import { action, makeObservable, observable } from 'mobx';
 import { TProject, TProjectAdd } from 'model/api/projects/types';
 import { ProjectsService } from 'model/services/projects';
-
-import { TUid } from '@api/types';
-import { Loading, Toggle } from '@stores/common';
-import { StoreManager } from '@stores/manager';
-import { TUser } from 'model/api/users/types';
 import { UsersService } from 'model/services/users';
 
-const emptyFormData: Partial<TProjectAdd> = {
+import { TUid } from '@api/types';
+import { AutocompleteControllerStore, Loading, Toggle } from '@stores/common';
+import { StoreManager } from '@stores/manager';
+
+import { TProjectsKanbanModalStore } from './types';
+
+const emptyFormData: TProjectsKanbanModalStore = {
   title: undefined,
   description: undefined,
   deadline: undefined,
@@ -19,18 +20,21 @@ const emptyFormData: Partial<TProjectAdd> = {
 
 class ProjectsKanbanModalStore {
   private projectsService!: ProjectsService;
-  private usersService!: UsersService;
   private manager!: StoreManager;
 
   loading = new Loading();
   modalOpen = new Toggle(false);
   isEditFormMode = new Toggle(false);
 
-  teachers: TUser[] = [];
+  teachersAutocomplete!: AutocompleteControllerStore;
+  studentsAutocomplete!: AutocompleteControllerStore;
+
+  updateCallback = () => {};
+
   editingId?: TUid;
 
   @observable
-  initialFormData: Partial<TProjectAdd> = emptyFormData;
+  initialFormData: TProjectsKanbanModalStore = emptyFormData;
 
   constructor() {
     makeObservable(this);
@@ -42,8 +46,14 @@ class ProjectsKanbanModalStore {
     manager: StoreManager
   ) => {
     this.projectsService = projectsService;
-    this.usersService = usersService;
     this.manager = manager;
+
+    this.teachersAutocomplete = new AutocompleteControllerStore(
+      usersService.getTeachersShort
+    );
+    this.studentsAutocomplete = new AutocompleteControllerStore(
+      usersService.getStudentsShort
+    );
   };
 
   getFormDataById = async () => {
@@ -51,24 +61,12 @@ class ProjectsKanbanModalStore {
 
     try {
       this.loading.start();
-      const response = await this.projectsService.getRecordById(this.editingId);
+      const response = await this.projectsService.getFormDataById(
+        this.editingId
+      );
       return response;
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getFormDataById');
-    } finally {
-      this.loading.stop();
-    }
-  };
-
-  getTeachers = async () => {
-    if (this.teachers.length) return this.teachers;
-
-    try {
-      this.loading.start();
-      const response = await this.usersService.getTeachers();
-      this.teachers.push(...response);
-    } catch (error) {
-      this.manager.callBackendError(error, 'Ошибка метода getTeachers');
     } finally {
       this.loading.stop();
     }
@@ -91,13 +89,15 @@ class ProjectsKanbanModalStore {
     }
   };
 
-  openCreate = async () => {
+  openCreate = async (updateCallback: () => void) => {
+    this.updateCallback = updateCallback;
     this.modalOpen.enable();
   };
 
-  openEdit = async (editingId: TUid) => {
+  openEdit = async (editingId: TUid, updateCallback: () => void) => {
     try {
       this.editingId = editingId;
+      this.updateCallback = updateCallback;
       this.modalOpen.enable();
       this.isEditFormMode.enable();
 
@@ -114,10 +114,11 @@ class ProjectsKanbanModalStore {
     this.isEditFormMode.disable();
 
     this.resetInitialFormData();
+    this.updateCallback();
   };
 
   @action
-  updateInitialFormData = (formData: TProjectAdd) => {
+  updateInitialFormData = (formData: TProjectsKanbanModalStore) => {
     this.initialFormData = { ...formData };
   };
 

@@ -1,16 +1,14 @@
 import { FC } from 'react';
 
-import {
-  Calendar,
-  CalendarProps,
-  CalendarPropsSingle,
-} from 'primereact/calendar';
+import { Calendar, CalendarPropsSingle } from 'primereact/calendar';
 import {
   Control,
   Controller,
   FieldErrors,
   RegisterOptions,
 } from 'react-hook-form';
+
+import { getFormErrorMessage } from '@view/utils';
 
 import { FormLabel } from '../';
 
@@ -62,8 +60,8 @@ const CalendarController: FC<TCalendarController> = ({
                   required={!!rules}
                 />
 
-                {/* {!!error?.message?.length &&
-                                getFormErrorMessage(errors, field.name)} */}
+                {!!error?.message?.length &&
+                  getFormErrorMessage(errors, field.name)}
               </div>
             )}
             <Calendar
@@ -83,6 +81,7 @@ const CalendarController: FC<TCalendarController> = ({
               view={view || 'date'}
               dateFormat={dateFormat}
               disabled={disabled}
+              showButtonBar
               {...calendarProps}
             />
           </div>

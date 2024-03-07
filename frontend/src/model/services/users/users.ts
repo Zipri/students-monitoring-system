@@ -44,6 +44,30 @@ class UsersService {
       throw error;
     }
   };
+
+  getTeachersShort = async () => {
+    try {
+      const response = await this.baseApi.getListByRole(UsersRolesEnum.teacher);
+      return response.map((item) => ({
+        id: item.id,
+        name: item.username,
+      }));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getStudentsShort = async () => {
+    try {
+      const response = await this.baseApi.getListByRole(UsersRolesEnum.student);
+      return response.map((item) => ({
+        id: item.id,
+        name: item.username,
+      }));
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default UsersService;

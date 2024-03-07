@@ -8,25 +8,32 @@ import { Control, useForm } from 'react-hook-form';
 import { useStores } from '@control';
 import { Spin } from '@view/common';
 import {
+  AutocompleteController,
   CalendarController,
-  DropdownController,
   InputController,
   InputTextareaController,
+  MultiAutocompleteController,
 } from '@view/form';
 import { usePreventEnterSubmit } from '@view/utils';
 
 import styles from './styles.module.scss';
+import { Button } from 'primereact/button';
+import FormLabel from 'view/common-form/formLabel/formLabel';
+import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 
 const ProjectsKanbanForm = () => {
-  const { projectsKanbanModal } = useStores();
+  const {
+    projectsKanbanModal,
+    user: { info },
+  } = useStores();
   const {
     changeFormData,
     initialFormData,
     isEditFormMode,
     editingId,
     loading,
-    teachers,
-    getTeachers,
+    teachersAutocomplete,
+    studentsAutocomplete,
   } = projectsKanbanModal;
 
   const {
@@ -37,7 +44,7 @@ const ProjectsKanbanForm = () => {
     reset,
     watch,
     formState: { errors, submitCount },
-  } = useForm<Partial<TProjectAdd>>({
+  } = useForm<TProjectsKanbanModalStore>({
     mode: 'onSubmit',
     defaultValues: initialFormData,
   });
@@ -46,9 +53,20 @@ const ProjectsKanbanForm = () => {
   const formControl = control as unknown as Control<Record<string, any>>;
   const requiredRule = { required: 'Обаятельное поле' };
 
-  const onSubmit = (data: Partial<TProjectAdd>) => {
-    // changeFormData(data);
-    console.log(data);
+  const onSubmit = (data: TProjectsKanbanModalStore) => {
+    //@ts-expect-error проверка проходит на уровне валидации UI
+    changeFormData(data);
+    // console.log(data);
+  };
+
+  const handleSelfChooseTeacher = () => {
+    teachersAutocomplete.getOptions();
+    setValue('assignedTeacher', info.id);
+  };
+
+  const handleSelfChooseStudent = () => {
+    studentsAutocomplete.getOptions();
+    setValue('assignedStudents', [info.id]);
   };
 
   usePreventEnterSubmit(formRef);
@@ -70,7 +88,7 @@ const ProjectsKanbanForm = () => {
           errors={errors}
           caption="Название"
           placeholder={'Название проекта'}
-          // inputProps={{ style: { width: '15rem' } }}
+          rules={requiredRule}
         />
         <CalendarController
           name="deadline"
@@ -78,9 +96,9 @@ const ProjectsKanbanForm = () => {
           errors={errors}
           view="date"
           caption="Срок сдачи"
+          rules={requiredRule}
           calendarProps={{
             placeholder: 'Выберите дату',
-            // style: { width: '15rem' },
           }}
         />
         <InputTextareaController
@@ -90,38 +108,67 @@ const ProjectsKanbanForm = () => {
           caption="Описание"
           placeholder="Описание проекта"
         />
-        <DropdownController
-          name="assignedTeacher"
-          control={formControl}
-          options={teachers}
-          errors={errors}
-          caption="Ответственный"
-          dropdownProps={{
-            placeholder: UsersRolesEnum.teacher,
-            // style: { width: '15rem' },
-            loading: loading.value,
-            onShow: getTeachers,
-            filter: true,
-            optionLabel: 'username',
-            optionValue: 'id',
-          }}
-        />
-        <DropdownController
-          name="assignedTeacher"
-          control={formControl}
-          options={teachers}
-          errors={errors}
-          caption="Студенты"
-          dropdownProps={{
-            placeholder: UsersRolesEnum.student,
-            // style: { width: '15rem' },
-            loading: loading.value,
-            onShow: getTeachers,
-            filter: true,
-            optionLabel: 'username',
-            optionValue: 'id',
-          }}
-        />
+        <div className="w-full flex flex-column gap-2">
+          <FormLabel
+            htmlFor="assignedTeacher"
+            caption="Ответственный"
+            required
+            bold
+          />
+          <div className="w-full flex align-items-center gap-2">
+            <AutocompleteController
+              name="assignedTeacher"
+              control={formControl}
+              autocompleteController={teachersAutocomplete}
+              errors={errors}
+              rules={requiredRule}
+              width="100%"
+              dropdownProps={{
+                placeholder: UsersRolesEnum.teacher,
+              }}
+            />
+            {info.role === UsersRolesEnum.teacher && (
+              <Button
+                onClick={handleSelfChooseTeacher}
+                type="button"
+                style={{ width: '11rem' }}
+                outlined
+                label="Выбрать себя"
+              />
+            )}
+          </div>
+        </div>
+        <div className="w-full flex flex-column gap-2">
+          <FormLabel
+            htmlFor="assignedStudents"
+            caption="Студенты"
+            required
+            bold
+          />
+          <div className="w-full flex align-items-center gap-2">
+            <MultiAutocompleteController
+              name="assignedStudents"
+              control={formControl}
+              autocompleteController={studentsAutocomplete}
+              errors={errors}
+              rules={requiredRule}
+              width="100%"
+              multiSelectProps={{
+                placeholder: UsersRolesEnum.student,
+                // multiple: true, // TODO
+              }}
+            />
+            {info.role === UsersRolesEnum.student && (
+              <Button
+                onClick={handleSelfChooseStudent}
+                type="button"
+                style={{ width: '11rem' }}
+                outlined
+                label="Выбрать себя"
+              />
+            )}
+          </div>
+        </div>
       </form>
     </Spin>
   );

@@ -8,6 +8,7 @@ import styles from './styles.module.scss';
 import { ProjectsKanbanItem } from './kanbanItem';
 import { Button } from 'primereact/button';
 import { useStores } from '@control';
+import { classNames } from 'primereact/utils';
 
 type TProjectsKanbanColumn = {
   columnId: string;
@@ -20,7 +21,7 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
   title,
   projects,
 }) => {
-  const { projectsKanbanModal } = useStores();
+  const { projectsKanbanModal, projectsKanban } = useStores();
 
   return (
     <Droppable droppableId={columnId}>
@@ -33,7 +34,12 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
           <div className={styles.header}>{title}</div>
 
           <div className={styles.contentWrapper}>
-            <div className={styles.content}>
+            <div
+              className={classNames(styles.content, {
+                [styles.contentOfPlanning]:
+                  title === ProjectsStatusesEnum.planning,
+              })}
+            >
               {projects.map((project, index) => (
                 <ProjectsKanbanItem
                   key={project.id}
@@ -45,7 +51,9 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
 
             {title === ProjectsStatusesEnum.planning && (
               <Button
-                onClick={projectsKanbanModal.openCreate}
+                onClick={() =>
+                  projectsKanbanModal.openCreate(projectsKanban.getUserProjects)
+                }
                 style={{ width: '100%' }}
                 severity="success"
                 label="Добавить проект"

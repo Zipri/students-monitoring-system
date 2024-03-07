@@ -8,6 +8,8 @@ import {
   RegisterOptions,
 } from 'react-hook-form';
 
+import { getFormErrorMessage } from '@view/utils';
+
 import { FormLabel } from '../formLabel';
 import styles from './styles.module.scss';
 
@@ -51,8 +53,8 @@ const InputTextareaController: FC<TInputTextareaController> = ({
                 bold
                 required={!!rules}
               />
-              {/* {!!error?.message?.length &&
-                                getFormErrorMessage(errors, field.name)} */}
+              {!!error?.message?.length &&
+                getFormErrorMessage(errors, field.name)}
             </div>
             <InputTextarea
               id={field.name}
