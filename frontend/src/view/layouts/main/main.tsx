@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { RootModal } from 'view/modals';
 
 import { CustomToast } from '@view/common';
-import { Projects, ProjectsKanban } from '@view/pages';
+import { Projects, ProjectsKanban, TasksKanban } from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
@@ -32,8 +32,9 @@ const MainLayout = () => {
                 </div>
               }
             />
-            <Route path="/projects" element={<Projects />} />
+            <Route path="/projects-search" element={<Projects />} />
             <Route path="/projects-kanban" element={<ProjectsKanban />} />
+            <Route path="/tasks-kanban" element={<TasksKanban />} />
             <Route
               path="*"
               element={

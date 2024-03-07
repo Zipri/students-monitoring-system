@@ -57,15 +57,21 @@ const NavigationMenu = () => {
         <div className={styles.divider} />
         <LinkButton
           isOpened={isOpened}
-          title="Проекты"
-          link="projects"
-          icon="pi pi-book"
+          title="Поиск проектов"
+          link="projects-search"
+          icon="pi pi-search"
         />
         <LinkButton
           isOpened={isOpened}
-          title="Мой канбан"
+          title="Доска проектов"
           link="projects-kanban"
           icon="pi pi-th-large"
+        />
+        <LinkButton
+          isOpened={isOpened}
+          title="Доска задач"
+          link="tasks-kanban"
+          icon="pi pi-table"
         />
       </div>
     </nav>

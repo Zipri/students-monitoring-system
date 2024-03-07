@@ -155,7 +155,6 @@ const ProjectsKanbanForm = () => {
               width="100%"
               multiSelectProps={{
                 placeholder: UsersRolesEnum.student,
-                // multiple: true, // TODO
               }}
             />
             {info.role === UsersRolesEnum.student && (

@@ -1,5 +1,6 @@
 import {
   ProjectsStatusesEnum,
+  TFilterListProjectsParams,
   TProjectAdd,
   TProjectSearchParams,
   TProjectUpdate,
@@ -30,6 +31,30 @@ class ProjectsService {
     try {
       const response = await this.baseApi.searchList(params);
       return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  filterUserProjects = async (
+    id: TUid,
+    role: UsersRolesEnum,
+    params: TFilterListProjectsParams
+  ) => {
+    try {
+      if (role === UsersRolesEnum.student) {
+        const response = await this.baseApi.filterList({
+          ...params,
+          assignedStudents: [id],
+        });
+        return response;
+      } else {
+        const response = await this.baseApi.filterList({
+          ...params,
+          assignedTeacher: id,
+        });
+        return response;
+      }
     } catch (error) {
       throw error;
     }

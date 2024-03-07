@@ -161,3 +161,22 @@ def get_projects_by_group(group_name):
     projects = mongo.db.projects.find({"assignedStudents": {"$in": student_ids}})
     result = [project_to_json(project) for project in projects]
     return jsonify(result)
+
+## Фильтр по всем полям
+@app.route('/projects/filter', methods=['GET'])
+def filter_projects():
+    query = {}
+    # Здесь укажем параметры, по которым можно фильтровать проекты
+    for key in ['title', 'status', 'deadline', 'assignedTeacher', 'assignedStudents']:
+        if key in request.args:
+            # Используем регистронезависимый поиск для текстовых полей
+            if key in ['title']:
+                query[key] = {"$regex": request.args[key], "$options": "i"}
+            # Для полей, где точное совпадение важно, присваиваем значение напрямую
+            else:
+                query[key] = request.args[key]
+
+    # Ищем проекты, соответствующие заданным критериям
+    projects = mongo.db.projects.find(query)
+    result = [project_to_json(project) for project in projects]
+    return jsonify(result)

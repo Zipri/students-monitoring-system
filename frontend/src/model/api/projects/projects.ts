@@ -5,6 +5,9 @@ import { BACKEND_URL } from '@config/app';
 
 import {
   TDeleteProjectsResponse,
+  TFilterListProjectsParams,
+  TFilterListProjectsRequest,
+  TFilterListProjectsResponse,
   TGetListByGroupProjectsResponse,
   TGetListByStudentsProjectsResponse,
   TGetListByTeacherProjectsResponse,
@@ -69,6 +72,14 @@ class ProjectsApi {
       TSearchListProjectsRequest,
       AxiosResponse<TSearchListProjectsResponse>
     >(`${LOCAL_URL}/search`, { params });
+    return response.data;
+  };
+
+  filterList = async (params: TFilterListProjectsParams) => {
+    const response = await axios.get<
+      TFilterListProjectsRequest,
+      AxiosResponse<TFilterListProjectsResponse>
+    >(`${LOCAL_URL}/filter`, { params });
     return response.data;
   };
 

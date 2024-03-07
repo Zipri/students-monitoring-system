@@ -47,6 +47,14 @@ export type TProjectSearchParams = {
   assignedTeacher?: TUid;
 };
 
+export type TProjectFilterParams = {
+  title?: string;
+  deadline?: TDate;
+  status?: ProjectsStatusesEnum;
+  assignedTeacher?: TUid;
+  assignedStudents?: TUid[];
+};
+
 // Get list
 export type TGetListProjectsResponse = TProject[];
 
@@ -70,6 +78,11 @@ export type TGetProjectsResponse = TProject;
 export type TSearchListProjectsParams = TProjectSearchParams;
 export type TSearchListProjectsRequest = TProjectSearchParams;
 export type TSearchListProjectsResponse = TProject[];
+
+// Filter list
+export type TFilterListProjectsParams = TProjectFilterParams;
+export type TFilterListProjectsRequest = TProjectFilterParams;
+export type TFilterListProjectsResponse = TProject[];
 
 // Get list by assignedTeacher
 export type TGetListByTeacherProjectsResponse = TProject[];

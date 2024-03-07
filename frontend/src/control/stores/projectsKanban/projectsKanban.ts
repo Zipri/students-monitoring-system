@@ -65,6 +65,11 @@ class ProjectsKanbanStore {
     }
   };
 
+  reset = () => {
+    this.updateUserProjects([]);
+    this.loading.stop();
+  };
+
   @action
   updateUserProjects = (data: TProject[]) => {
     this.userProjects = data;

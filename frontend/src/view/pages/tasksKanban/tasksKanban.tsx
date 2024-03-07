@@ -9,7 +9,7 @@ import { useStores } from '@control';
 import { ProjectsKanbanColumn } from './kanbanColumn';
 import styles from './styles.module.scss';
 
-const ProjectsKanban = () => {
+const TasksKanban = () => {
   const { projectsKanban } = useStores();
   const { userProjects, userInfo, getUserProjects, changeStatus, reset } =
     projectsKanban;
@@ -40,22 +40,24 @@ const ProjectsKanban = () => {
   }, []);
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <div className={styles.kanbanWrapper}>
-        {Object.values(ProjectsStatusesEnum).map((statusValue) => {
-          const projects = projectsByStatus[statusValue] || [];
-          return (
-            <ProjectsKanbanColumn
-              key={statusValue}
-              columnId={statusValue}
-              title={statusValue}
-              projects={projects}
-            />
-          );
-        })}
-      </div>
-    </DragDropContext>
+    <div>
+      {/* <DragDropContext onDragEnd={onDragEnd}>
+        <div className={styles.kanbanWrapper}>
+          {Object.values(ProjectsStatusesEnum).map((statusValue) => {
+            const projects = projectsByStatus[statusValue] || [];
+            return (
+              <ProjectsKanbanColumn
+                key={statusValue}
+                columnId={statusValue}
+                title={statusValue}
+                projects={projects}
+              />
+            );
+          })}
+        </div>
+      </DragDropContext> */}
+    </div>
   );
 };
 
-export default observer(ProjectsKanban);
+export default observer(TasksKanban);
