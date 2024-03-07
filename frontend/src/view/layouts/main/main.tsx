@@ -1,19 +1,23 @@
 import { observer } from 'mobx-react-lite';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { RootModal } from 'view/modals';
 
+import { CustomToast } from '@view/common';
 import { Projects, ProjectsKanban } from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
-import { CustomToast } from '@view/common';
 
 const MainLayout = () => {
   return (
     <BrowserRouter>
       <CustomToast />
+      <RootModal />
+
       <div className={styles.wrapper}>
         <TopBar />
         <NavigationMenu />
+
         <div className={styles.content}>
           <Routes>
             {/* <Route

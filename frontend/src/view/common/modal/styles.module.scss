@@ -9,6 +9,10 @@
     [class~='p-dialog-header-icon'] {
         box-shadow: none !important;
     }
+
+    [class~='p-blockui-container'] {
+        height: 100%;
+    }
 }
 
 .withoutFooter {

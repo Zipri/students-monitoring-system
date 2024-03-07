@@ -1,0 +1,10 @@
+@import '../../theme/variables';
+@import '../../theme/mixins';
+
+.counter {
+    position: absolute;
+    bottom: .3rem;
+    right: 9px;
+    color: darken($color: $grey-input-color, $amount: 20);
+    user-select: none;
+}

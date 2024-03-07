@@ -1,12 +1,13 @@
 import { LogicRoot } from 'model';
 
 import { ErrorHandlerStore } from '@stores/common';
+import { ProjectsKanbanModalStore } from '@stores/modals';
 
 import { StoreManager } from './storeManager';
 import { ProjectsStore } from './stores/projects';
+import { ProjectsKanbanStore } from './stores/projectsKanban';
 import { ToastStore } from './stores/toast';
 import { UserStore } from './stores/user';
-import { ProjectsKanbanStore } from './stores/projectsKanban';
 
 const { services } = LogicRoot;
 
@@ -28,6 +29,9 @@ class RootStore {
   /** страница всех проектов пользователя на одной канбан доске */
   public projectsKanban = new ProjectsKanbanStore();
 
+  /** Модалка для редактирования страницы projectsKanban */
+  public projectsKanbanModal = new ProjectsKanbanModalStore();
+
   constructor() {
     this.init();
   }
@@ -37,9 +41,13 @@ class RootStore {
 
     this.errorHandler.init(manager);
 
+    // Страницы
     this.user.init(services.users, services.groups, manager);
     this.projects.init(services.projects, services.users, manager);
     this.projectsKanban.init(services.projects, manager);
+
+    // Модалки
+    this.projectsKanbanModal.init(services.projects, services.users, manager);
   }
 }
 

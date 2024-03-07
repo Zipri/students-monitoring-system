@@ -16,7 +16,8 @@
             "@view/common": ["view/common"],
             "@view/form": ["view/common-form"],
             "@view/pieces": ["view/pieces"],
-            "@view/pages": ["view/pages"]
+            "@view/pages": ["view/pages"],
+            "@view/utils": ["view/utils"]
         }
     }
 }

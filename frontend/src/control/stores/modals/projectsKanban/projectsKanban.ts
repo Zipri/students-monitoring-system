@@ -5,6 +5,8 @@ import { ProjectsService } from 'model/services/projects';
 import { TUid } from '@api/types';
 import { Loading, Toggle } from '@stores/common';
 import { StoreManager } from '@stores/manager';
+import { TUser } from 'model/api/users/types';
+import { UsersService } from 'model/services/users';
 
 const emptyFormData: Partial<TProjectAdd> = {
   title: undefined,
@@ -17,12 +19,14 @@ const emptyFormData: Partial<TProjectAdd> = {
 
 class ProjectsKanbanModalStore {
   private projectsService!: ProjectsService;
+  private usersService!: UsersService;
   private manager!: StoreManager;
 
   loading = new Loading();
   modalOpen = new Toggle(false);
   isEditFormMode = new Toggle(false);
 
+  teachers: TUser[] = [];
   editingId?: TUid;
 
   @observable
@@ -32,8 +36,13 @@ class ProjectsKanbanModalStore {
     makeObservable(this);
   }
 
-  init = (projectsService: ProjectsService, manager: StoreManager) => {
+  init = (
+    projectsService: ProjectsService,
+    usersService: UsersService,
+    manager: StoreManager
+  ) => {
     this.projectsService = projectsService;
+    this.usersService = usersService;
     this.manager = manager;
   };
 
@@ -46,6 +55,20 @@ class ProjectsKanbanModalStore {
       return response;
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getFormDataById');
+    } finally {
+      this.loading.stop();
+    }
+  };
+
+  getTeachers = async () => {
+    if (this.teachers.length) return this.teachers;
+
+    try {
+      this.loading.start();
+      const response = await this.usersService.getTeachers();
+      this.teachers.push(...response);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода getTeachers');
     } finally {
       this.loading.stop();
     }

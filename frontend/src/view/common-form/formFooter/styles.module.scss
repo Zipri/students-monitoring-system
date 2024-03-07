@@ -1,0 +1,15 @@
+.button {
+    font-size: 1.12rem;
+}
+
+.cancel {
+    background-color: var(--gray-100);
+    color: var(--gray-700);
+    border: none;
+    height: 37.81px;
+
+    &:hover {
+        background-color: var(--gray-300) !important;
+        color: var(--gray-800) !important;
+    }
+}
