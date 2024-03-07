@@ -82,6 +82,7 @@ class TasksKanbanStore {
   };
 
   reset = () => {
+    console.log('reset');
     this.updateUserProjects([]);
     this.updateProjectTasks([]);
     this.updateProjectId(undefined);

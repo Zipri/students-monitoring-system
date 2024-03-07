@@ -2,14 +2,14 @@ import { FC } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
+import { Button } from 'primereact/button';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { projectsKanbanColorSchema } from '@config';
+import { useStores } from '@control';
 import { ChipList, CustomDivider, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
-import { Button } from 'primereact/button';
-import { useStores } from '@control';
 
 const colorSchema = projectsKanbanColorSchema;
 
@@ -20,6 +20,10 @@ type TProjectsKanbanItem = {
 
 const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
   const { projectsKanbanModal, projectsKanban } = useStores();
+
+  const handleOpenProject = () => {
+    window.open(`/tasks-kanban?projectId=${project.id}`, '_blank');
+  };
 
   return (
     <Draggable key={project.id} draggableId={project.id} index={index}>
@@ -43,7 +47,9 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
             <CustomDivider title="Срок сдачи" />
             <div>{project.deadline}</div>
             <CustomDivider title="Описание" />
-            <EllipsisText maxLines={3}>{project.description}</EllipsisText>
+            <EllipsisText maxLines={3} hardBreak>
+              {project.description}
+            </EllipsisText>
             <CustomDivider title="Ответственный" />
             <div>{project.assignedTeacher.username}</div>
             <div>{project.assignedTeacher.email}</div>
@@ -73,7 +79,7 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                   )
                 }
               />
-              <Button outlined label="Открыть" />
+              <Button outlined label="Открыть" onClick={handleOpenProject} />
             </div>
           </div>
         </div>
