@@ -133,6 +133,15 @@ class ProjectsService {
       throw error;
     }
   };
+
+  deleteRecord = async (id: TUid) => {
+    try {
+      const response = await this.baseApi.deleteRecord(id);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
 }
 
 export default ProjectsService;

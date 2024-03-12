@@ -3,8 +3,10 @@ import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
 import { Button } from 'primereact/button';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Draggable } from 'react-beautiful-dnd';
 
+import { TUid } from '@api/types';
 import { projectsKanbanColorSchema } from '@config';
 import { useStores } from '@control';
 import { ChipList, CustomDivider, EllipsisText } from '@view/common';
@@ -23,6 +25,18 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
 
   const handleOpenProject = () => {
     window.open(`/tasks-kanban?projectId=${project.id}`, '_blank');
+  };
+
+  const confirmDeleteItem = (id: TUid) => {
+    console.log(id);
+    confirmDialog({
+      message:
+        'Вы точно хотите удалить запись? После удаления запись восстановить нельзя',
+      header: 'Подтверждение удаления записи',
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      accept: () => projectsKanban.deleteProject(id),
+    });
   };
 
   return (
@@ -67,11 +81,30 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                 })) || []
               }
             />
-            <CustomDivider />
+            <CustomDivider title="Управление" />
             <div className="flex align-items-center justify-content-end gap-2">
               <Button
                 outlined
-                label="Редактировать"
+                severity="danger"
+                tooltip="Удалить"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-trash"
+                onClick={() => confirmDeleteItem(project.id)}
+              />
+              <Button
+                outlined
+                severity="warning"
+                tooltip="В архив"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-window-minimize"
+                // TODO EC
+                onClick={() => {}}
+              />
+              <Button
+                outlined
+                tooltip="Редактировать"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-file-edit"
                 onClick={() =>
                   projectsKanbanModal.openEdit(
                     project.id,
@@ -79,7 +112,13 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                   )
                 }
               />
-              <Button outlined label="Открыть" onClick={handleOpenProject} />
+              <Button
+                outlined
+                tooltip="Открыть"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-external-link"
+                onClick={handleOpenProject}
+              />
             </div>
           </div>
         </div>

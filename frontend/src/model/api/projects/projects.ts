@@ -55,7 +55,7 @@ class ProjectsApi {
     const response = await axios.delete<
       undefined,
       AxiosResponse<TDeleteProjectsResponse>
-    >(`${LOCAL_URL}/update/${id}`);
+    >(`${LOCAL_URL}/delete/${id}`);
     return response.data;
   };
 

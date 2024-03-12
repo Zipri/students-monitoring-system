@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useStores } from '@control';
@@ -42,6 +43,7 @@ const ProjectsKanban = () => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.kanbanWrapper}>
+        <ConfirmDialog />
         {Object.values(ProjectsStatusesEnum).map((statusValue) => {
           const projects = projectsByStatus[statusValue] || [];
           return (
