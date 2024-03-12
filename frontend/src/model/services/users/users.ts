@@ -1,6 +1,11 @@
-import { TUserRegistration, UsersRolesEnum } from 'model/api/users/types';
+import {
+  TUserRegistration,
+  TUserUpdate,
+  UsersRolesEnum,
+} from 'model/api/users/types';
 
 import { UsersApi } from '@api';
+import { TUid } from '@api/types';
 
 class UsersService {
   private baseApi!: UsersApi;
@@ -12,6 +17,24 @@ class UsersService {
   getListItems = async () => {
     try {
       const response = await this.baseApi.getList();
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  getRecord = async (id: TUid) => {
+    try {
+      // const response = await this.baseApi.ge({ id, data });
+      // return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  updateRecord = async (id: TUid, data: TUserUpdate) => {
+    try {
+      const response = await this.baseApi.putRecord({ id, data });
       return response;
     } catch (error) {
       throw error;

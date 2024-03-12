@@ -51,7 +51,7 @@ const NavigationMenu = () => {
         <LinkButton
           isOpened={isOpened}
           title="Пользователь"
-          link="user"
+          link="user-settings"
           icon="pi pi-user"
         />
         <div className={styles.divider} />

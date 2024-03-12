@@ -1,9 +1,12 @@
 @import './variables';
 
 @mixin common-wrapper {
-    background-color: white;
+    border: 1px solid $darken-grey;
     border-radius: $main-radius;
+
     padding: 1rem;
+
+    background-color: white;
 }
 
 @mixin table-button {

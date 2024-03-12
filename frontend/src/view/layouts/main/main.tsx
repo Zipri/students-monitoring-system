@@ -1,9 +1,14 @@
 import { observer } from 'mobx-react-lite';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { RootModal } from 'view/modals';
 
 import { CustomToast } from '@view/common';
-import { Projects, ProjectsKanban, TasksKanban } from '@view/pages';
+import {
+  Projects,
+  ProjectsKanban,
+  TasksKanban,
+  UserSettings,
+} from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
@@ -20,18 +25,11 @@ const MainLayout = () => {
 
         <div className={styles.content}>
           <Routes>
-            {/* <Route
-              path="/"
-              element={<Navigate replace to="/global-search" />}
-            /> */}
             <Route
               path="/"
-              element={
-                <div className="flex flex-column gap-2">
-                  <h1>V EduTrack V</h1>
-                </div>
-              }
+              element={<Navigate replace to="/projects-kanban" />}
             />
+            <Route path="/user-settings" element={<UserSettings />} />
             <Route path="/projects-search" element={<Projects />} />
             <Route path="/projects-kanban" element={<ProjectsKanban />} />
             <Route path="/tasks-kanban" element={<TasksKanban />} />

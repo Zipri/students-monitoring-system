@@ -8,7 +8,7 @@ import {
 import { GroupsService } from 'model/services/groups';
 import { UsersService } from 'model/services/users';
 
-import { Loading } from '@stores/common';
+import { AutocompleteControllerStore, Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
 
 const initialUserInfo: TUser = {
@@ -29,6 +29,9 @@ class UserStore {
   groups: TGroup[] = [];
 
   loadingDropdown = new Loading();
+  loading = new Loading();
+
+  groupsAutocomplete!: AutocompleteControllerStore;
 
   constructor() {
     makeObservable(this);
@@ -42,6 +45,10 @@ class UserStore {
     this.usersService = usersService;
     this.groupsService = groupsService;
     this.manager = manager;
+
+    this.groupsAutocomplete = new AutocompleteControllerStore(
+      groupsService.getListItems
+    );
 
     const storedInfo = localStorage.getItem('user-info');
     const initialValue = storedInfo ? JSON.parse(storedInfo) : initialUserInfo;
@@ -79,6 +86,19 @@ class UserStore {
       this.updateInfo(response);
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка регистрации');
+    }
+  };
+
+  changeUserData = async (data: TUser) => {
+    try {
+      this.loading.start();
+      await this.usersService.updateRecord(this.info.id, data);
+      // const response = await this.usersService.ge(this.info.id, data); // TODO
+      // this.updateInfo(response);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка регистрации');
+    } finally {
+      this.loading.stop();
     }
   };
 
