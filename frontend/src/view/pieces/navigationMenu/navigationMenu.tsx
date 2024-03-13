@@ -44,8 +44,8 @@ const NavigationMenu = () => {
       <div className={styles.container}>
         <LinkButton
           isOpened={isOpened}
-          title="Системные настройки"
-          link="system-settings"
+          title="Настройки вуза"
+          link="uni-settings"
           icon="pi pi-cog"
         />
         <LinkButton

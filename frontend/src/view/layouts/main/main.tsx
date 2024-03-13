@@ -7,6 +7,7 @@ import {
   Projects,
   ProjectsKanban,
   TasksKanban,
+  UniSettings,
   UserSettings,
 } from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
@@ -29,6 +30,7 @@ const MainLayout = () => {
               path="/"
               element={<Navigate replace to="/projects-kanban" />}
             />
+            <Route path="/uni-settings" element={<UniSettings />} />
             <Route path="/user-settings" element={<UserSettings />} />
             <Route path="/projects-search" element={<Projects />} />
             <Route path="/projects-kanban" element={<ProjectsKanban />} />

@@ -5,16 +5,20 @@ import { ProgressSpinner } from 'primereact/progressspinner';
 
 import styles from './styles.module.scss';
 
-type Props = PropsWithChildren & { blocked: boolean; template?: ReactNode };
+type Props = PropsWithChildren & {
+  blocked: boolean;
+  template?: ReactNode;
+  className?: string;
+};
 
-const Spin: FC<Props> = ({ children, template, blocked }) => {
+const Spin: FC<Props> = ({ children, template, blocked, className }) => {
   return (
     <BlockUI
       blocked={blocked}
       className={styles.container}
       template={template || <ProgressSpinner />}
     >
-      {children}
+      <div className={className}>{children}</div>
     </BlockUI>
   );
 };
