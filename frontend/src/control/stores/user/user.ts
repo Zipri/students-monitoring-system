@@ -92,11 +92,11 @@ class UserStore {
   changeUserData = async (data: TUser) => {
     try {
       this.loading.start();
-      await this.usersService.updateRecord(this.info.id, data);
-      // const response = await this.usersService.ge(this.info.id, data); // TODO
-      // this.updateInfo(response);
+      const response = await this.usersService.updateRecord(this.info.id, data);
+      this.updateInfo(response);
+      this.manager.callToastSuccess('Данные успешно изменены');
     } catch (error) {
-      this.manager.callBackendError(error, 'Ошибка регистрации');
+      this.manager.callBackendError(error, 'Ошибка changeUserData');
     } finally {
       this.loading.stop();
     }
