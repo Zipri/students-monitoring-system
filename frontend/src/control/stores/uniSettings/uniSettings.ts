@@ -5,19 +5,29 @@ import { UsersService } from 'model/services/users';
 
 import { AutocompleteControllerStore, Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
+import { TUser, TUserAdd } from 'model/api/users/types';
 
 class UniSettingsStore {
   private groupsService!: GroupsService;
+  private usersService!: UsersService;
   private manager!: StoreManager;
 
   @observable
   newGroup?: TGroupAdd;
 
+  @observable
+  newStudent?: TUserAdd;
+
   groups: TGroup[] = [];
+  students: TUser[] = [];
+  teachers: TUser[] = [];
 
   loadingGroups = new Loading();
+  loadingStudents = new Loading();
+  loadingTeachers = new Loading();
 
   studentsAutocomplete!: AutocompleteControllerStore;
+  groupsAutocomplete!: AutocompleteControllerStore;
 
   constructor() {
     makeObservable(this);
@@ -29,10 +39,14 @@ class UniSettingsStore {
     manager: StoreManager
   ) => {
     this.groupsService = groupsService;
+    this.usersService = usersService;
     this.manager = manager;
 
     this.studentsAutocomplete = new AutocompleteControllerStore(
       usersService.getStudentsShort
+    );
+    this.groupsAutocomplete = new AutocompleteControllerStore(
+      groupsService.getListItems
     );
   };
 
@@ -74,9 +88,44 @@ class UniSettingsStore {
     }
   };
 
+  getStudents = async () => {
+    if (this.students.length) return this.students;
+
+    try {
+      this.loadingStudents.start();
+      const response = await this.usersService.getStudents();
+      const sorted = response.sort();
+      this.students.push(...sorted);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка получения students');
+    } finally {
+      this.loadingStudents.stop();
+    }
+  };
+
+  getTeachers = async () => {
+    if (this.teachers.length) return this.teachers;
+
+    try {
+      this.loadingTeachers.start();
+      const response = await this.usersService.getTeachers();
+      const sorted = response.sort();
+      this.teachers.push(...sorted);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка получения teachers');
+    } finally {
+      this.loadingTeachers.stop();
+    }
+  };
+
   @action
   updateNewGroup = (newGroup?: TGroupAdd) => {
     this.newGroup = newGroup;
+  };
+
+  @action
+  updateNewStudent = (newStudent?: TUserAdd) => {
+    this.newStudent = newStudent;
   };
 }
 

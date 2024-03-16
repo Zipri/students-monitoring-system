@@ -1,17 +1,18 @@
+import { useState } from 'react';
+
 import { observer } from 'mobx-react-lite';
 import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
+import { InputText } from 'primereact/inputtext';
 
+import { TUid } from '@api/types';
 import { useStores } from '@control';
 import { ChipList, Spin } from '@view/common';
 import { FormLabel } from '@view/form';
 
 import styles from '../styles.module.scss';
-import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
-import { useState } from 'react';
-import { TUid } from '@api/types';
 
-const UniSettingsGroupTab = () => {
+const UniSettingsGroupCollapse = () => {
   const { uniSettings } = useStores();
   const { loadingGroups, groups, studentsAutocomplete } = uniSettings;
 
@@ -131,4 +132,4 @@ const UniSettingsGroupTab = () => {
   );
 };
 
-export default observer(UniSettingsGroupTab);
+export default observer(UniSettingsGroupCollapse);

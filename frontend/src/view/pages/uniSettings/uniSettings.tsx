@@ -3,17 +3,27 @@ import { Accordion, AccordionTab } from 'primereact/accordion';
 
 import { useStores } from '@control';
 
-import { UniSettingsGroupTab } from './groupTab';
+import { UniSettingsGroupCollapse } from './groupCollapse';
+import { UniSettingsStudentsCollapse } from './studentsCollapse';
 import styles from './styles.module.scss';
+import { UniSettingsTeachersCollapse } from './teachersCollapse';
 
 const UniSettings = () => {
   const { uniSettings } = useStores();
-  const { getGroups } = uniSettings;
+  const { getGroups, getStudents, getTeachers } = uniSettings;
 
   const handleOpenTab = (index: number) => {
     switch (index) {
       case 0:
         getGroups();
+        break;
+
+      case 1:
+        getStudents();
+        break;
+
+      case 2:
+        getTeachers();
         break;
 
       default:
@@ -25,29 +35,13 @@ const UniSettings = () => {
     <div className={styles.commonWrapper}>
       <Accordion onTabOpen={(e) => handleOpenTab(e.index)}>
         <AccordionTab header="Управление группами">
-          <UniSettingsGroupTab />
+          <UniSettingsGroupCollapse />
         </AccordionTab>
         <AccordionTab header="Управление списком студентов">
-          <p className="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          <UniSettingsStudentsCollapse />
         </AccordionTab>
         <AccordionTab header="Управление списком преподавателей">
-          <p className="m-0">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat. Duis aute irure dolor in
-            reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-            culpa qui officia deserunt mollit anim id est laborum.
-          </p>
+          <UniSettingsTeachersCollapse />
         </AccordionTab>
       </Accordion>
     </div>
