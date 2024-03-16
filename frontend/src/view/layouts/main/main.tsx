@@ -7,6 +7,7 @@ import {
   Projects,
   ProjectsKanban,
   TasksKanban,
+  TimelineTasks,
   UniSettings,
   UserSettings,
 } from '@view/pages';
@@ -35,6 +36,7 @@ const MainLayout = () => {
             <Route path="/projects-search" element={<Projects />} />
             <Route path="/projects-kanban" element={<ProjectsKanban />} />
             <Route path="/tasks-kanban" element={<TasksKanban />} />
+            <Route path="/tasks-timeline" element={<TimelineTasks />} />
             <Route
               path="*"
               element={

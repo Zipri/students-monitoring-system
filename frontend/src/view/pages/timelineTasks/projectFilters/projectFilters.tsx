@@ -16,7 +16,8 @@ import styles from './styles.module.scss';
 const colorSchema = projectsKanbanColorSchema;
 const statuses = Object.values(ProjectsStatusesEnum);
 
-const TasksProjectFilters = () => {
+// TODO сделать общим компонентом
+const TimelineTasksProjectFilters = () => {
   const { tasksKanban } = useStores();
 
   const {
@@ -137,4 +138,4 @@ const TasksProjectFilters = () => {
   );
 };
 
-export default observer(TasksProjectFilters);
+export default observer(TimelineTasksProjectFilters);

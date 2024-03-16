@@ -73,6 +73,12 @@ const NavigationMenu = () => {
           link="tasks-kanban"
           icon="pi pi-table"
         />
+        <LinkButton
+          isOpened={isOpened}
+          title="Таймлан задач"
+          link="tasks-timeline"
+          icon="pi pi-sliders-h"
+        />
       </div>
     </nav>
   );

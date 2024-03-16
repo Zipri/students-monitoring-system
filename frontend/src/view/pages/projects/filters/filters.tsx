@@ -5,6 +5,7 @@ import {
   ProjectsStatusesEnum,
   TProjectSearchParams,
 } from 'model/api/projects/types';
+import { UsersRolesEnum } from 'model/api/users/types';
 import { Button } from 'primereact/button';
 import { Control, useForm } from 'react-hook-form';
 
@@ -16,7 +17,6 @@ import {
 } from '@view/form';
 
 import styles from './styles.module.scss';
-import { UsersRolesEnum } from 'model/api/users/types';
 
 const options = Object.values(ProjectsStatusesEnum); // FIXME SKV вынести в конфиг
 
