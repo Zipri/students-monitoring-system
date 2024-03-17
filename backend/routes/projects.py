@@ -5,23 +5,19 @@ from datetime import datetime
 
 # Helper functions
 def validate_project_data(data, update=False):
-    """Validate project data for required fields. For updates, checks are more lenient."""
     errors = []
     if not update:
-        if 'title' not in data or not data['title']:
-            errors.append('Title is required.')
-        if 'deadline' not in data or not data['deadline']:
-            errors.append('Deadline is required.')
-        else:
-            try:
-                datetime.strptime(data['deadline'], '%Y-%m-%d')
-            except ValueError:
-                errors.append('Invalid deadline format. Use YYYY-MM-DD.')
-        if 'status' not in data or not data['status']:
-            errors.append('Status is required.')
-        if 'assignedTeacher' not in data or not data['assignedTeacher']:
-            errors.append('Assigned teacher is required.')
-    
+        required_fields = ['title', 'deadline', 'startDate', 'status', 'assignedTeacher']
+        for field in required_fields:
+            if field not in data or not data[field]:
+                errors.append(f'{field} is required.')
+        date_fields = ['deadline', 'startDate']
+        for field in date_fields:
+            if field in data:
+                try:
+                    datetime.strptime(data[field], '%Y-%m-%d')
+                except ValueError:
+                    errors.append(f'Invalid {field} format. Use YYYY-MM-DD.')
     return errors
 
 def get_user_info(user_id):
@@ -44,20 +40,19 @@ def get_user_info(user_id):
     return None
 
 def project_to_json(project):
-    """Convert a project document to a JSON-serializable format."""
-    # Получаем информацию о преподавателе
     assignedTeacher_info = get_user_info(project.get('assignedTeacher'))
-    # Получаем информацию о студентах
     assignedStudents_info = [get_user_info(student_id) for student_id in project.get('assignedStudents', [])]
     return {
         'id': str(project['_id']),
         'title': project['title'],
         'description': project.get('description', 'No description provided'),
         'deadline': project.get('deadline', 'No deadline provided'),
+        'startDate': project.get('startDate', 'No start date provided'),
         'status': project.get('status', 'No status provided'),
         'assignedStudents': assignedStudents_info,
         'assignedTeacher': assignedTeacher_info
     }
+
 
 ##region CRUD
 # Получение списка всех проектов

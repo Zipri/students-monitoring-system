@@ -5,22 +5,22 @@ from datetime import datetime
 
 # Helper functions
 def validate_task_data(data, update=False):
-    """Validate task data for required fields. For updates, checks are more lenient."""
     errors = []
-    required_fields = ['projectId', 'title', 'status', 'priority', 'deadline']
+    required_fields = ['projectId', 'title', 'status', 'priority', 'deadline', 'startDate']
     if not update:
         for field in required_fields:
             if field not in data or not data[field]:
                 errors.append(f'{field} is required.')
-        if 'deadline' in data:
-            try:
-                datetime.strptime(data['deadline'], '%Y-%m-%d')
-            except ValueError:
-                errors.append('Invalid deadline format. Use YYYY-MM-DD.')
+        date_fields = ['deadline', 'startDate']
+        for field in date_fields:
+            if field in data:
+                try:
+                    datetime.strptime(data[field], '%Y-%m-%d')
+                except ValueError:
+                    errors.append(f'Invalid {field} format. Use YYYY-MM-DD.')
     return errors
 
 def task_to_json(task):
-    """Convert a task document to a JSON-serializable format."""
     return {
         'id': str(task['_id']),
         'projectId': str(task['projectId']),
@@ -28,8 +28,10 @@ def task_to_json(task):
         'description': task.get('description', 'No description provided'),
         'status': task['status'],
         'priority': task['priority'],
-        'deadline': task.get('deadline', 'No deadline')  # Предоставление значения по умолчанию
+        'deadline': task.get('deadline', 'No deadline provided'),
+        'startDate': task.get('startDate', 'No start date provided')
     }
+
 
 ##region CRUD
 # Получение списка всех задач

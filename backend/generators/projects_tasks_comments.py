@@ -25,14 +25,17 @@ def generate_random_future_date():
 # Функция для создания проектов
 def create_projects(teachers, students):
     projects = []
-    for i in range(20):  # Создаем 10 проектов для примера
+    for i in range(100):  # Создаем 10 проектов для примера
         teacher = random.choice(teachers)
         assigned_students = random.sample(students, k=random.randint(1, 5))  # От 1 до 5 учеников на проект
+        deadline = generate_random_future_date()
+        start_date = deadline - timedelta(days=random.randint(10, 60))  # Начало проекта от 10 до 60 дней до deadline
         project = {
             'title': fake.sentence(nb_words=6),
             'description': fake.text(max_nb_chars=200),
-            'deadline': generate_random_future_date(),
-            'status': random.choice(['В планировании', 'В процессе']),
+            'startDate': start_date.strftime('%Y-%m-%d'),
+            'deadline': deadline.strftime('%Y-%m-%d'),
+            'status': random.choice(['В планировании', 'В процессе', 'Отложен']),
             'assignedTeacher': str(teacher['_id']),
             'assignedStudents': [str(student['_id']) for student in assigned_students]
         }
@@ -46,13 +49,29 @@ project_ids = db.projects.insert_many(projects).inserted_ids
 def create_tasks(project_ids, students):
     tasks = []
     for project_id in project_ids:
-        for _ in range(random.randint(1, 5)):  # От 1 до 5 задач на проект
+        project = db.projects.find_one({'_id': ObjectId(project_id)})
+        # Преобразуем строки в объекты datetime
+        start_date_project = datetime.strptime(project['startDate'], "%Y-%m-%d")
+        deadline_project = datetime.strptime(project['deadline'], "%Y-%m-%d")
+
+        # Теперь можно безопасно вычислять середину интервала
+        half_way_duration = (deadline_project - start_date_project) / 2
+        mid_project_date = start_date_project + half_way_duration
+
+        for _ in range(random.randint(4, 8)):  # От 1 до 5 задач на проект
+            start_date_task = start_date_project + timedelta(days=random.randint(0, half_way_duration.days))
+            # Убедитесь, что deadline_task также генерируется корректно, основываясь на объектах datetime
+            days_until_project_deadline = (deadline_project - start_date_task).days
+            deadline_task = start_date_task + timedelta(days=random.randint(1, days_until_project_deadline))
+
             task = {
                 'title': fake.sentence(nb_words=4),
                 'description': fake.text(max_nb_chars=100),
                 'projectId': str(project_id),
-                'status': 'Новая',
+                'status': random.choice(['Новая', 'В работе']),
                 'priority': random.choice(['Низкий', 'Средний', 'Высокий']),
+                'startDate': start_date_task.strftime('%Y-%m-%d'),  # Форматируем обратно в строку для сохранения
+                'deadline': deadline_task.strftime('%Y-%m-%d'),
             }
             task_id = db.tasks.insert_one(task).inserted_id
             tasks.append((task_id, project_id))
