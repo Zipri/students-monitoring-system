@@ -1,9 +1,9 @@
-import { TimelineTasksProjectFilters } from './projectFilters';
+import { ProjectFiltersWithUrl } from '@view/pieces';
 
 const TimelineTasks = () => {
   return (
     <div className="w-full h-full flex gap-2">
-      <TimelineTasksProjectFilters />
+      <ProjectFiltersWithUrl updateDataCallback={() => {}} />
     </div>
   );
 };

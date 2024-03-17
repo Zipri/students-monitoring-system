@@ -1,18 +1,17 @@
 import { FC } from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { TProject } from 'model/api/projects/types';
+import { TTask } from 'model/api/tasks/types';
+import { Button } from 'primereact/button';
 import { Draggable } from 'react-beautiful-dnd';
 
-import { projectsKanbanColorSchema, tasksKanbanColorSchema } from '@config';
-import { ChipList, CustomDivider, EllipsisText } from '@view/common';
+import { tasksPriorityColorSchema } from '@config';
+import { useStores } from '@control';
+import { CustomDivider, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
-import { Button } from 'primereact/button';
-import { useStores } from '@control';
-import { TTask } from 'model/api/tasks/types';
 
-const colorSchema = tasksKanbanColorSchema;
+const colorSchema = tasksPriorityColorSchema;
 
 type TTasksKanbanItem = {
   task: TTask;
@@ -33,13 +32,13 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
         >
           <div
             className={styles.header}
-            style={colorSchema[task.status].header}
+            style={colorSchema[task.priority].header}
           >
             <EllipsisText maxLines={1}>{task.title}</EllipsisText>
           </div>
           <div
             className={styles.content}
-            style={colorSchema[task.status].content}
+            style={colorSchema[task.priority].content}
           >
             <CustomDivider title="Приоритет" />
             <div>{task.priority}</div>
@@ -53,16 +52,7 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
             <EllipsisText maxLines={3}>{task.description}</EllipsisText>
             <CustomDivider />
             <div className="flex align-items-center justify-content-end gap-2">
-              <Button
-                outlined
-                label="Редактировать"
-                onClick={() =>
-                  projectsKanbanModal.openEdit(
-                    task.id,
-                    projectsKanban.getUserProjects
-                  )
-                }
-              />
+              <Button outlined label="Редактировать" onClick={() => {}} />
               <Button outlined label="Открыть" />
             </div>
           </div>

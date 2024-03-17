@@ -19,16 +19,6 @@
         padding: .5rem;
     }
 
-    .greenHeader {
-        background-color: green;
-        border: 1px solid green;
-    }
-
-    .yellowHeader {
-        background-color: green;
-        border: 1px solid green;
-    }
-
     .content {
         @include custom-scrollbars;
         

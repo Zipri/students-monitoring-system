@@ -10,6 +10,7 @@ import { ToastStore } from './stores/toast';
 import { UserStore } from './stores/user';
 import { TasksKanbanStore } from './stores/tasksKanban';
 import { UniSettingsStore } from './stores/uniSettings';
+import { ProjectFiltersWithUrlStore } from './stores/projectFiltersWithUrl';
 
 const { services } = LogicRoot;
 
@@ -23,6 +24,9 @@ class RootStore {
   public toast = new ToastStore();
   /** отдельный стор для кастомизации вывода ошибок (в т.ч. вывод ошибок с бэка в тост) */
   public errorHandler = new ErrorHandlerStore();
+
+  /** стор для компонента фильтров проектов в урл */
+  public projectFiltersWithUrl = new ProjectFiltersWithUrlStore();
 
   /** информация о пользователе и его права */
   public user = new UserStore();
@@ -51,11 +55,13 @@ class RootStore {
     this.user.init(services.users, services.groups, manager);
     this.projects.init(services.projects, services.users, manager);
     this.projectsKanban.init(services.projects, manager);
-    this.tasksKanban.init(services.projects, services.tasks, manager);
+    this.tasksKanban.init(services.tasks, manager);
     this.uniSettings.init(services.users, services.groups, manager);
 
     // Модалки
     this.projectsKanbanModal.init(services.projects, services.users, manager);
+
+    this.projectFiltersWithUrl.init(services.projects, manager);
   }
 }
 

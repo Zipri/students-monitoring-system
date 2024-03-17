@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { ProjectsStatusesEnum } from 'model/api/projects/types';
@@ -16,20 +16,24 @@ import styles from './styles.module.scss';
 const colorSchema = projectsKanbanColorSchema;
 const statuses = Object.values(ProjectsStatusesEnum);
 
-// TODO сделать общим компонентом
-const TimelineTasksProjectFilters = () => {
-  const { tasksKanban } = useStores();
+type TProjectFiltersWithUrl = {
+  updateDataCallback: (projectId: TUid) => void;
+};
+
+const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
+  updateDataCallback,
+}) => {
+  const { projectFiltersWithUrl } = useStores();
 
   const {
     userProjects,
     projectId,
     projectFilters,
     projectsLoading,
-    getProjectTasks,
     updateProjectFilters,
     updateProjectId,
     filterProjects,
-  } = tasksKanban;
+  } = projectFiltersWithUrl;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -65,7 +69,7 @@ const TimelineTasksProjectFilters = () => {
       currentUrl.searchParams.set('projectId', projectId);
       window.history.pushState({}, '', currentUrl);
 
-      getProjectTasks();
+      updateDataCallback(projectId);
     }
   }, [projectId]);
 
@@ -80,62 +84,63 @@ const TimelineTasksProjectFilters = () => {
   }, []);
 
   return (
-    <Spin blocked={projectsLoading.value}>
-      <div className="w-min h-full flex flex-column align-items-center gap-2">
-        <div className="flex align-items-center gap-2">
-          <InputText
-            ref={inputRef}
-            value={projectFilters.title}
-            placeholder="Название проекта"
-            onChange={(e) => handleChangeFilterTitle(e.target.value)}
-            style={{ width: '15rem' }}
-          />
-          <Dropdown
-            value={projectFilters.status}
-            options={statuses}
-            placeholder="Статус проекта"
-            onChange={(e) => handleChangeFilterStatus(e.value)}
-            style={{ width: '15rem' }}
-          />
-          <Button
-            onClick={handleResetFilters}
-            icon="pi pi-replay"
-            severity="warning"
-          />
-        </div>
-        <div className={styles.projectList}>
-          {userProjects.map((project) => (
+    <Spin
+      blocked={projectsLoading.value}
+      className="w-min h-full flex flex-column align-items-center gap-2"
+    >
+      <div className="flex align-items-center gap-2">
+        <InputText
+          ref={inputRef}
+          value={projectFilters.title}
+          placeholder="Название проекта"
+          onChange={(e) => handleChangeFilterTitle(e.target.value)}
+          style={{ width: '15rem' }}
+        />
+        <Dropdown
+          value={projectFilters.status}
+          options={statuses}
+          placeholder="Статус проекта"
+          onChange={(e) => handleChangeFilterStatus(e.value)}
+          style={{ width: '15rem' }}
+        />
+        <Button
+          onClick={handleResetFilters}
+          icon="pi pi-replay"
+          severity="warning"
+        />
+      </div>
+      <div className={styles.projectList}>
+        {userProjects.map((project) => (
+          <div
+            key={project.id}
+            className={styles.item}
+            onClick={() => handleUpdateProjectId(project.id)}
+          >
             <div
-              key={project.id}
-              className={styles.item}
-              onClick={() => handleUpdateProjectId(project.id)}
+              className={styles.title}
+              style={
+                isActive(project.id)
+                  ? colorSchema[project.status].header
+                  : undefined
+              }
             >
-              <div
-                className={styles.title}
-                style={
-                  isActive(project.id)
-                    ? colorSchema[project.status].header
-                    : undefined
-                }
-              >
-                <EllipsisText>{project.title}</EllipsisText>
-              </div>
-              <div
-                className={styles.status}
-                style={
-                  isActive(project.id)
-                    ? colorSchema[project.status].header
-                    : colorSchema[project.status].content
-                }
-              >
-                {project.status}
-              </div>
+              <EllipsisText>{project.title}</EllipsisText>
             </div>
-          ))}
-        </div>
+            <div
+              className={styles.status}
+              style={
+                isActive(project.id)
+                  ? colorSchema[project.status].header
+                  : colorSchema[project.status].content
+              }
+            >
+              {project.status}
+            </div>
+          </div>
+        ))}
       </div>
     </Spin>
   );
 };
 
-export default observer(TimelineTasksProjectFilters);
+export default observer(ProjectFiltersWithUrl);

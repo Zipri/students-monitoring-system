@@ -1,15 +1,18 @@
 import { FC } from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
 import { Droppable } from 'react-beautiful-dnd';
 
+import { tasksKanbanColorSchema } from '@config';
 import { useStores } from '@control';
 
 import { TasksKanbanItem } from './kanbanItem';
 import styles from './styles.module.scss';
+
+const colorSchema = tasksKanbanColorSchema;
 
 type TTasksKanbanColumn = {
   columnId: string;
@@ -32,13 +35,19 @@ const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
           ref={provided.innerRef}
           {...provided.droppableProps}
         >
-          <div className={styles.header}>{title}</div>
+          <div
+            className={styles.header}
+            style={colorSchema[title as TaskStatusEnum].header}
+          >
+            {title}
+          </div>
 
           <div className={styles.contentWrapper}>
             <div
               className={classNames(styles.content, {
                 [styles.contentOfPlanning]: title === TaskStatusEnum.new,
               })}
+              style={colorSchema[title as TaskStatusEnum].content}
             >
               {tasks.map((task, index) => (
                 <TasksKanbanItem key={task.id} task={task} index={index} />

@@ -1,13 +1,15 @@
+import { useEffect } from 'react';
+
 import { observer } from 'mobx-react-lite';
 
-import { TasksKanbanPart } from './kanban';
-import { TasksProjectFilters } from './projectFilters';
 import { useStores } from '@control';
-import { useEffect } from 'react';
+import { ProjectFiltersWithUrl } from '@view/pieces';
+
+import { TasksKanbanPart } from './kanban';
 
 const TasksKanban = () => {
   const {
-    tasksKanban: { reset },
+    tasksKanban: { reset, getProjectTasks },
   } = useStores();
 
   useEffect(() => {
@@ -16,7 +18,7 @@ const TasksKanban = () => {
 
   return (
     <div className="w-full h-full flex gap-2">
-      <TasksProjectFilters />
+      <ProjectFiltersWithUrl updateDataCallback={getProjectTasks} />
       <TasksKanbanPart />
     </div>
   );
