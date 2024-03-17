@@ -1,11 +1,27 @@
+import { useEffect } from 'react';
+
+import { observer } from 'mobx-react-lite';
+
+import { useStores } from '@control';
 import { ProjectFiltersWithUrl } from '@view/pieces';
 
+import { TimelineTasksPart } from './timeline';
+
 const TimelineTasks = () => {
+  const {
+    timelineTasks: { reset, getProjectTasks },
+  } = useStores();
+
+  useEffect(() => {
+    return () => reset();
+  }, []);
+
   return (
     <div className="w-full h-full flex gap-2">
-      <ProjectFiltersWithUrl updateDataCallback={() => {}} />
+      <ProjectFiltersWithUrl updateDataCallback={getProjectTasks} />
+      <TimelineTasksPart />
     </div>
   );
 };
 
-export default TimelineTasks;
+export default observer(TimelineTasks);

@@ -9,8 +9,10 @@ import { TasksKanbanPart } from './kanban';
 
 const TasksKanban = () => {
   const {
-    tasksKanban: { reset, getProjectTasks },
+    tasksKanban: { reset, getProjectTasks, projectTasks },
   } = useStores();
+
+  console.log(projectTasks);
 
   useEffect(() => {
     return () => reset();

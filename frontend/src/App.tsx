@@ -1,11 +1,9 @@
 import './view/theme/index.scss';
+import 'react-calendar-timeline/lib/Timeline.css';
 
-import { useEffect } from 'react';
-
-import { configure, toJS } from 'mobx';
+import { configure } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
-import { ProjectsApi, TasksApi } from '@api';
 import { useStores } from '@control';
 import { InitialLayout } from '@layouts/initial';
 import { LoginLayout } from '@layouts/login';

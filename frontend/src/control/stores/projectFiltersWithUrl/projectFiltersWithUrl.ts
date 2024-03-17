@@ -20,6 +20,9 @@ class ProjectFiltersWithUrlStore {
   @observable
   projectId?: TUid;
 
+  @observable
+  project?: TProject;
+
   projectsLoading = new Loading();
 
   userInfo!: TUser;
@@ -32,7 +35,6 @@ class ProjectFiltersWithUrlStore {
     this.projectsService = projectsService;
     this.manager = manager;
 
-    console.log(manager.getUserInfo());
     this.userInfo = manager.getUserInfo();
   };
 
@@ -45,6 +47,7 @@ class ProjectFiltersWithUrlStore {
         this.projectFilters
       );
       this.updateUserProjects(response);
+      this.updateProject(response.find((p) => p.id === this.projectId));
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода filterProjects');
     } finally {
@@ -55,6 +58,7 @@ class ProjectFiltersWithUrlStore {
   reset = () => {
     this.updateUserProjects([]);
     this.updateProjectId(undefined);
+    this.updateProject(undefined);
     this.updateProjectFilters({});
     this.projectsLoading.stop();
   };
@@ -72,6 +76,11 @@ class ProjectFiltersWithUrlStore {
   @action
   updateProjectId = (id?: TUid) => {
     this.projectId = id;
+  };
+
+  @action
+  updateProject = (project?: TProject) => {
+    this.project = project;
   };
 }
 

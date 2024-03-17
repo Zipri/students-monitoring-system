@@ -25,6 +25,7 @@ export type TTask = {
   description?: string;
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
+  startDate: TDate;
   deadline: TDate;
 };
 
