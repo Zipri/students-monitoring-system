@@ -37,7 +37,7 @@ const ProjectsKanban = () => {
   useEffect(() => {
     getUserProjects();
 
-    return reset();
+    return () => reset();
   }, []);
 
   return (

@@ -1,0 +1,22 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.wrapper {
+  @include common-wrapper;
+  @include custom-scrollbars;
+  width: 100%;
+
+
+  .table {
+    width: '100%';
+    border-collapse: collapse;
+  
+    .th {
+      border: 1px solid $grey-border-color;
+      padding: .5rem;
+      background: lighten($main-grey, 15);
+    }
+
+    
+  }
+}
