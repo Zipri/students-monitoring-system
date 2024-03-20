@@ -14,12 +14,15 @@ import { useStores } from '@control';
 import { getBackendDate, useHorizontalScroll } from '@view/utils';
 
 import styles from './styles.module.scss';
+import { EllipsisText } from '@view/common';
 
 const colorSchema = tasksKanbanColorSchema;
 
 const TimelineTasksPart = () => {
   const { timelineTasks, manager } = useStores();
   const { projectTasks, currentProject } = timelineTasks;
+
+  const today = new Date();
 
   const days = eachDayOfInterval({
     start: parseISO(currentProject?.startDate || ''),
@@ -39,6 +42,31 @@ const TimelineTasksPart = () => {
   if (!currentProject) return <div id="timeline-tasks-part"></div>;
   return (
     <div className={styles.wrapper} id="timeline-tasks-part">
+      <table className={styles.infoTable}>
+        <thead>
+          <tr>
+            <th className={styles.th}>Месяц</th>
+          </tr>
+          <tr>
+            <th className={styles.th}>День</th>
+          </tr>
+        </thead>
+        <tbody>
+          {projectTasks.map((task) => (
+            <tr key={task.id}>
+              <td
+                className={styles.td}
+                style={colorSchema[task.status as TaskStatusEnum].content}
+              >
+                <div className={styles.staticContent}>
+                  <EllipsisText>{task.title}</EllipsisText>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       <table className={styles.table}>
         <thead>
           <tr>
@@ -61,10 +89,15 @@ const TimelineTasksPart = () => {
             {days.map((day) => (
               <th
                 key={day.toString()}
-                className={styles.th}
+                className={classNames(styles.th, {
+                  [styles.today]: isSameDay(day, today),
+                })}
                 style={{ minWidth: '10rem' }}
               >
-                {format(day, 'dd')}
+                <div className="flex align-items-center justify-content-center gap-2">
+                  {isSameDay(day, today) && <div>Сегодня</div>}
+                  {format(day, 'dd')}
+                </div>
               </th>
             ))}
           </tr>
@@ -95,7 +128,7 @@ const TimelineTasksPart = () => {
                           colorSchema[task.status as TaskStatusEnum].content
                         }
                       >
-                        {task.title}
+                        <div className={styles.content}>{task.title}</div>
                       </td>
                     );
                   } else if (index > taskStartIndex && index <= taskEndIndex) {
@@ -103,7 +136,14 @@ const TimelineTasksPart = () => {
                     return null;
                   } else {
                     // Пустые ячейки за пределами задачи
-                    return <td key={index} className={styles.td}></td>;
+                    return (
+                      <td
+                        key={index}
+                        className={classNames(styles.td, {
+                          [styles.todayTd]: isSameDay(day, today),
+                        })}
+                      ></td>
+                    );
                   }
                 })}
               </tr>

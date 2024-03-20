@@ -4,12 +4,48 @@
 .wrapper {
   @include common-wrapper;
   @include custom-scrollbars;
+
   width: 100%;
 
+  .infoTable {
+    width: '100%';
+    border-collapse: collapse;
+
+    position: absolute;
+  
+    .th {
+      border: 1px solid $grey-border-color;
+      padding: .5rem;
+      background: lighten($main-grey, 15);
+    }
+
+    .td {
+      border: 1px solid $grey-border-color !important;
+      padding: .5rem;
+      background: white;
+
+      .staticContent {
+        height: 2rem;
+        width: 12rem;
+
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
 
   .table {
     width: '100%';
     border-collapse: collapse;
+    margin-left: 13rem;
+
+    .today {
+      background: lighten($accent-color, 20) !important;
+    }
+
+    .todayTd {
+      background: lighten($accent-color, 40) !important;
+    }
   
     .th {
       border: 1px solid $grey-border-color;
