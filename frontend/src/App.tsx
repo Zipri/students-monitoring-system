@@ -1,5 +1,4 @@
 import './view/theme/index.scss';
-import 'react-calendar-timeline/lib/Timeline.css';
 
 import { configure } from 'mobx';
 import { observer } from 'mobx-react-lite';

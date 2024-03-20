@@ -12,8 +12,6 @@ const TasksKanban = () => {
     tasksKanban: { reset, getProjectTasks, projectTasks },
   } = useStores();
 
-  console.log(projectTasks);
-
   useEffect(() => {
     return () => reset();
   }, []);

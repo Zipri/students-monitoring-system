@@ -17,6 +17,18 @@
       background: lighten($main-grey, 15);
     }
 
-    
+    .td {
+      border: 1px solid $grey-border-color !important;
+      padding: .5rem;
+      background: white;
+
+      .content {
+        height: 2rem;
+      }
+    }
+
+    .filledTd {
+      background: wheat;
+    }
   }
 }
