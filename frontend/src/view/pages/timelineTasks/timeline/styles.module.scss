@@ -3,12 +3,10 @@
 
 .wrapper {
   @include common-wrapper;
-  @include custom-scrollbars;
 
-  width: 100%;
+  width: calc(100% - 34rem);
 
   .infoTable {
-    width: '100%';
     border-collapse: collapse;
 
     position: absolute;
@@ -21,53 +19,78 @@
 
     .td {
       border: 1px solid $grey-border-color !important;
-      padding: .5rem;
+      padding-left: .5rem;
+      padding-right: .5rem;
       background: white;
 
       .staticContent {
-        height: 2rem;
+        height: 3rem;
         width: 12rem;
 
         display: flex;
         align-items: center;
+        gap: .5rem;
       }
     }
   }
 
-  .table {
-    width: '100%';
-    border-collapse: collapse;
+
+  .tableWrapper {
+    @include custom-scrollbars;
     margin-left: 13rem;
-
-    .today {
-      background: lighten($accent-color, 20) !important;
-    }
-
-    .todayTd {
-      background: lighten($accent-color, 40) !important;
-    }
+    
+    .table {
+      border-collapse: collapse;
   
-    .th {
-      border: 1px solid $grey-border-color;
-      padding: .5rem;
-      background: lighten($main-grey, 15);
-    }
-
-    .td {
-      border: 1px solid $grey-border-color !important;
-      padding: .5rem;
-      background: white;
-
-      .content {
-        height: 2rem;
-
-        display: flex;
-        align-items: center;
+      .today {
+        background: lighten($accent-color, 20) !important;
       }
-    }
+  
+      .todayTd {
+        background: lighten($accent-color, 40) !important;
+      }
+    
+      .th {
+        border: 1px solid $grey-border-color;
+        padding: .5rem;
+        background: lighten($main-grey, 15);
+      }
+  
+      .td {
+        border: 1px solid $grey-border-color !important;
+        background: white;
+  
+        .content {
 
-    .filledTd {
-      background: wheat;
+          .label {
+            display: flex;
+            align-items: center;
+            padding: .5rem;
+
+            background: white;
+
+            border: 1px solid $grey-border-color;
+            border-radius: $main-radius;
+          }
+
+          height: 3rem;
+  
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: .5rem;
+  
+          [class~='p-button'] {
+            [class~='pi'] {
+              font-size: 1.3rem;
+            }
+          }
+        }
+      }
+  
+      .filledTd {
+        background: wheat;
+      }
     }
   }
 }
