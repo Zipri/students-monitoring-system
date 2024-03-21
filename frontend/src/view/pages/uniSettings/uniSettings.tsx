@@ -34,7 +34,6 @@ const UniSettings = () => {
 
   return (
     <div className={styles.commonWrapper}>
-      <ConfirmDialog />
       <Accordion onTabOpen={(e) => handleOpenTab(e.index)}>
         <AccordionTab header="Управление группами" key="Управление группами">
           <UniSettingsGroupCollapse />

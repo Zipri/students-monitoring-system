@@ -23,7 +23,7 @@
         @include custom-scrollbars;
         
         width: 100%;
-        background-color: white;
+        background-color: white !important;
 
         padding: 1rem;
         border-radius: 0 0 $main-radius $main-radius;

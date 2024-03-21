@@ -27,6 +27,10 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
     window.open(`/tasks-kanban?projectId=${project.id}`, '_blank');
   };
 
+  const handleOpenTimeline = () => {
+    window.open(`/tasks-timeline?projectId=${project.id}`, '_blank');
+  };
+
   const confirmDeleteItem = (id: TUid) => {
     confirmDialog({
       message:
@@ -96,7 +100,6 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                 tooltip="В архив"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-window-minimize"
-                // TODO EC
                 onClick={() => {}}
               />
               <Button
@@ -110,6 +113,13 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                     projectsKanban.getUserProjects
                   )
                 }
+              />
+              <Button
+                outlined
+                tooltip="Открыть таймлайн"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-sliders-h"
+                onClick={handleOpenTimeline}
               />
               <Button
                 outlined
