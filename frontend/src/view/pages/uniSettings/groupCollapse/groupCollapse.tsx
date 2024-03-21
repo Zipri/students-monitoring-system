@@ -11,12 +11,39 @@ import { ChipList, Spin } from '@view/common';
 import { FormLabel } from '@view/form';
 
 import styles from '../styles.module.scss';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { TGroup } from 'model/api/groups/types';
 
 const UniSettingsGroupCollapse = () => {
   const { uniSettings } = useStores();
-  const { loadingGroups, groups, studentsAutocomplete } = uniSettings;
+  const { loadingGroups, groups, studentsAutocomplete, getStudentsByGroup } =
+    uniSettings;
 
   const [editingId, setEditingId] = useState<TUid>('');
+
+  const confirmDeleteItem = async (group: TGroup) => {
+    const students = group.students;
+
+    confirmDialog({
+      message: students ? (
+        <div className="flex flex-column gap-2">
+          <div>
+            При удалении группы, будут удалены все студенты этой группы:
+          </div>
+          {students.map((student) => (
+            <div key={student.id} className="flex align-items-center gap-2">
+              <div>·</div>
+              <FormLabel htmlFor={student.name} caption={student.name} bold />
+            </div>
+          ))}
+        </div>
+      ) : undefined,
+      header: `Подтверждение удаления группы ${group.name}`,
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      accept: () => console.log(group.id),
+    });
+  };
 
   return (
     <Spin blocked={loadingGroups.value} className="flex flex-column gap-2">
@@ -85,7 +112,7 @@ const UniSettingsGroupCollapse = () => {
                       tooltip="Удалить"
                       tooltipOptions={{ position: 'top' }}
                       icon="pi pi-trash"
-                      onClick={() => console.log(group.id)}
+                      onClick={() => confirmDeleteItem(group)}
                     />
                   </div>
                 </div>
@@ -120,7 +147,7 @@ const UniSettingsGroupCollapse = () => {
                     tooltip="Удалить"
                     tooltipOptions={{ position: 'top' }}
                     icon="pi pi-trash"
-                    onClick={() => console.log(group.id)}
+                    onClick={() => confirmDeleteItem(group)}
                   />
                 </div>
               </div>

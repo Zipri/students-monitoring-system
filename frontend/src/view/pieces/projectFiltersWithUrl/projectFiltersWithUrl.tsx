@@ -1,7 +1,7 @@
 import { FC, useCallback, useEffect, useRef } from 'react';
 
 import { observer } from 'mobx-react-lite';
-import { ProjectsStatusesEnum } from 'model/api/projects/types';
+import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
 import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
@@ -12,12 +12,13 @@ import { useStores } from '@control';
 import { EllipsisText, Spin } from '@view/common';
 
 import styles from './styles.module.scss';
+import { toJS } from 'mobx';
 
 const colorSchema = projectsKanbanColorSchema;
 const statuses = Object.values(ProjectsStatusesEnum);
 
 type TProjectFiltersWithUrl = {
-  updateDataCallback: (projectId: TUid) => void;
+  updateDataCallback: (projectId: TUid, project?: TProject) => void;
 };
 
 const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
@@ -28,10 +29,12 @@ const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
   const {
     userProjects,
     projectId,
+    project,
     projectFilters,
     projectsLoading,
     updateProjectFilters,
     updateProjectId,
+    updateProject,
     filterProjects,
   } = projectFiltersWithUrl;
 
@@ -54,24 +57,14 @@ const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
     inputRef.current.value = '';
   };
 
-  const handleUpdateProjectId = useCallback((id: TUid) => {
+  const handleUpdateProjectId = useCallback((id: TUid, project: TProject) => {
     updateProjectId(id);
+    updateProject(project);
   }, []);
 
   const isActive = (id: TUid) => {
     return projectId === id;
   };
-
-  useEffect(() => {
-    // Этот эффект обновляет URL при изменении projectId
-    if (projectId) {
-      const currentUrl = new URL(window.location.href);
-      currentUrl.searchParams.set('projectId', projectId);
-      window.history.pushState({}, '', currentUrl);
-
-      updateDataCallback(projectId);
-    }
-  }, [projectId]);
 
   useEffect(() => {
     // Этот эффект срабатывает при монтировании компонента и читает projectId из URL
@@ -82,6 +75,17 @@ const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
     }
     filterProjects();
   }, []);
+
+  useEffect(() => {
+    // Этот эффект обновляет URL при изменении projectId
+    if (projectId) {
+      const currentUrl = new URL(window.location.href);
+      currentUrl.searchParams.set('projectId', projectId);
+      window.history.pushState({}, '', currentUrl);
+
+      updateDataCallback(projectId, project);
+    }
+  }, [projectId, project]);
 
   return (
     <Spin
@@ -114,7 +118,7 @@ const ProjectFiltersWithUrl: FC<TProjectFiltersWithUrl> = ({
           <div
             key={project.id}
             className={styles.item}
-            onClick={() => handleUpdateProjectId(project.id)}
+            onClick={() => handleUpdateProjectId(project.id, project)}
           >
             <div
               className={styles.title}

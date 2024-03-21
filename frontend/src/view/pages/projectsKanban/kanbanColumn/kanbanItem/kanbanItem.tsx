@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
 import { Button } from 'primereact/button';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { TUid } from '@api/types';
@@ -27,8 +27,11 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
     window.open(`/tasks-kanban?projectId=${project.id}`, '_blank');
   };
 
+  const handleOpenTimeline = () => {
+    window.open(`/tasks-timeline?projectId=${project.id}`, '_blank');
+  };
+
   const confirmDeleteItem = (id: TUid) => {
-    console.log(id);
     confirmDialog({
       message:
         'Вы точно хотите удалить запись? После удаления запись восстановить нельзя',
@@ -97,7 +100,6 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                 tooltip="В архив"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-window-minimize"
-                // TODO EC
                 onClick={() => {}}
               />
               <Button
@@ -111,6 +113,13 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                     projectsKanban.getUserProjects
                   )
                 }
+              />
+              <Button
+                outlined
+                tooltip="Открыть таймлайн"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-sliders-h"
+                onClick={handleOpenTimeline}
               />
               <Button
                 outlined

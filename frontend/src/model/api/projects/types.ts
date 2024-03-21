@@ -31,6 +31,7 @@ export type TProject = {
   title: string;
   description?: string;
   deadline: TDate;
+  startDate: TDate;
   status: ProjectsStatusesEnum;
   assignedStudents?: TAssignedStudent[];
   assignedTeacher: TAssignedTeacher;

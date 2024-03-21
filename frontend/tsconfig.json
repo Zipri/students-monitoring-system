@@ -51,7 +51,7 @@
     // Включает генерацию метаданных для декораторов, используется вместе с библиотеками рефлексии.
     "emitDecoratorMetadata": false 
   },
-  "include": ["src", "node_modules/primereact", "node_modules/react-beautiful-dnd"],
+  "include": ["src", "node_modules/primereact", "node_modules/react-beautiful-dnd", "node_modules/react-calendar-timeline"],
   "references": [{ "path": "./tsconfig.node.json" }],
   "extends": "./tsconfig.paths.json"
 }

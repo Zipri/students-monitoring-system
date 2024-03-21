@@ -37,13 +37,12 @@ const ProjectsKanban = () => {
   useEffect(() => {
     getUserProjects();
 
-    return reset();
+    return () => reset();
   }, []);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className={styles.kanbanWrapper}>
-        <ConfirmDialog />
         {Object.values(ProjectsStatusesEnum).map((statusValue) => {
           const projects = projectsByStatus[statusValue] || [];
           return (

@@ -47,7 +47,7 @@ class TasksService {
       const response = await this.baseApi.putRecord({
         id,
         //@ts-expect-error не соответствие типов с UI
-        data: { ...data, deadline: getBackendDate(data.deadline) || '' },
+        data: { ...data, deadline: getBackendDate(data.deadline) },
       });
       return response;
     } catch (error) {

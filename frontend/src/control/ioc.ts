@@ -11,6 +11,7 @@ import { UserStore } from './stores/user';
 import { TasksKanbanStore } from './stores/tasksKanban';
 import { UniSettingsStore } from './stores/uniSettings';
 import { ProjectFiltersWithUrlStore } from './stores/projectFiltersWithUrl';
+import { TimelineTasksStore } from './stores/timelineTasks';
 
 const { services } = LogicRoot;
 
@@ -36,6 +37,8 @@ class RootStore {
   public projectsKanban = new ProjectsKanbanStore();
   /** страница всех задач проекта на одной канбан доске */
   public tasksKanban = new TasksKanbanStore();
+  /** страница всех задач проекта на таймлайне */
+  public timelineTasks = new TimelineTasksStore();
   /** страница вузовских настроек */
   public uniSettings = new UniSettingsStore();
 
@@ -56,7 +59,13 @@ class RootStore {
     this.projects.init(services.projects, services.users, manager);
     this.projectsKanban.init(services.projects, manager);
     this.tasksKanban.init(services.tasks, manager);
-    this.uniSettings.init(services.users, services.groups, manager);
+    this.timelineTasks.init(services.tasks, manager);
+    this.uniSettings.init(
+      services.users,
+      services.groups,
+      services.projects,
+      manager
+    );
 
     // Модалки
     this.projectsKanbanModal.init(services.projects, services.users, manager);

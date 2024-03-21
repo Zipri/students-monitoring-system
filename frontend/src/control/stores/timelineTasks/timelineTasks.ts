@@ -1,17 +1,21 @@
 import { action, makeObservable, observable } from 'mobx';
-import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
+import { TProject } from 'model/api/projects/types';
+import { TTask } from 'model/api/tasks/types';
 import { TasksService } from 'model/services/tasks';
 
 import { TUid } from '@api/types';
 import { Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
 
-class TasksKanbanStore {
+class TimelineTasksStore {
   private tasksService!: TasksService;
   private manager!: StoreManager;
 
   @observable
   projectTasks: TTask[] = [];
+
+  @observable
+  currentProject?: TProject;
 
   tasksLoading = new Loading();
 
@@ -24,7 +28,7 @@ class TasksKanbanStore {
     this.manager = manager;
   };
 
-  getProjectTasks = async (projectId?: TUid) => {
+  getProjectTasks = async (projectId?: TUid, currentProject?: TProject) => {
     if (!projectId) {
       this.manager.callToastError('Выберите проект');
       return;
@@ -33,26 +37,9 @@ class TasksKanbanStore {
       this.tasksLoading.start();
       const response = await this.tasksService.getListByProjectId(projectId);
       this.updateProjectTasks(response);
+      this.updateProject(currentProject);
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getProjectTasks');
-    } finally {
-      this.tasksLoading.stop();
-    }
-  };
-
-  changeStatus = async (id: TUid, status: TaskStatusEnum) => {
-    try {
-      this.tasksLoading.start();
-      const response = await this.tasksService.changeTaskStatus(id, status);
-      const newProjectTasks = this.projectTasks.map((item) => {
-        if (item.id !== id) return item;
-        return {
-          ...response,
-        };
-      });
-      this.updateProjectTasks(newProjectTasks);
-    } catch (error) {
-      this.manager.callBackendError(error, 'Ошибка метода changeStatus');
     } finally {
       this.tasksLoading.stop();
     }
@@ -61,6 +48,12 @@ class TasksKanbanStore {
   reset = () => {
     this.updateProjectTasks([]);
     this.tasksLoading.stop();
+    this.updateProject(undefined);
+  };
+
+  @action
+  updateProject = (currentProject?: TProject) => {
+    this.currentProject = currentProject;
   };
 
   @action
@@ -69,4 +62,4 @@ class TasksKanbanStore {
   };
 }
 
-export default TasksKanbanStore;
+export default TimelineTasksStore;

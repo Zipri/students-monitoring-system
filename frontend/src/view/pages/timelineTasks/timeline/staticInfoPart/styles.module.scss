@@ -1,0 +1,30 @@
+@import '../../../../theme/mixins';
+@import '../../../../theme/variables';
+
+.infoTable {
+  border-collapse: collapse;
+
+  position: absolute;
+
+  .th {
+    border: 1px solid $grey-border-color;
+    padding: .5rem;
+    background: lighten($main-grey, 15);
+  }
+
+  .td {
+    border: 1px solid $grey-border-color !important;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    background: white;
+
+    .staticContent {
+      height: 3rem;
+      width: 16rem;
+
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+  }
+}

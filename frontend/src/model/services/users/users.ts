@@ -59,6 +59,15 @@ class UsersService {
     }
   };
 
+  getStudentsByGroup = async (group: string) => {
+    try {
+      const response = await this.baseApi.getListByGroup(group);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   loginUser = async (email: string, password: string) => {
     try {
       const response = await this.baseApi.login({ email, password });

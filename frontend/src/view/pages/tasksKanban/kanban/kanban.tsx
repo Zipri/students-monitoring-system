@@ -1,9 +1,11 @@
-import { useStores } from '@control';
 import { observer } from 'mobx-react-lite';
-import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
-import styles from './styles.module.scss';
+
+import { useStores } from '@control';
+
 import { TasksKanbanColumn } from './kanbanColumn';
+import styles from './styles.module.scss';
 
 const TasksKanbanPart = () => {
   const { tasksKanban } = useStores();
