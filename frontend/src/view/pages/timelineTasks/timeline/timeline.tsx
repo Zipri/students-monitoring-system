@@ -7,15 +7,16 @@ import styles from './styles.module.scss';
 import { TableTimeline } from './tableTimeline';
 
 const TimelineTasksPart = () => {
-  const { timelineTasks } = useStores();
-  const { projectTasks, currentProject } = timelineTasks;
+  const { timelineTasks, projectFiltersWithUrl } = useStores();
 
-  if (!currentProject) return <></>;
+  const { projectTasks, currentProject } = timelineTasks;
+  const { notUserProject } = projectFiltersWithUrl;
+
   return (
     <div className={styles.wrapper}>
       <TimelineTasksPartStaticInfoPart projectTasks={projectTasks} />
       <TableTimeline
-        currentProject={currentProject}
+        currentProject={currentProject || notUserProject}
         projectTasks={projectTasks}
       />
     </div>

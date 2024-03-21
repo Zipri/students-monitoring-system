@@ -10,6 +10,7 @@ import { tasksKanbanColorSchema } from '@config';
 import { EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
+import { useStores } from '@control';
 
 const colorSchema = tasksKanbanColorSchema;
 
@@ -18,6 +19,13 @@ type Type = {
 };
 
 const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
+  const { projectFiltersWithUrl } = useStores();
+  const { userProjects, projectId } = projectFiltersWithUrl;
+
+  const isUserProject = userProjects.some(
+    (project) => project.id === projectId
+  );
+
   const confirmDeleteItem = (id: TUid) => {
     confirmDialog({
       message:
@@ -55,6 +63,7 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
                   tooltipOptions={{ position: 'top' }}
                   icon="pi pi-trash"
                   onClick={() => confirmDeleteItem(task.id)}
+                  disabled={!isUserProject}
                 />
                 <Button
                   text
@@ -62,6 +71,7 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
                   tooltipOptions={{ position: 'top' }}
                   icon="pi pi-external-link"
                   onClick={() => {}}
+                  disabled={!isUserProject}
                 />
               </div>
             </td>

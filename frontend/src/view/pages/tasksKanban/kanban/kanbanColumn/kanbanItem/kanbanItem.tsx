@@ -21,7 +21,13 @@ type TTasksKanbanItem = {
 };
 
 const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
-  const { projectsKanbanModal, projectsKanban } = useStores();
+  const { projectsKanbanModal, projectsKanban, projectFiltersWithUrl } =
+    useStores();
+  const { userProjects, projectId } = projectFiltersWithUrl;
+
+  const isUserProject = userProjects.some(
+    (project) => project.id === projectId
+  );
 
   const confirmDeleteItem = (id: TUid) => {
     confirmDialog({
@@ -63,24 +69,28 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
             )}
             <CustomDivider title="Описание" />
             <EllipsisText maxLines={3}>{task.description}</EllipsisText>
-            <CustomDivider />
-            <div className="flex align-items-center justify-content-end gap-2">
-              <Button
-                outlined
-                severity="danger"
-                tooltip="Удалить"
-                tooltipOptions={{ position: 'top' }}
-                label="Удалить"
-                onClick={() => confirmDeleteItem(task.id)}
-              />
-              <Button
-                outlined
-                tooltip="Открыть"
-                tooltipOptions={{ position: 'top' }}
-                label="Открыть"
-                onClick={() => {}}
-              />
-            </div>
+            {isUserProject && (
+              <>
+                <CustomDivider />
+                <div className="flex align-items-center justify-content-end gap-2">
+                  <Button
+                    outlined
+                    severity="danger"
+                    tooltip="Удалить"
+                    tooltipOptions={{ position: 'top' }}
+                    label="Удалить"
+                    onClick={() => confirmDeleteItem(task.id)}
+                  />
+                  <Button
+                    outlined
+                    tooltip="Открыть"
+                    tooltipOptions={{ position: 'top' }}
+                    label="Открыть"
+                    onClick={() => {}}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       )}

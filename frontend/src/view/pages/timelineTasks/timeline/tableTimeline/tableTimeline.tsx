@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { eachDayOfInterval, format, isSameDay, parseISO } from 'date-fns';
+import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
 import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { Button } from 'primereact/button';
@@ -11,13 +12,12 @@ import { EllipsisText } from '@view/common';
 import { useHorizontalScroll } from '@view/utils';
 
 import styles from './styles.module.scss';
-import { observer } from 'mobx-react-lite';
 
 const statusColorSchema = tasksKanbanColorSchema;
 const priorityColorSchema = tasksPriorityColorSchema;
 
 type Type = {
-  currentProject: TProject;
+  currentProject?: TProject;
   projectTasks: TTask[];
 };
 

@@ -23,6 +23,9 @@ class ProjectFiltersWithUrlStore {
   @observable
   project?: TProject;
 
+  @observable
+  notUserProject?: TProject;
+
   projectsLoading = new Loading();
 
   userInfo!: TUser;
@@ -47,9 +50,28 @@ class ProjectFiltersWithUrlStore {
         this.projectFilters
       );
       this.updateUserProjects(response);
-      this.updateProject(response.find((p) => p.id === this.projectId));
+      const userProject = response.find((p) => p.id === this.projectId);
+      this.updateProject(userProject);
+
+      if (!userProject) {
+        const notUserProject = await this.returnProjectById();
+        this.updateNotUserProject(notUserProject);
+      }
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода filterProjects');
+    } finally {
+      this.projectsLoading.stop();
+    }
+  };
+
+  returnProjectById = async () => {
+    if (!this.projectId) return;
+    try {
+      this.projectsLoading.start();
+      const response = await this.projectsService.getRecordById(this.projectId);
+      return response;
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода returnProjectById');
     } finally {
       this.projectsLoading.stop();
     }
@@ -81,6 +103,11 @@ class ProjectFiltersWithUrlStore {
   @action
   updateProject = (project?: TProject) => {
     this.project = project;
+  };
+
+  @action
+  updateNotUserProject = (notUserProject?: TProject) => {
+    this.notUserProject = notUserProject;
   };
 }
 
