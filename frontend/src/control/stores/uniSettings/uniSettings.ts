@@ -1,15 +1,19 @@
 import { action, makeObservable, observable } from 'mobx';
 import { TGroup, TGroupAdd } from 'model/api/groups/types';
+import { TUser, TUserAdd, UsersRolesEnum } from 'model/api/users/types';
 import { GroupsService } from 'model/services/groups';
+import { ProjectsService } from 'model/services/projects';
 import { UsersService } from 'model/services/users';
 
 import { AutocompleteControllerStore, Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
-import { TUser, TUserAdd } from 'model/api/users/types';
+import { TProject } from 'model/api/projects/types';
+import { TUid } from '@api/types';
 
 class UniSettingsStore {
   private groupsService!: GroupsService;
   private usersService!: UsersService;
+  private projectsService!: ProjectsService;
   private manager!: StoreManager;
 
   @observable
@@ -25,6 +29,7 @@ class UniSettingsStore {
   loadingGroups = new Loading();
   loadingStudents = new Loading();
   loadingTeachers = new Loading();
+  loadingProjects = new Loading();
 
   studentsAutocomplete!: AutocompleteControllerStore;
   groupsAutocomplete!: AutocompleteControllerStore;
@@ -36,10 +41,12 @@ class UniSettingsStore {
   init = (
     usersService: UsersService,
     groupsService: GroupsService,
+    projectsService: ProjectsService,
     manager: StoreManager
   ) => {
     this.groupsService = groupsService;
     this.usersService = usersService;
+    this.projectsService = projectsService;
     this.manager = manager;
 
     this.studentsAutocomplete = new AutocompleteControllerStore(
@@ -103,6 +110,19 @@ class UniSettingsStore {
     }
   };
 
+  getStudentsByGroup = async (group: string) => {
+    try {
+      this.loadingStudents.start();
+      const response = await this.usersService.getStudentsByGroup(group);
+      const sorted = response.sort();
+      return sorted;
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка получения students');
+    } finally {
+      this.loadingStudents.stop();
+    }
+  };
+
   getTeachers = async () => {
     if (this.teachers.length) return this.teachers;
 
@@ -115,6 +135,21 @@ class UniSettingsStore {
       this.manager.callBackendError(error, 'Ошибка получения teachers');
     } finally {
       this.loadingTeachers.stop();
+    }
+  };
+
+  getProjects = async (id: TUid, role: UsersRolesEnum) => {
+    try {
+      this.loadingProjects.start();
+
+      const response = await this.projectsService.getListById(id, role);
+      const sorted = response.sort();
+
+      return sorted;
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка получения userProjects');
+    } finally {
+      this.loadingProjects.stop();
     }
   };
 

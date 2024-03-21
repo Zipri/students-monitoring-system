@@ -3,7 +3,7 @@ import { FC } from 'react';
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
 import { Button } from 'primereact/button';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
 import { Draggable } from 'react-beautiful-dnd';
 
 import { TUid } from '@api/types';
@@ -28,7 +28,6 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
   };
 
   const confirmDeleteItem = (id: TUid) => {
-    console.log(id);
     confirmDialog({
       message:
         'Вы точно хотите удалить запись? После удаления запись восстановить нельзя',

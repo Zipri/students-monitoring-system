@@ -11,15 +11,57 @@ import { Spin } from '@view/common';
 import { FormLabel } from '@view/form';
 
 import styles from '../styles.module.scss';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { TUser, UsersRolesEnum } from 'model/api/users/types';
+import { projectsKanbanColorSchema } from '@config';
+
+const colorSchema = projectsKanbanColorSchema;
 
 const UniSettingsTeachersCollapse = () => {
   const { uniSettings } = useStores();
-  const { loadingTeachers, teachers } = uniSettings;
+  const { loadingProjects, loadingTeachers, teachers, getProjects } =
+    uniSettings;
 
   const [editingId, setEditingId] = useState<TUid>('');
 
+  const confirmDeleteItem = async (teacher: TUser) => {
+    const userProjects = await getProjects(teacher.id, UsersRolesEnum.teacher);
+
+    confirmDialog({
+      message: userProjects ? (
+        <div className="flex flex-column gap-2">
+          <div>
+            При удалении преподавателя, его профиль удалится из всех проектов, в
+            которые он бал добавлен:
+          </div>
+          {userProjects.map((project) => (
+            <div key={project.id} className="flex align-items-center gap-2">
+              <div>·</div>
+              <div style={colorSchema[project.status].header}>
+                ({project.status})
+              </div>
+              <FormLabel htmlFor={project.title} caption={project.title} bold />
+              <div className="flex align-items-center gap-1 text-400">
+                <div>[{project.startDate}</div>
+                <div>-</div>
+                <div>{project.deadline}]</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : undefined,
+      header: `Подтверждение удаления преподавателя ${teacher.username}`,
+      icon: 'pi pi-info-circle',
+      acceptClassName: 'p-button-danger',
+      accept: () => console.log(teacher.id),
+    });
+  };
+
   return (
-    <Spin blocked={loadingTeachers.value} className="flex flex-column gap-2">
+    <Spin
+      blocked={loadingTeachers.value || loadingProjects.value}
+      className="flex flex-column gap-2"
+    >
       <div className="w-full">
         <span className="w-full p-input-icon-left">
           <i className="pi pi-search" />
@@ -31,7 +73,7 @@ const UniSettingsTeachersCollapse = () => {
           {teachers.map((teacher) => {
             if (editingId === teacher.id) {
               return (
-                <div className={styles.item}>
+                <div className={styles.item} key={teacher.id}>
                   <InputText
                     value={teacher.username}
                     placeholder="Введите ФИО"
@@ -55,14 +97,14 @@ const UniSettingsTeachersCollapse = () => {
                       tooltip="Удалить"
                       tooltipOptions={{ position: 'top' }}
                       icon="pi pi-trash"
-                      onClick={() => console.log(teacher.id)}
+                      onClick={() => confirmDeleteItem(teacher)}
                     />
                   </div>
                 </div>
               );
             }
             return (
-              <div className={styles.item}>
+              <div className={styles.item} key={teacher.id}>
                 <FormLabel
                   htmlFor={'UniSettingsStudentsCollapse-student.username'}
                   caption={teacher.username}
@@ -87,7 +129,7 @@ const UniSettingsTeachersCollapse = () => {
                     tooltip="Удалить"
                     tooltipOptions={{ position: 'top' }}
                     icon="pi pi-trash"
-                    onClick={() => console.log(teacher.id)}
+                    onClick={() => confirmDeleteItem(teacher)}
                   />
                 </div>
               </div>

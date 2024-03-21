@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { Accordion, AccordionTab } from 'primereact/accordion';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 
 import { useStores } from '@control';
 
@@ -33,14 +34,21 @@ const UniSettings = () => {
 
   return (
     <div className={styles.commonWrapper}>
+      <ConfirmDialog />
       <Accordion onTabOpen={(e) => handleOpenTab(e.index)}>
-        <AccordionTab header="Управление группами">
+        <AccordionTab header="Управление группами" key="Управление группами">
           <UniSettingsGroupCollapse />
         </AccordionTab>
-        <AccordionTab header="Управление списком студентов">
+        <AccordionTab
+          header="Управление списком студентов"
+          key="Управление списком студентов"
+        >
           <UniSettingsStudentsCollapse />
         </AccordionTab>
-        <AccordionTab header="Управление списком преподавателей">
+        <AccordionTab
+          header="Управление списком преподавателей"
+          key="Управление списком преподавателей"
+        >
           <UniSettingsTeachersCollapse />
         </AccordionTab>
       </Accordion>

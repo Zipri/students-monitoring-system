@@ -60,7 +60,12 @@ class RootStore {
     this.projectsKanban.init(services.projects, manager);
     this.tasksKanban.init(services.tasks, manager);
     this.timelineTasks.init(services.tasks, manager);
-    this.uniSettings.init(services.users, services.groups, manager);
+    this.uniSettings.init(
+      services.users,
+      services.groups,
+      services.projects,
+      manager
+    );
 
     // Модалки
     this.projectsKanbanModal.init(services.projects, services.users, manager);
