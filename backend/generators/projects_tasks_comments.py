@@ -82,16 +82,26 @@ tasks_with_project = create_tasks(project_ids, students)
 # Функция для создания комментариев
 def create_comments(tasks_with_project, students):
     for task_id, _ in tasks_with_project:
-        for _ in range(random.randint(0, 5)):  # От 0 до 5 комментариев на задачу
+        for _ in range(random.randint(3, 10)):  # От 0 до 5 комментариев на задачу
             student = random.choice(students)
+            # В этой реализации информация об авторе извлекается непосредственно из записи о студенте
+            author_info = {
+                'id':student['_id'],
+                'username': student['username'],
+                'email': student['email'],
+                'role': student['role'],
+                'group': student['group']
+            }
             comment = {
-                'text': fake.text(max_nb_chars=50),
+                'text': fake.text(max_nb_chars=100),
                 'taskId': str(task_id),
-                'authorId': str(student['_id']),
+                'authorId': str(student['_id']),  # Сохраняем authorId для совместимости
+                'author': author_info,  # Добавляем информацию об авторе непосредственно в документ комментария
                 'timestamp': datetime.now()
-                # 'author': {'id': str(student['_id']), 'name': student['username'], 'email': student['email']} # TODO добавить потом
             }
             db.comments.insert_one(comment)
+
+
 
 create_comments(tasks_with_project, students)
 
