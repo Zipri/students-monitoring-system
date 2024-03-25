@@ -4,6 +4,8 @@ import { TDate, TUid } from '@api/types';
 
 export type TTaskModalStore = {
   /** Пустое для инициализации, но не может быть пустым при добавлении или редактировании */
+  id?: TUid;
+  /** Пустое для инициализации, но не может быть пустым при добавлении или редактировании */
   projectId?: TUid;
   title?: string;
   description?: string;

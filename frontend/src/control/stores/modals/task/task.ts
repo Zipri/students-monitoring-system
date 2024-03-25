@@ -74,6 +74,10 @@ class TaskModalStore {
   };
 
   addComment = async (taskId: TUid, authorId: TUid, text: string) => {
+    if (!text.length) {
+      this.manager.callToastError('Необходимо написать текст комментария');
+      return;
+    }
     try {
       this.loading.start();
       const response = await this.commentsService.addRecord({
@@ -81,8 +85,9 @@ class TaskModalStore {
         authorId,
         text,
       });
-      console.log([...this.comments, response]);
-      // this.comments.push(newData);
+
+      this.updateComments([...this.comments, response]);
+
       this.manager.callToastSuccess('Комментарий добавлен');
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода addComment');
@@ -95,12 +100,14 @@ class TaskModalStore {
     try {
       this.loading.start();
       const response = await this.commentsService.changeRecord(id, { text });
+
       const newData = this.comments.map((comment) => {
         if (comment.id === response.id) return response;
         return comment;
       });
-      console.log(newData);
-      // this.comments.push(newData);
+
+      this.updateComments(newData);
+
       this.manager.callToastSuccess('Комментарий изменен');
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода updateComment');
@@ -112,13 +119,11 @@ class TaskModalStore {
   deleteComment = async (id: TUid) => {
     try {
       this.loading.start();
-      const response = await this.commentsService.deleteRecord(id);
-      // const newData = this.comments.map((comment) => {
-      //   if (comment.id === response.id) return response;
-      //   return comment;
-      // });
-      // console.log(newData);
-      // this.comments.push(newData);
+      await this.commentsService.deleteRecord(id);
+
+      const newData = this.comments.filter((comment) => comment.id !== id);
+
+      this.updateComments(newData);
       this.manager.callToastSuccess('Комментарий удален');
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода updateComment');
@@ -164,6 +169,7 @@ class TaskModalStore {
 
   openCreate = async () => {
     this.modalOpen.enable();
+    this.isEditFormMode.enable();
   };
 
   openEdit = async (editingId: TUid) => {
