@@ -38,7 +38,7 @@ const CalendarController: FC<TCalendarController> = ({
   errors,
   rules,
   view,
-  dateFormat,
+  dateFormat = 'dd-mm-yy',
   disabled,
   calendarProps,
 }) => {

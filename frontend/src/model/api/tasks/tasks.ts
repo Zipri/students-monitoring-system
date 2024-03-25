@@ -17,6 +17,7 @@ import {
   TPutTasksParams,
   TPutTasksRequest,
   TPutTasksResponse,
+  TTask,
 } from './types';
 
 const LOCAL_URL = `${BACKEND_URL}/tasks`;
@@ -27,6 +28,13 @@ class TasksApi {
       undefined,
       AxiosResponse<TGetListTasksResponse>
     >(LOCAL_URL);
+    return response.data;
+  };
+
+  getRecordById = async (id: TUid) => {
+    const response = await axios.get<undefined, AxiosResponse<TTask>>(
+      `${LOCAL_URL}/${id}`
+    );
     return response.data;
   };
 

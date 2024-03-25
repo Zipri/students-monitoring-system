@@ -25,7 +25,7 @@ const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
   title,
   tasks,
 }) => {
-  const { projectsKanbanModal, projectsKanban } = useStores();
+  const { projectsKanbanModal, projectsKanban, taskModal } = useStores();
 
   return (
     <Droppable droppableId={columnId}>
@@ -56,12 +56,10 @@ const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
 
             {title === TaskStatusEnum.new && (
               <Button
-                // onClick={() =>
-                //   projectsKanbanModal.openCreate(projectsKanban.getUserProjects)
-                // }
                 style={{ width: '100%' }}
                 severity="success"
                 label="Добавить задачу"
+                onClick={() => taskModal.openCreate()}
               />
             )}
           </div>

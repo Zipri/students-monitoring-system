@@ -9,6 +9,6 @@ export type TTaskModalStore = {
   description?: string;
   status: TaskStatusEnum;
   priority: TaskPriorityEnum;
-  startDate?: TDate;
-  deadline?: TDate;
+  startDate?: Date;
+  deadline?: Date;
 };

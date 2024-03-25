@@ -19,7 +19,7 @@ type Type = {
 };
 
 const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
-  const { projectFiltersWithUrl } = useStores();
+  const { projectFiltersWithUrl, taskModal } = useStores();
   const { userProjects, projectId } = projectFiltersWithUrl;
 
   const isUserProject = userProjects.some(
@@ -70,7 +70,7 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
                   tooltip="Открыть"
                   tooltipOptions={{ position: 'top' }}
                   icon="pi pi-external-link"
-                  onClick={() => {}}
+                  onClick={() => taskModal.openEdit(task.id)}
                   disabled={!isUserProject}
                 />
               </div>

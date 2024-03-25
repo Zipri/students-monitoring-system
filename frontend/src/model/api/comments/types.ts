@@ -1,4 +1,5 @@
-import { TUid, TDate, TResponseDeletedCount } from '@api/types';
+import { TDate, TResponseDeletedCount, TUid } from '@api/types';
+
 import { TUser } from '../users/types';
 
 export type TComment = {
@@ -6,7 +7,7 @@ export type TComment = {
   taskId: TUid;
   author: TUser;
   text: string;
-  timestamp: TDate | string; // Поскольку timestamp может быть 'Неизвестно'
+  timestamp: string;
 };
 
 export type TCommentAdd = Omit<TComment, 'id' | 'author' | 'timestamp'> & {
@@ -16,18 +17,20 @@ export type TCommentAdd = Omit<TComment, 'id' | 'author' | 'timestamp'> & {
 export type TCommentUpdate = { text: string };
 
 // Для получения списка комментариев
-export type TGetCommentsResponse = TComment[];
+export type TGetListCommentsResponse = TComment[];
 
 // Для добавления нового комментария
-export type TPostCommentParams = TCommentAdd;
-export type TPostCommentResponse = TComment;
+export type TPostCommentsParams = TCommentAdd;
+export type TPostCommentsRequest = TPostCommentsParams;
+export type TPostCommentsResponse = TComment;
 
 // Для обновления комментария
-export type TPutCommentParams = { id: TUid; data: TCommentUpdate };
-export type TPutCommentResponse = TComment;
+export type TPutCommentsParams = { id: TUid; data: TCommentUpdate };
+export type TPutCommentsRequest = TPutCommentsParams;
+export type TPutCommentsResponse = TComment;
 
 // Для удаления комментария
-export type TDeleteCommentResponse = TResponseDeletedCount;
+export type TDeleteCommentsResponse = TResponseDeletedCount;
 
 // Для получения комментариев по идентификатору задачи
 export type TGetCommentsByTaskResponse = TComment[];

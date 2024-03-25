@@ -1,7 +1,7 @@
 import { LogicRoot } from 'model';
 
 import { ErrorHandlerStore } from '@stores/common';
-import { ProjectsKanbanModalStore } from '@stores/modals';
+import { ProjectsKanbanModalStore, TaskModalStore } from '@stores/modals';
 
 import { StoreManager } from './storeManager';
 import { ProjectsStore } from './stores/projects';
@@ -44,6 +44,8 @@ class RootStore {
 
   /** Модалка для редактирования страницы projectsKanban */
   public projectsKanbanModal = new ProjectsKanbanModalStore();
+  /** Модалка для работы с одной задачей */
+  public taskModal = new TaskModalStore();
 
   constructor() {
     this.init();
@@ -69,6 +71,7 @@ class RootStore {
 
     // Модалки
     this.projectsKanbanModal.init(services.projects, services.users, manager);
+    this.taskModal.init(services.tasks, services.comments, manager);
 
     this.projectFiltersWithUrl.init(services.projects, manager);
   }

@@ -9,14 +9,17 @@ type Props = PropsWithChildren & {
   blocked: boolean;
   template?: ReactNode;
   className?: string;
+  /** primeflex */
+  width?: string;
 };
 
-const Spin: FC<Props> = ({ children, template, blocked, className }) => {
+const Spin: FC<Props> = ({ children, template, blocked, className, width }) => {
   return (
     <BlockUI
       blocked={blocked}
       className={styles.container}
       template={template || <ProgressSpinner />}
+      pt={{ root: { className: width } }}
     >
       <div className={className}>{children}</div>
     </BlockUI>

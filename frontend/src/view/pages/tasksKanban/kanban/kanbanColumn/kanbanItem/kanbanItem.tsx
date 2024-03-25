@@ -21,8 +21,12 @@ type TTasksKanbanItem = {
 };
 
 const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
-  const { projectsKanbanModal, projectsKanban, projectFiltersWithUrl } =
-    useStores();
+  const {
+    projectsKanbanModal,
+    projectsKanban,
+    projectFiltersWithUrl,
+    taskModal,
+  } = useStores();
   const { userProjects, projectId } = projectFiltersWithUrl;
 
   const isUserProject = userProjects.some(
@@ -86,7 +90,7 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
                     tooltip="Открыть"
                     tooltipOptions={{ position: 'top' }}
                     label="Открыть"
-                    onClick={() => {}}
+                    onClick={() => taskModal.openEdit(task.id)}
                   />
                 </div>
               </>

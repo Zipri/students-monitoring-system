@@ -81,6 +81,15 @@ def delete_task(id):
     return jsonify({'deleted_count': result.deleted_count})
 ##endregion
 
+## Получение детальной информации
+@app.route('/tasks/<id>', methods=['GET'])
+def get_task_by_id(id):
+    task = mongo.db.tasks.find_one({'_id': ObjectId(id)})
+    if task:
+        return jsonify(task_to_json(task))
+    else:
+        return jsonify({'error': 'task not found'}), 404
+
 ## Получение задач по идентификатору проекта
 @app.route('/tasks/project/<projectId>', methods=['GET'])
 def get_tasks_by_project(projectId):

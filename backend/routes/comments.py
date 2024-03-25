@@ -96,8 +96,11 @@ def get_comments_by_task(taskId):
     for comment in comments:
         author = mongo.db.users.find_one({'_id': ObjectId(comment['authorId'])})
         author_info = {
-            'name': author.get('name', 'Неизвестно'),
-            'email': author.get('email', 'Неизвестно')
+            'id': str(author['_id']),
+            'username': author['username'],
+            'email': author['email'],
+            'role': author['role'],
+            'group': author.get('group', None)
         } if author else {'name': 'Неизвестно', 'email': 'Неизвестно'}
         
         result.append({
