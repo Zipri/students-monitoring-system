@@ -31,6 +31,15 @@ class TasksService {
     }
   };
 
+  deleteRecord = async (id: TUid) => {
+    try {
+      const response = await this.baseApi.deleteRecord(id);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   getRecord = async (id: TUid) => {
     try {
       const response = await this.baseApi.getRecordById(id);

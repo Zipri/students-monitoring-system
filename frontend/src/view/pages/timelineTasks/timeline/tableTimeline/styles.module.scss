@@ -47,6 +47,8 @@
         gap: .5rem;
 
         [class~='p-button'] {
+          min-width: 36px;
+          
           [class~='pi'] {
             font-size: 1.3rem;
           }

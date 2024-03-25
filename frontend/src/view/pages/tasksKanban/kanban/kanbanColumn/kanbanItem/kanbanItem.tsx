@@ -21,12 +21,7 @@ type TTasksKanbanItem = {
 };
 
 const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
-  const {
-    projectsKanbanModal,
-    projectsKanban,
-    projectFiltersWithUrl,
-    taskModal,
-  } = useStores();
+  const { tasksKanban, projectFiltersWithUrl, taskModal } = useStores();
   const { userProjects, projectId } = projectFiltersWithUrl;
 
   const isUserProject = userProjects.some(
@@ -40,7 +35,10 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
       header: 'Подтверждение удаления записи',
       icon: 'pi pi-info-circle',
       acceptClassName: 'p-button-danger',
-      accept: () => console.log(id),
+      accept: async () => {
+        await taskModal.deleteTask(id);
+        tasksKanban.getProjectTasks(projectId);
+      },
     });
   };
 
@@ -57,7 +55,9 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
             className={styles.header}
             style={colorSchema[task.priority].header}
           >
-            <EllipsisText maxLines={1}>{task.title}</EllipsisText>
+            <EllipsisText hardBreak maxLines={1}>
+              {task.title}
+            </EllipsisText>
           </div>
           <div
             className={styles.content}
@@ -90,7 +90,13 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
                     tooltip="Открыть"
                     tooltipOptions={{ position: 'top' }}
                     label="Открыть"
-                    onClick={() => taskModal.openEdit(task.id)}
+                    onClick={() =>
+                      taskModal.openEdit(
+                        () => tasksKanban.getProjectTasks(projectId),
+                        task.id,
+                        projectId
+                      )
+                    }
                   />
                 </div>
               </>

@@ -12,21 +12,28 @@ import { EllipsisText } from '@view/common';
 import { useHorizontalScroll } from '@view/utils';
 
 import styles from './styles.module.scss';
+import { useStores } from '@control';
+import { toJS } from 'mobx';
+import { Tooltip } from 'primereact/tooltip';
 
 const statusColorSchema = tasksKanbanColorSchema;
 const priorityColorSchema = tasksPriorityColorSchema;
 
-type Type = {
-  currentProject?: TProject;
-  projectTasks: TTask[];
-};
+const TableTimeline = () => {
+  const { timelineTasks, projectFiltersWithUrl } = useStores();
 
-const TableTimeline: FC<Type> = ({ currentProject, projectTasks }) => {
+  const { projectTasks, currentProject } = timelineTasks;
+  const { notUserProject } = projectFiltersWithUrl;
+
+  const timelineTaskItems = (toJS(projectTasks) || []).sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
+  );
+
   const today = new Date();
 
   const days = eachDayOfInterval({
-    start: parseISO(currentProject?.startDate || ''),
-    end: parseISO(currentProject?.deadline || ''),
+    start: parseISO((currentProject || notUserProject)?.startDate || ''),
+    end: parseISO((currentProject || notUserProject)?.deadline || ''),
   });
 
   const months = days.reduce<string[]>((acc, day) => {
@@ -78,7 +85,7 @@ const TableTimeline: FC<Type> = ({ currentProject, projectTasks }) => {
         </thead>
 
         <tbody>
-          {projectTasks.map((task) => {
+          {timelineTaskItems.map((task) => {
             const taskStart = parseISO(task.startDate);
             const taskEnd = parseISO(task.deadline);
             const taskStartIndex = days.findIndex((day) =>
@@ -110,17 +117,50 @@ const TableTimeline: FC<Type> = ({ currentProject, projectTasks }) => {
                             tooltip="Уменьшить на день"
                             tooltipOptions={{ position: 'top' }}
                           />
-                          <div className="flex align-items-center justify-content-center gap-2">
-                            <div className={styles.label}>
-                              <EllipsisText>{task.title}</EllipsisText>
+                          {taskLength !== 1 ? (
+                            <div className="flex align-items-center justify-content-center gap-2">
+                              <div className={styles.label}>
+                                <EllipsisText hardBreak>
+                                  {task.title}
+                                </EllipsisText>
+                              </div>
+
+                              <div
+                                className={styles.label}
+                                style={
+                                  priorityColorSchema[task.priority].content
+                                }
+                              >
+                                {task.priority}
+                              </div>
                             </div>
-                            <div
-                              className={styles.label}
-                              style={priorityColorSchema[task.priority].content}
-                            >
-                              {task.priority}
-                            </div>
-                          </div>
+                          ) : (
+                            <>
+                              <Tooltip
+                                target={`.custom-target-icon-${task.id}`}
+                                position="top"
+                              >
+                                <div className="flex flex-column gap-1">
+                                  <div className="flex align-items-center gap-1">
+                                    <div>Статус:</div>
+                                    <div>{task.status}</div>
+                                  </div>
+                                  <div className="flex align-items-center gap-1">
+                                    <div>Задача:</div>
+                                    <div>{task.title}</div>
+                                  </div>
+                                </div>
+                              </Tooltip>
+                              <div className={`custom-target-icon-${task.id}`}>
+                                <Button
+                                  outlined
+                                  disabled
+                                  severity="warning"
+                                  icon="pi pi-question"
+                                />
+                              </div>
+                            </>
+                          )}
                           <Button
                             outlined
                             icon="pi pi-angle-right"

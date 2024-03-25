@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from 'react';
 
 import { TTaskModalStore } from 'control/stores/modals/task/types';
+import { observer } from 'mobx-react-lite';
+import { TaskPriorityEnum, TaskStatusEnum } from 'model/api/tasks/types';
+import { classNames } from 'primereact/utils';
 import { Control, useForm } from 'react-hook-form';
 
 import { useStores } from '@control';
 import { Spin } from '@view/common';
-import { usePreventEnterSubmit } from '@view/utils';
-
-import styles from './styles.module.scss';
 import {
   CalendarController,
   DropdownController,
@@ -15,16 +15,12 @@ import {
   InputController,
   InputTextareaController,
 } from '@view/form';
-import { observer } from 'mobx-react-lite';
-import { TaskPriorityEnum, TaskStatusEnum } from 'model/api/tasks/types';
-import { toJS } from 'mobx';
-import { classNames } from 'primereact/utils';
+import { usePreventEnterSubmit } from '@view/utils';
+
+import styles from './styles.module.scss';
 
 const TaskForm = () => {
-  const {
-    taskModal,
-    user: { info },
-  } = useStores();
+  const { taskModal, projectFiltersWithUrl } = useStores();
   const {
     closeModal,
     changeFormData,
@@ -33,6 +29,7 @@ const TaskForm = () => {
     editingId,
     loading,
   } = taskModal;
+  const { project } = projectFiltersWithUrl;
 
   const {
     control,
@@ -52,8 +49,7 @@ const TaskForm = () => {
   const requiredRule = { required: 'Обаятельное поле' };
 
   const onSubmit = (data: TTaskModalStore) => {
-    // changeFormData(data);
-    console.log(data);
+    changeFormData(data);
   };
 
   const handleCloseEditMode = () => {
@@ -118,6 +114,9 @@ const TaskForm = () => {
           caption="Дата начала выполнения задачи"
           calendarProps={{
             placeholder: 'Выберите дату',
+            minDate: new Date(project?.startDate || ''),
+            viewDate: new Date(project?.startDate || ''),
+            maxDate: new Date(project?.deadline || ''),
           }}
           rules={requiredRule}
         />
@@ -129,6 +128,9 @@ const TaskForm = () => {
           caption="Дата завершения выполнения задачи"
           calendarProps={{
             placeholder: 'Выберите дату',
+            minDate: new Date(project?.startDate || ''),
+            viewDate: new Date(project?.startDate || ''),
+            maxDate: new Date(project?.deadline || ''),
           }}
           rules={requiredRule}
         />

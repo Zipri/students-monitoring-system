@@ -89,12 +89,28 @@ const TaskCommentsList = () => {
 
   if (!comments.length)
     return (
-      <div className={styles.commentsWrapper}>
-        <div className="h-full flex align-items-center justify-content-center">
-          <FormLabel
-            htmlFor="Комментариев пока нет"
-            caption="Комментариев пока нет"
-            bold
+      <div className="w-8 flex flex-column gap-2">
+        <div className={styles.commentsWrapper}>
+          <div className="h-full flex align-items-center justify-content-center">
+            <FormLabel
+              htmlFor="Комментариев пока нет"
+              caption="Комментариев пока нет"
+              bold
+            />
+          </div>
+        </div>
+        <div className="flex align-items-center gap-2">
+          <InputText
+            placeholder="Новый комментарий"
+            className="w-full"
+            value={newText}
+            onChange={(e) => setNewText(e.target.value)}
+            onKeyDown={handleKeyDownAddTask}
+          />
+          <Button
+            severity="success"
+            icon="pi pi-plus"
+            onClick={handleAddComment}
           />
         </div>
       </div>

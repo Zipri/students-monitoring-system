@@ -11,19 +11,21 @@ import { EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
 import { useStores } from '@control';
+import { toJS } from 'mobx';
 
 const colorSchema = tasksKanbanColorSchema;
 
-type Type = {
-  projectTasks: TTask[];
-};
-
-const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
-  const { projectFiltersWithUrl, taskModal } = useStores();
+const TimelineTasksPartStaticInfoPart = () => {
+  const { projectFiltersWithUrl, taskModal, timelineTasks } = useStores();
   const { userProjects, projectId } = projectFiltersWithUrl;
+  const { projectTasks, getProjectTasks } = timelineTasks;
 
   const isUserProject = userProjects.some(
     (project) => project.id === projectId
+  );
+
+  const timelineTaskItems = (toJS(projectTasks) || []).sort(
+    (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime()
   );
 
   const confirmDeleteItem = (id: TUid) => {
@@ -33,7 +35,10 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
       header: 'Подтверждение удаления записи',
       icon: 'pi pi-info-circle',
       acceptClassName: 'p-button-danger',
-      accept: () => console.log(id),
+      accept: async () => {
+        await taskModal.deleteTask(id);
+        getProjectTasks(projectId);
+      },
     });
   };
 
@@ -48,14 +53,14 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
         </tr>
       </thead>
       <tbody>
-        {projectTasks.map((task) => (
+        {timelineTaskItems.map((task) => (
           <tr key={task.id}>
             <td
               className={styles.td}
               style={colorSchema[task.status as TaskStatusEnum].content}
             >
               <div className={styles.staticContent}>
-                <EllipsisText>{task.title}</EllipsisText>
+                <EllipsisText hardBreak>{task.title}</EllipsisText>
                 <Button
                   text
                   severity="danger"
@@ -70,7 +75,13 @@ const TimelineTasksPartStaticInfoPart: FC<Type> = ({ projectTasks }) => {
                   tooltip="Открыть"
                   tooltipOptions={{ position: 'top' }}
                   icon="pi pi-external-link"
-                  onClick={() => taskModal.openEdit(task.id)}
+                  onClick={() =>
+                    taskModal.openEdit(
+                      () => getProjectTasks(projectId),
+                      task.id,
+                      projectId
+                    )
+                  }
                   disabled={!isUserProject}
                 />
               </div>

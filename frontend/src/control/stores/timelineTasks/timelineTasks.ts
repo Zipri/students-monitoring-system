@@ -37,7 +37,7 @@ class TimelineTasksStore {
       this.tasksLoading.start();
       const response = await this.tasksService.getListByProjectId(projectId);
       this.updateProjectTasks(response);
-      this.updateProject(currentProject);
+      currentProject && this.updateProject(currentProject);
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getProjectTasks');
     } finally {

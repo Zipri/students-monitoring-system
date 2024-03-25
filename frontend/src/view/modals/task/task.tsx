@@ -10,7 +10,8 @@ import TaskCommentsList from './taskCommentsList';
 
 const TaskModal = () => {
   const { taskModal } = useStores();
-  const { modalOpen, closeModal, isEditFormMode, loading } = taskModal;
+  const { modalOpen, closeModal, isEditFormMode, loading, editingId } =
+    taskModal;
 
   // TODO
   //   const [] = useUrlFormControl({
@@ -41,7 +42,7 @@ const TaskModal = () => {
     >
       <div className={styles.common}>
         {isEditFormMode.value ? <TaskForm /> : <TaskModalInfo />}
-        <TaskCommentsList />
+        {editingId?.length && <TaskCommentsList />}
       </div>
     </Modal>
   );

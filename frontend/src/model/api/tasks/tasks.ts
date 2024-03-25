@@ -58,7 +58,7 @@ class TasksApi {
     const response = await axios.delete<
       undefined,
       AxiosResponse<TDeleteTasksResponse>
-    >(`${LOCAL_URL}/update/${id}`);
+    >(`${LOCAL_URL}/delete/${id}`);
     return response.data;
   };
 

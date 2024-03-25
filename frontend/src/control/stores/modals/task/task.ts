@@ -1,10 +1,5 @@
 import { action, makeObservable, observable } from 'mobx';
-import {
-  TaskPriorityEnum,
-  TaskStatusEnum,
-  TTask,
-  TTaskAdd,
-} from 'model/api/tasks/types';
+import { TaskPriorityEnum, TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { CommentsService } from 'model/services/comments';
 import { TasksService } from 'model/services/tasks';
 
@@ -40,7 +35,10 @@ class TaskModalStore {
   @observable
   comments: TComment[] = [];
 
+  @observable
   editingId?: TUid;
+
+  updateCallback = () => {};
 
   constructor() {
     makeObservable(this);
@@ -150,31 +148,48 @@ class TaskModalStore {
   };
 
   changeFormData = async (newData: TTaskModalStore) => {
+    if (!this.initialFormData.projectId) {
+      this.manager.callToastError('Нет projectId');
+      return;
+    }
     try {
       this.loading.start();
 
       const response: TTaskModalStore = this.editingId
         ? await this.tasksService.changeFormRecord(this.editingId, newData)
-        : // @ts-expect-error поля обязательны к заполнению, так что ошибки не будет
-          await this.tasksService.addRecord(newData);
+        : await this.tasksService.addFormRecord(newData);
 
       this.updateInitialFormData(response);
+      this.updateEditingId(response.id);
+
       this.manager.callToastSuccess('Данные успешно изменены');
     } catch (error) {
-      this.manager.callBackendError(error, 'Ошибка метода getFormDataById');
+      this.manager.callBackendError(error, 'Ошибка метода changeFormData');
     } finally {
       this.loading.stop();
     }
   };
 
-  openCreate = async () => {
+  openCreate = async (updateCallback: () => void, projectId?: TUid) => {
+    this.updateCallback = updateCallback;
+
     this.modalOpen.enable();
     this.isEditFormMode.enable();
+
+    this.updateInitialFormData({ ...this.initialFormData, projectId });
   };
 
-  openEdit = async (editingId: TUid) => {
+  openEdit = async (
+    updateCallback: () => void,
+    editingId: TUid,
+    projectId?: TUid
+  ) => {
     try {
-      this.editingId = editingId;
+      this.updateCallback = updateCallback;
+
+      this.updateEditingId(editingId);
+      this.updateInitialFormData({ ...this.initialFormData, projectId });
+
       this.modalOpen.enable();
 
       await this.getFormDataById();
@@ -189,8 +204,26 @@ class TaskModalStore {
     this.loading.stop();
     this.isEditFormMode.disable();
 
+    this.updateEditingId(undefined);
     this.updateComments([]);
     this.resetInitialFormData();
+
+    this.updateCallback();
+    this.updateCallback = () => {};
+  };
+
+  deleteTask = async (id: TUid) => {
+    try {
+      await this.tasksService.deleteRecord(id);
+      this.manager.callToastSuccess('Запись успешно удалена');
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода openEdit');
+    }
+  };
+
+  @action
+  updateEditingId = (id?: TUid) => {
+    this.editingId = id;
   };
 
   @action

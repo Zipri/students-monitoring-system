@@ -25,7 +25,8 @@ const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
   title,
   tasks,
 }) => {
-  const { projectsKanbanModal, projectsKanban, taskModal } = useStores();
+  const { projectsKanbanModal, tasksKanban, taskModal, projectFiltersWithUrl } =
+    useStores();
 
   return (
     <Droppable droppableId={columnId}>
@@ -59,7 +60,15 @@ const TasksKanbanColumn: FC<TTasksKanbanColumn> = ({
                 style={{ width: '100%' }}
                 severity="success"
                 label="Добавить задачу"
-                onClick={() => taskModal.openCreate()}
+                onClick={() =>
+                  taskModal.openCreate(
+                    () =>
+                      tasksKanban.getProjectTasks(
+                        projectFiltersWithUrl.projectId
+                      ),
+                    projectFiltersWithUrl.projectId
+                  )
+                }
               />
             )}
           </div>
