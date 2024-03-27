@@ -108,13 +108,18 @@ def get_tasks_by_status(status):
 @app.route('/tasks/search', methods=['GET'])
 def search_tasks():
     query = {}
-    for key in ['projectId', 'title', 'description', 'status', 'priority', 'deadline']:
+    for key in ['title', 'description', 'status', 'priority', 'deadline']:
         if key in request.args:
             if key in ['title', 'description']:
                 query[key] = {"$regex": request.args[key], "$options": "i"}
             else:
                 query[key] = request.args[key]
-    
+
+    # Обработка projectId как массива идентификаторов
+    project_ids = request.args.getlist('projectId')  # Получаем список projectId из параметров запроса
+    if project_ids:
+        query['projectId'] = {"$in": project_ids}
+
     # Разбор параметра сортировки
     sort_params = request.args.get('sort', '')
     sort_list = []

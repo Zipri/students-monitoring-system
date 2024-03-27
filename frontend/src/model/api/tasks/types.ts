@@ -34,7 +34,7 @@ export type TTaskAdd = Omit<TTask, 'id'>;
 export type TTaskUpdate = Partial<TTaskAdd>;
 
 export type TTaskFilterParams = Partial<{
-  projectId: TUid;
+  projectId: TUid[];
   title: string;
   description: string;
   status: TaskStatusEnum;
