@@ -125,10 +125,10 @@ class TasksService {
 
         data: {
           ...data,
-          //@ts-expect-error не соответствие типов с UI
-          startDate: getBackendDate(data.startDate) || '',
-          //@ts-expect-error не соответствие типов с UI
-          deadline: getBackendDate(data.deadline) || '',
+
+          // startDate: getBackendDate(data.startDate) || '',
+
+          // deadline: getBackendDate(data.deadline) || '',
         },
       });
       return response;

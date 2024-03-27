@@ -39,15 +39,25 @@
           border-radius: $main-radius;
         }
 
-        height: 3rem;
+        height: 3.5rem;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
         gap: .5rem;
 
+        .topBtn {
+          border-radius: $main-radius $main-radius 0 0 ;
+        }
+
+        .bottomBtn {
+          border-radius: 0 0 $main-radius $main-radius;
+          border-top: 0;
+        }
+
         [class~='p-button'] {
           min-width: 36px;
+          height: 10px;
           
           [class~='pi'] {
             font-size: 1.3rem;

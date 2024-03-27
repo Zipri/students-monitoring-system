@@ -51,6 +51,51 @@ class TimelineTasksStore {
     this.updateProject(undefined);
   };
 
+  // TODO добавить обработку конца месяца
+  private incDate = (date: string) => {
+    const splited = date.split('-');
+    const stringDay = (+splited[2] + 1).toString();
+    const day = stringDay.length === 1 ? `0${stringDay}` : stringDay;
+    return `${splited[0]}-${splited[1]}-${day}`;
+  };
+
+  // TODO добавить обработку конца месяца
+  private decDate = (date: string) => {
+    const splited = date.split('-');
+    const stringDay = (+splited[2] - 1).toString();
+    const day = stringDay.length === 1 ? `0${stringDay}` : stringDay;
+    return `${splited[0]}-${splited[1]}-${day}`;
+  };
+
+  changeTaskDate = async (task: TTask, dateField: string, isInc: boolean) => {
+    try {
+      this.tasksLoading.start();
+
+      //@ts-expect-error
+      const taskField = task[dateField];
+
+      const newDate = isInc ? this.incDate(taskField) : this.decDate(taskField);
+
+      const updated = {
+        ...task,
+        [dateField]: newDate,
+      };
+
+      const response = await this.tasksService.changeRecord(task.id, updated);
+
+      const newTasks = this.projectTasks.map((i) => {
+        if (i.id !== task.id) return i;
+        return response;
+      });
+
+      this.updateProjectTasks(newTasks);
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода getProjectTasks');
+    } finally {
+      this.tasksLoading.stop();
+    }
+  };
+
   @action
   updateProject = (currentProject?: TProject) => {
     this.currentProject = currentProject;

@@ -1,28 +1,18 @@
-import { FC } from 'react';
-
 import { eachDayOfInterval, format, isSameDay, parseISO } from 'date-fns';
+import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
-import { TProject } from 'model/api/projects/types';
-import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
-import { Button } from 'primereact/button';
 import { classNames } from 'primereact/utils';
 
-import { tasksKanbanColorSchema, tasksPriorityColorSchema } from '@config';
-import { EllipsisText } from '@view/common';
+import { useStores } from '@control';
 import { useHorizontalScroll } from '@view/utils';
 
 import styles from './styles.module.scss';
-import { useStores } from '@control';
-import { toJS } from 'mobx';
-import { Tooltip } from 'primereact/tooltip';
-
-const statusColorSchema = tasksKanbanColorSchema;
-const priorityColorSchema = tasksPriorityColorSchema;
+import TableTimelineTableCell from './tableCell';
 
 const TableTimeline = () => {
   const { timelineTasks, projectFiltersWithUrl } = useStores();
 
-  const { projectTasks, currentProject } = timelineTasks;
+  const { projectTasks, currentProject, changeTaskDate } = timelineTasks;
   const { notUserProject } = projectFiltersWithUrl;
 
   const timelineTaskItems = (toJS(projectTasks) || []).sort(
@@ -98,93 +88,17 @@ const TableTimeline = () => {
 
             return (
               <tr key={task.id}>
-                {days.map((day, index) => {
-                  if (index === taskStartIndex) {
-                    return (
-                      <td
-                        key={index}
-                        colSpan={taskLength}
-                        className={classNames(styles.td, styles.filledTd)}
-                        style={
-                          statusColorSchema[task.status as TaskStatusEnum]
-                            .content
-                        }
-                      >
-                        <div className={styles.content}>
-                          <Button
-                            outlined
-                            icon="pi pi-angle-left"
-                            tooltip="Уменьшить на день"
-                            tooltipOptions={{ position: 'top' }}
-                          />
-                          {taskLength !== 1 ? (
-                            <div className="flex align-items-center justify-content-center gap-2">
-                              <div className={styles.label}>
-                                <EllipsisText hardBreak>
-                                  {task.title}
-                                </EllipsisText>
-                              </div>
-
-                              <div
-                                className={styles.label}
-                                style={
-                                  priorityColorSchema[task.priority].content
-                                }
-                              >
-                                {task.priority}
-                              </div>
-                            </div>
-                          ) : (
-                            <>
-                              <Tooltip
-                                target={`.custom-target-icon-${task.id}`}
-                                position="top"
-                              >
-                                <div className="flex flex-column gap-1">
-                                  <div className="flex align-items-center gap-1">
-                                    <div>Статус:</div>
-                                    <div>{task.status}</div>
-                                  </div>
-                                  <div className="flex align-items-center gap-1">
-                                    <div>Задача:</div>
-                                    <div>{task.title}</div>
-                                  </div>
-                                </div>
-                              </Tooltip>
-                              <div className={`custom-target-icon-${task.id}`}>
-                                <Button
-                                  outlined
-                                  disabled
-                                  severity="warning"
-                                  icon="pi pi-question"
-                                />
-                              </div>
-                            </>
-                          )}
-                          <Button
-                            outlined
-                            icon="pi pi-angle-right"
-                            tooltip="Увеличить на день"
-                            tooltipOptions={{ position: 'top' }}
-                          />
-                        </div>
-                      </td>
-                    );
-                  } else if (index > taskStartIndex && index <= taskEndIndex) {
-                    // Пропускаем ячейки внутри диапазона задачи
-                    return null;
-                  } else {
-                    // Пустые ячейки за пределами задачи
-                    return (
-                      <td
-                        key={index}
-                        className={classNames(styles.td, {
-                          [styles.todayTd]: isSameDay(day, today),
-                        })}
-                      ></td>
-                    );
-                  }
-                })}
+                {days.map((day, index) => (
+                  <TableTimelineTableCell
+                    key={`${day}-${index}`}
+                    day={day}
+                    index={index}
+                    taskStartIndex={taskStartIndex}
+                    taskEndIndex={taskEndIndex}
+                    taskLength={taskLength}
+                    task={task}
+                  />
+                ))}
               </tr>
             );
           })}
