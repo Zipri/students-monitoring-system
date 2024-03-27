@@ -75,7 +75,8 @@ def add_project():
     new_project = mongo.db.projects.find_one({'_id': new_project_id})
     return jsonify(project_to_json(new_project)), 201
 
-# Обновление данных проекта по идентификатору
+# Обновление данных проекта по идентификатору 
+# TODO при изменении даты в проекте - удалять таски, которые не помещаются
 @app.route('/projects/update/<id>', methods=['PUT'])
 def update_project(id):
     data = request.json

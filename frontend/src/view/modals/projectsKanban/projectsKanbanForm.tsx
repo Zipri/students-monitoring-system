@@ -1,9 +1,11 @@
 import { useEffect, useRef } from 'react';
 
+import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 import { observer } from 'mobx-react-lite';
-import { TProjectAdd } from 'model/api/projects/types';
 import { UsersRolesEnum } from 'model/api/users/types';
+import { Button } from 'primereact/button';
 import { Control, useForm } from 'react-hook-form';
+import FormLabel from 'view/common-form/formLabel/formLabel';
 
 import { useStores } from '@control';
 import { Spin } from '@view/common';
@@ -17,9 +19,6 @@ import {
 import { usePreventEnterSubmit } from '@view/utils';
 
 import styles from './styles.module.scss';
-import { Button } from 'primereact/button';
-import FormLabel from 'view/common-form/formLabel/formLabel';
-import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 
 const ProjectsKanbanForm = () => {
   const {
@@ -54,7 +53,6 @@ const ProjectsKanbanForm = () => {
   const requiredRule = { required: 'Обаятельное поле' };
 
   const onSubmit = (data: TProjectsKanbanModalStore) => {
-    //@ts-expect-error проверка проходит на уровне валидации UI
     changeFormData(data);
     // console.log(data);
   };
@@ -72,6 +70,8 @@ const ProjectsKanbanForm = () => {
   usePreventEnterSubmit(formRef);
   useEffect(() => {
     reset(initialFormData);
+    teachersAutocomplete.getOptions();
+    studentsAutocomplete.getOptions();
   }, [initialFormData]);
 
   return (
@@ -91,15 +91,26 @@ const ProjectsKanbanForm = () => {
           rules={requiredRule}
         />
         <CalendarController
+          name="startDate"
+          control={formControl}
+          errors={errors}
+          view="date"
+          caption="Дата начала выполнения"
+          calendarProps={{
+            placeholder: 'Выберите дату',
+          }}
+          rules={requiredRule}
+        />
+        <CalendarController
           name="deadline"
           control={formControl}
           errors={errors}
           view="date"
-          caption="Срок сдачи"
-          rules={requiredRule}
+          caption="Дата сдачи"
           calendarProps={{
             placeholder: 'Выберите дату',
           }}
+          rules={requiredRule}
         />
         <InputTextareaController
           name="description"

@@ -10,6 +10,7 @@ import { UsersRolesEnum } from 'model/api/users/types';
 import { ProjectsApi } from '@api';
 import { TUid } from '@api/types';
 import { adaptBackendDate, getBackendDate } from '@view/utils';
+import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 
 class ProjectsService {
   private baseApi!: ProjectsApi;
@@ -92,6 +93,7 @@ class ProjectsService {
         assignedTeacher: response.assignedTeacher.id,
         assignedStudents: response.assignedStudents?.map((i) => i.id),
         deadline: adaptBackendDate(response.deadline),
+        startDate: adaptBackendDate(response.startDate),
       };
     } catch (error) {
       throw error;
@@ -107,6 +109,37 @@ class ProjectsService {
         status: ProjectsStatusesEnum.planning,
       });
       return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  addFormRecord = async (data: TProjectsKanbanModalStore) => {
+    try {
+      const adaptedData = {
+        ...data,
+        title: data.title || '',
+        assignedTeacher: data.assignedTeacher || '',
+        startDate: getBackendDate(data.startDate) || '',
+        deadline: getBackendDate(data.deadline) || '',
+      };
+
+      await this.baseApi.postRecord(adaptedData);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  changeFormRecord = async (id: TUid, data: TProjectsKanbanModalStore) => {
+    try {
+      await this.baseApi.putRecord({
+        id,
+        data: {
+          ...data,
+          startDate: getBackendDate(data.startDate),
+          deadline: getBackendDate(data.deadline),
+        },
+      });
     } catch (error) {
       throw error;
     }

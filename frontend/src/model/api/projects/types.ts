@@ -37,7 +37,15 @@ export type TProject = {
   assignedTeacher: TAssignedTeacher;
 };
 
-export type TProjectAdd = Omit<TProject, 'id'>;
+export type TProjectAdd = {
+  title: string;
+  description?: string;
+  deadline: TDate;
+  startDate: TDate;
+  status: ProjectsStatusesEnum;
+  assignedStudents?: TUid[];
+  assignedTeacher: TUid;
+};
 
 export type TProjectUpdate = Partial<TProjectAdd>;
 

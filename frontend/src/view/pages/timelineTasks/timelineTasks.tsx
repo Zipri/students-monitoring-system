@@ -9,7 +9,7 @@ import { TimelineTasksPart } from './timeline';
 
 const TimelineTasks = () => {
   const {
-    timelineTasks: { reset, getProjectTasks },
+    timelineTasks: { projectTasks, reset, getProjectTasks },
   } = useStores();
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const TimelineTasks = () => {
   return (
     <div className="w-full h-full flex gap-2">
       <ProjectFiltersWithUrl updateDataCallback={getProjectTasks} />
-      <TimelineTasksPart />
+      {!!projectTasks.length && <TimelineTasksPart />}
     </div>
   );
 };

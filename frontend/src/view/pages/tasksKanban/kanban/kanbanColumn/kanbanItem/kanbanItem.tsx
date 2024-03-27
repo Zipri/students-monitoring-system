@@ -72,7 +72,9 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
               </>
             )}
             <CustomDivider title="Описание" />
-            <EllipsisText maxLines={3}>{task.description}</EllipsisText>
+            <EllipsisText hardBreak maxLines={3}>
+              {task.description}
+            </EllipsisText>
             {isUserProject && (
               <>
                 <CustomDivider />

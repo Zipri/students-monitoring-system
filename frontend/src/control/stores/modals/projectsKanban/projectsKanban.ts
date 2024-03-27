@@ -1,5 +1,9 @@
 import { action, makeObservable, observable } from 'mobx';
-import { TProject, TProjectAdd } from 'model/api/projects/types';
+import {
+  ProjectsStatusesEnum,
+  TProject,
+  TProjectAdd,
+} from 'model/api/projects/types';
 import { ProjectsService } from 'model/services/projects';
 import { UsersService } from 'model/services/users';
 
@@ -12,10 +16,11 @@ import { TProjectsKanbanModalStore } from './types';
 const emptyFormData: TProjectsKanbanModalStore = {
   title: undefined,
   description: undefined,
-  deadline: undefined,
-  status: undefined,
+  status: ProjectsStatusesEnum.planning,
   assignedStudents: undefined,
   assignedTeacher: undefined,
+  startDate: undefined,
+  deadline: undefined,
 };
 
 class ProjectsKanbanModalStore {
@@ -72,18 +77,20 @@ class ProjectsKanbanModalStore {
     }
   };
 
-  changeFormData = async (newData: TProjectAdd) => {
+  changeFormData = async (newData: TProjectsKanbanModalStore) => {
     try {
       this.loading.start();
 
-      const response: TProject = this.editingId
-        ? await this.projectsService.changeRecord(this.editingId, newData)
-        : await this.projectsService.addRecord(newData);
+      if (this.editingId) {
+        await this.projectsService.changeFormRecord(this.editingId, newData);
+      } else {
+        await this.projectsService.addFormRecord(newData);
+      }
 
       this.manager.callToastSuccess('Данные успешно изменены');
       this.closeModal();
     } catch (error) {
-      this.manager.callBackendError(error, 'Ошибка метода getFormDataById');
+      this.manager.callBackendError(error, 'Ошибка метода changeFormData');
     } finally {
       this.loading.stop();
     }
