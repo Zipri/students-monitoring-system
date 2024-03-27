@@ -21,6 +21,7 @@
     "primeflex": "^3.3.1",
     "primeicons": "^6.0.1",
     "primereact": "^10.5.1",
+    "qs": "^6.12.0",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
@@ -30,6 +31,7 @@
     "unplugin-turbo-console": "^1.4.0"
   },
   "devDependencies": {
+    "@types/qs": "^6.9.14",
     "@types/react": "^18.2.56",
     "@types/react-dom": "^18.2.19",
     "@typescript-eslint/eslint-plugin": "^7.0.2",

@@ -11,6 +11,7 @@ import { TUser, UsersRolesEnum } from 'model/api/users/types';
 import { ProjectsService } from 'model/services/projects';
 import { TasksService } from 'model/services/tasks';
 import { TTaskSortService } from 'model/services/tasks/types';
+import Qs from 'qs';
 
 class TasksStatisticStore {
   private tasksService!: TasksService;
@@ -76,9 +77,11 @@ class TasksStatisticStore {
     }
     try {
       this.loading.start();
-
       const response = await this.tasksService.searchList(
-        { ...this.filters, projectId: this.projectsIds },
+        {
+          ...this.filters,
+          projectId: this.projectsIds,
+        },
         this.sorters
       );
 

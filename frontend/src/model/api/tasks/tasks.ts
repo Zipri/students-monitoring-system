@@ -19,6 +19,7 @@ import {
   TSearchListTasksResponse,
   TTask,
 } from './types';
+import Qs from 'qs';
 
 const LOCAL_URL = `${BACKEND_URL}/tasks`;
 
@@ -63,10 +64,18 @@ class TasksApi {
   };
 
   searchList = async (params: TSearchListTasksParams) => {
+    const idsQuery = Qs.stringify(
+      { projectsId: params.projectId },
+      {
+        arrayFormat: 'repeat',
+      }
+    );
+    delete params.projectId;
+
     const response = await axios.get<
       TSearchListTasksRequest,
       AxiosResponse<TSearchListTasksResponse>
-    >(`${LOCAL_URL}/search`, { params });
+    >(`${LOCAL_URL}/search/?${idsQuery}`, { params });
     return response.data;
   };
 
