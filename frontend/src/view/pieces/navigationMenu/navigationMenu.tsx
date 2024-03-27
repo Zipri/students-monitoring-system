@@ -79,6 +79,28 @@ const NavigationMenu = () => {
           link="tasks-timeline"
           icon="pi pi-sliders-h"
         />
+        <div className={styles.divider} />
+        <LinkButton
+          isOpened={isOpened}
+          tooltipLabel="Статистика выполнения проектов в группе"
+          title="Статистика проектов"
+          link="projects-group-statistic"
+          icon="pi pi-chart-bar"
+        />
+        <LinkButton
+          isOpened={isOpened}
+          tooltipLabel="Статистика по всем задачам"
+          title="Статистика задач"
+          link="tasks-statistic"
+          icon="pi pi-align-left"
+        />
+        <div className={styles.divider} />
+        <LinkButton
+          isOpened={isOpened}
+          title="Расписание"
+          link="schedule"
+          icon="pi pi-book"
+        />
       </div>
     </nav>
   );

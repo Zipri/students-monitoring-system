@@ -3,17 +3,33 @@ import {
   TaskStatusEnum,
   TTask,
   TTaskFilterParams,
+  TTaskSortParams,
   TTaskUpdate,
 } from 'model/api/tasks/types';
 
 import { TasksApi } from '@api';
 import { TUid } from '@api/types';
 import { getBackendDate } from '@view/utils';
+import { TTaskSortOrderEnum, TTaskSortService } from './types';
 
 const adaptDates = (response: TTask) => ({
   startDate: new Date(response.startDate),
   deadline: new Date(response.deadline),
 });
+
+const sortServiceToString = (
+  sortServices?: TTaskSortService
+): string | undefined => {
+  if (!sortServices) return undefined;
+  return sortServices
+    .map((sortService) => {
+      const sortBy = sortService.sort_by ?? 'unknown'; // Значение по умолчанию или обработка неопределенного sort_by
+      const sortOrder =
+        sortService.sort_order === TTaskSortOrderEnum.asc ? 'asc' : 'desc';
+      return `${sortBy}:${sortOrder}`;
+    })
+    .join(', ');
+};
 
 class TasksService {
   private baseApi!: TasksApi;
@@ -61,9 +77,15 @@ class TasksService {
     }
   };
 
-  filterList = async (params: TTaskFilterParams) => {
+  searchList = async (
+    filters?: TTaskFilterParams,
+    sorts?: TTaskSortService
+  ) => {
     try {
-      const response = await this.baseApi.filterList(params);
+      const response = await this.baseApi.searchList({
+        ...filters,
+        sort: sortServiceToString(sorts),
+      });
       return response;
     } catch (error) {
       throw error;

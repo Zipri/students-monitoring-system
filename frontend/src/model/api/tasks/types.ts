@@ -42,6 +42,11 @@ export type TTaskFilterParams = Partial<{
   deadline: TDate;
 }>;
 
+export type TTaskSortParams = {
+  /** TTaskSortByEnum:TTaskSortOrderEnum, ... */
+  sort?: string;
+};
+
 // Get list: Для получения списка задач
 export type TGetListTasksResponse = TTask[];
 
@@ -64,7 +69,7 @@ export type TGetListTasksByProjectResponse = TTask[];
 // Get list by status: Для получения задач по статусу
 export type TGetListTasksByStatusResponse = TTask[];
 
-// Filter list: Для фильтрации задач
-export type TFilterListTasksParams = TTaskFilterParams;
-export type TFilterListTasksRequest = TTaskFilterParams;
-export type TFilterListTasksResponse = TTask[];
+// Search list: Для фильтрации задач
+export type TSearchListTasksParams = TTaskFilterParams & TTaskSortParams;
+export type TSearchListTasksRequest = TTaskFilterParams & TTaskSortParams;
+export type TSearchListTasksResponse = TTask[];

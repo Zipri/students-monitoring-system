@@ -12,9 +12,16 @@ type TLinkButton = {
   title: string;
   link: string;
   icon: string;
+  tooltipLabel?: string;
 };
 
-const LinkButton: FC<TLinkButton> = ({ isOpened, title, link, icon }) => {
+const LinkButton: FC<TLinkButton> = ({
+  isOpened,
+  title,
+  link,
+  icon,
+  tooltipLabel,
+}) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -33,7 +40,7 @@ const LinkButton: FC<TLinkButton> = ({ isOpened, title, link, icon }) => {
     <Button
       onClick={() => linkClicked(link)}
       label={isOpened ? title : undefined}
-      tooltip={isOpened ? undefined : title}
+      tooltip={isOpened ? undefined : tooltipLabel ? tooltipLabel : title}
       tooltipOptions={{ showDelay: 50 }}
       text
       className={classNames(styles.navmenuButton, {

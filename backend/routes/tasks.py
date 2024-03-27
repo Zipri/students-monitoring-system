@@ -104,9 +104,9 @@ def get_tasks_by_status(status):
     result = [task_to_json(task) for task in tasks]
     return jsonify(result)
 
-## эндпоинт, который позволяет фильтровать задачи (tasks) по всем предоставленным параметрам
-@app.route('/tasks/filter', methods=['GET'])
-def filter_tasks():
+## эндпоинт, который позволяет фильтровать и сортировать задачи (tasks) по всем предоставленным параметрам
+@app.route('/tasks/search', methods=['GET'])
+def search_tasks():
     query = {}
     for key in ['projectId', 'title', 'description', 'status', 'priority', 'deadline']:
         if key in request.args:
@@ -114,42 +114,16 @@ def filter_tasks():
                 query[key] = {"$regex": request.args[key], "$options": "i"}
             else:
                 query[key] = request.args[key]
+    
+    # Разбор параметра сортировки
+    sort_params = request.args.get('sort', '')
+    sort_list = []
+    if sort_params:
+        for sort_param in sort_params.split(','):
+            field, order = sort_param.split(':')
+            sort_list.append((field, int(order)))
 
-    tasks = mongo.db.tasks.find(query)
+    tasks = mongo.db.tasks.find(query).sort(sort_list) if sort_list else mongo.db.tasks.find(query)
+    
     result = [task_to_json(task) for task in tasks]
     return jsonify(result)
-
-# @app.route('/tasks/filter', methods=['GET'])
-# def filter_tasks():
-#     query = {}
-
-     # Фильтры для запроса
-#     if 'id' in request.args:
-#         query['_id'] = ObjectId(request.args['id'])
-#     if 'projectId' in request.args:
-#         query['projectId'] = request.args['projectId']
-#     if 'title' in request.args:
-#         query['title'] = {"$regex": request.args['title'], "$options": "i"}  # Поиск по подстроке, регистронезависимый
-#     if 'description' in request.args:
-#         query['description'] = {"$regex": request.args['description'], "$options": "i"}  # Поиск по подстроке, регистронезависимый
-#     if 'status' in request.args:
-#         query['status'] = request.args['status']
-#     if 'priority' in request.args:
-#         query['priority'] = request.args['priority']
-#     if 'deadline' in request.args:
-         # Предполагается, что дедлайн передаётся в формате YYYY-MM-DD # TODO на самом деле нет - проверить
-         # Необходимо преобразовать строку в объект даты, если в вашей базе даты хранятся в соответствующем формате
-#         query['deadline'] = request.args['deadline']
-
-#     tasks = mongo.db.tasks.find(query)
-#     result = [{
-#         'id': str(task['_id']),
-#         'projectId': str(task['projectId']),
-#         'title': task['title'],
-#         'description': task['description'],
-#         'status': task['status'],
-#         'priority': task['priority'],
-#         'deadline': task['deadline']
-#     } for task in tasks]
-
-#     return jsonify(result)

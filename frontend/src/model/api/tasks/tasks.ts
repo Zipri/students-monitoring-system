@@ -5,9 +5,6 @@ import { BACKEND_URL } from '@config/app';
 
 import {
   TDeleteTasksResponse,
-  TFilterListTasksParams,
-  TFilterListTasksRequest,
-  TFilterListTasksResponse,
   TGetListTasksByProjectResponse,
   TGetListTasksByStatusResponse,
   TGetListTasksResponse,
@@ -17,6 +14,9 @@ import {
   TPutTasksParams,
   TPutTasksRequest,
   TPutTasksResponse,
+  TSearchListTasksParams,
+  TSearchListTasksRequest,
+  TSearchListTasksResponse,
   TTask,
 } from './types';
 
@@ -62,11 +62,11 @@ class TasksApi {
     return response.data;
   };
 
-  filterList = async (params: TFilterListTasksParams) => {
+  searchList = async (params: TSearchListTasksParams) => {
     const response = await axios.get<
-      TFilterListTasksRequest,
-      AxiosResponse<TFilterListTasksResponse>
-    >(`${LOCAL_URL}/filter`, { params });
+      TSearchListTasksRequest,
+      AxiosResponse<TSearchListTasksResponse>
+    >(`${LOCAL_URL}/search`, { params });
     return response.data;
   };
 
