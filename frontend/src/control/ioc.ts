@@ -12,6 +12,7 @@ import { TasksKanbanStore } from './stores/tasksKanban';
 import { UniSettingsStore } from './stores/uniSettings';
 import { ProjectFiltersWithUrlStore } from './stores/projectFiltersWithUrl';
 import { TimelineTasksStore } from './stores/timelineTasks';
+import { TasksStatisticStore } from './stores/tasksStatistic';
 
 const { services } = LogicRoot;
 
@@ -41,6 +42,8 @@ class RootStore {
   public timelineTasks = new TimelineTasksStore();
   /** страница вузовских настроек */
   public uniSettings = new UniSettingsStore();
+  /** страница статистика по задачам */
+  public tasksStatistic = new TasksStatisticStore();
 
   /** Модалка для редактирования страницы projectsKanban */
   public projectsKanbanModal = new ProjectsKanbanModalStore();
@@ -68,6 +71,7 @@ class RootStore {
       services.projects,
       manager
     );
+    this.tasksStatistic.init(services.tasks, services.projects, manager);
 
     // Модалки
     this.projectsKanbanModal.init(services.projects, services.users, manager);

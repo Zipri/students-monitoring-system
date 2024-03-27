@@ -59,6 +59,7 @@ class TasksStatisticStore {
       );
 
       this.updateProjectsIds(response.map((project) => project.id));
+      await this.searchTasks();
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getProjectsIds');
     } finally {
