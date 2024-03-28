@@ -1,9 +1,7 @@
 import TasksStatisticTableProjectTemplate from './project';
-import TasksStatisticTableSkippedTemplate from './skipped';
-import TasksStatisticTableWastedTemplate from './wasted';
+import TasksStatisticTableChipItemWithArray from './chipItemWithArray';
 
 export {
   TasksStatisticTableProjectTemplate,
-  TasksStatisticTableSkippedTemplate,
-  TasksStatisticTableWastedTemplate,
+  TasksStatisticTableChipItemWithArray,
 };

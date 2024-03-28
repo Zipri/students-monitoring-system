@@ -1,34 +1,29 @@
-import { TUid } from '@api/types';
-import { ChipList, CustomDivider, EllipsisText } from '@view/common';
+import { FC, useRef } from 'react';
+
 import { observer } from 'mobx-react-lite';
 import { TProject } from 'model/api/projects/types';
-import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { TTask } from 'model/api/tasks/types';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { FC, useRef } from 'react';
+import { v4 } from 'uuid';
 import { ChipItem } from 'view/common/chipList/chipItem';
-import styles from './styles.module.scss';
+
+import { TUid } from '@api/types';
 import { useStores } from '@control';
+import { CustomDivider, EllipsisText } from '@view/common';
+import styles from './styles.module.scss';
 
 type Type = {
-  tasks: TTask[];
+  adaptedTasks: TTask[];
+  emptyLabel: string;
+  countLabel: string;
 };
 
-const countOverdueTasks = (tasks: TTask[]) => {
-  const currentDate = new Date();
-  const overdueTasks: TTask[] = [];
-
-  tasks.forEach((task) => {
-    const deadlineDate = new Date(task.deadline);
-    if (task.status !== TaskStatusEnum.done && currentDate > deadlineDate) {
-      overdueTasks.push(task);
-    }
-  });
-
-  return overdueTasks;
-};
-
-const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
+const TasksStatisticTableChipItemWithArray: FC<Type> = ({
+  adaptedTasks,
+  emptyLabel,
+  countLabel,
+}) => {
   const overlayRef = useRef<OverlayPanel>(null);
   const { tasksStatistic, taskModal } = useStores();
 
@@ -40,14 +35,12 @@ const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
     window.open(`/tasks-kanban?projectId=${id}`, '_blank');
   };
 
-  const overdueTasks = countOverdueTasks(tasks);
-
-  if (!overdueTasks.length) return <>Просроченных задач нет</>;
+  if (!adaptedTasks.length) return <>{emptyLabel}</>;
 
   return (
     <div>
-      <OverlayPanel ref={overlayRef}>
-        {overdueTasks.map((task, index) => {
+      <OverlayPanel ref={overlayRef} pt={{ root: { className: styles.op } }}>
+        {adaptedTasks.map((task, index) => {
           return (
             <div key={index} className="w-20rem flex flex-column gap-2">
               <div className="flex align-items-center gap-1">
@@ -74,14 +67,14 @@ const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
                   <div className="ml-2">Задача</div>
                 </Button>
               </div>
-              {overdueTasks.length - 1 !== index && <CustomDivider />}
+              {adaptedTasks.length - 1 !== index && <CustomDivider />}
             </div>
           );
         })}
       </OverlayPanel>
       <ChipItem
-        id={tasks[0].id}
-        template={`Просроченных задач: ${overdueTasks.length}`}
+        id={v4()}
+        template={`${countLabel}: ${adaptedTasks.length}`}
         style={{ cursor: 'pointer' }}
         onClick={(e) => overlayRef.current?.toggle(e)}
       />
@@ -89,4 +82,4 @@ const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
   );
 };
 
-export default observer(TasksStatisticTableWastedTemplate);
+export default observer(TasksStatisticTableChipItemWithArray);

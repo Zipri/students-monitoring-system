@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 
 import { toJS } from 'mobx';
 import { observer } from 'mobx-react-lite';
+import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
 import { TaskPriorityEnum, TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
@@ -16,30 +17,57 @@ import { ChipList, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
 import {
+  TasksStatisticTableChipItemWithArray,
   TasksStatisticTableProjectTemplate,
-  TasksStatisticTableSkippedTemplate,
-  TasksStatisticTableWastedTemplate,
 } from './templates';
 
-const countTasksByStatus = (tasks: TTask[]) => {
-  return Object.values(TaskStatusEnum).map((status) => {
-    const count = tasks.filter((task) => task.status === status).length;
-    return {
-      id: status,
-      name: `${status}: ${count}`,
-    };
-  });
+//#region функции для инфо-таблицы
+const tasksByStatus = (tasks: TTask[], status: TaskStatusEnum) => {
+  return tasks.filter((task) => task.status === status) || [];
 };
 
-const countTasksByPriority = (tasks: TTask[]) => {
-  return Object.values(TaskPriorityEnum).map((priority) => {
-    const count = tasks.filter((task) => task.priority === priority).length;
-    return {
-      id: priority,
-      name: `${priority}: ${count}`,
-    };
-  });
+const tasksByPriority = (tasks: TTask[], priority: TaskPriorityEnum) => {
+  return tasks.filter((task) => task.priority === priority) || [];
 };
+
+const countSkippedTasks = (
+  tasks: TTask[],
+  projects?: Record<TUid, TProject>
+) => {
+  const currentDate = new Date();
+  const skippedTasks: TTask[] = [];
+
+  tasks.forEach((task) => {
+    const startDate = new Date(task.startDate);
+    const deadline = new Date(task.deadline);
+
+    if (
+      task.status === TaskStatusEnum.new &&
+      currentDate > startDate &&
+      currentDate < deadline &&
+      projects?.[task.projectId].status !== ProjectsStatusesEnum.postponed
+    ) {
+      skippedTasks.push(task);
+    }
+  });
+
+  return skippedTasks;
+};
+
+const countOverdueTasks = (tasks: TTask[]) => {
+  const currentDate = new Date();
+  const overdueTasks: TTask[] = [];
+
+  tasks.forEach((task) => {
+    const deadlineDate = new Date(task.deadline);
+    if (task.status !== TaskStatusEnum.done && currentDate > deadlineDate) {
+      overdueTasks.push(task);
+    }
+  });
+
+  return overdueTasks;
+};
+//#endregion
 
 const TasksStatisticTable = () => {
   const { tasksStatistic, taskModal } = useStores();
@@ -53,6 +81,7 @@ const TasksStatisticTable = () => {
     window.open(`/tasks-timeline?projectId=${id}`, '_blank');
   };
 
+  //#region инфо таблица
   const helpTableColumns = useMemo(() => {
     return [
       {
@@ -69,28 +98,48 @@ const TasksStatisticTable = () => {
       {
         header: 'Статистика по статусам',
         body: () => {
-          const newTasks = countTasksByStatus(tasks);
           return (
-            <ChipList
-              key={`TasksStatisticTable-countTasksByStatus-${tasks.length}`}
-              id={tasks.length.toString()}
-              maxListChips={4}
-              chipItems={newTasks}
-            />
+            <div className="flex align-items-center gap-2">
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByStatus(tasks, TaskStatusEnum.new)}
+                emptyLabel={`${TaskStatusEnum.new} 0`}
+                countLabel={TaskStatusEnum.new}
+              />
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByStatus(tasks, TaskStatusEnum.working)}
+                emptyLabel={`${TaskStatusEnum.working} 0`}
+                countLabel={TaskStatusEnum.working}
+              />
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByStatus(tasks, TaskStatusEnum.done)}
+                emptyLabel={`${TaskStatusEnum.done} 0`}
+                countLabel={TaskStatusEnum.done}
+              />
+            </div>
           );
         },
       },
       {
         header: 'Статистика по приоритетам',
         body: () => {
-          const newTasks = countTasksByPriority(tasks);
           return (
-            <ChipList
-              key={`TasksStatisticTable-countTasksByPriority-${tasks.length}`}
-              id={tasks.length.toString()}
-              maxListChips={4}
-              chipItems={newTasks}
-            />
+            <div className="flex align-items-center gap-2">
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByPriority(tasks, TaskPriorityEnum.low)}
+                emptyLabel={`${TaskPriorityEnum.low} 0`}
+                countLabel={TaskPriorityEnum.low}
+              />
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByPriority(tasks, TaskPriorityEnum.medium)}
+                emptyLabel={`${TaskPriorityEnum.medium} 0`}
+                countLabel={TaskPriorityEnum.medium}
+              />
+              <TasksStatisticTableChipItemWithArray
+                adaptedTasks={tasksByPriority(tasks, TaskPriorityEnum.high)}
+                emptyLabel={`${TaskPriorityEnum.high} 0`}
+                countLabel={TaskPriorityEnum.high}
+              />
+            </div>
           );
         },
       },
@@ -108,7 +157,13 @@ const TasksStatisticTable = () => {
           </div>
         ),
         body: () => {
-          return <TasksStatisticTableWastedTemplate tasks={tasks} />;
+          return (
+            <TasksStatisticTableChipItemWithArray
+              adaptedTasks={countOverdueTasks(tasks)}
+              emptyLabel="Просроченных задач нет"
+              countLabel="Просроченных задач"
+            />
+          );
         },
       },
       {
@@ -125,16 +180,19 @@ const TasksStatisticTable = () => {
         ),
         body: () => {
           return (
-            <TasksStatisticTableSkippedTemplate
-              tasks={tasks}
-              projects={projects}
+            <TasksStatisticTableChipItemWithArray
+              adaptedTasks={countSkippedTasks(tasks)}
+              emptyLabel="Пропущенных задач нет"
+              countLabel="Пропущенных задач"
             />
           );
         },
       },
     ];
   }, [tasks]);
+  //#endregion
 
+  //#region Основная таблица
   const tableColumns = useMemo(() => {
     return [
       {
@@ -210,6 +268,7 @@ const TasksStatisticTable = () => {
       },
     ];
   }, [tasks]);
+  //#endregion
 
   return (
     <div className={styles.commonWrapper}>

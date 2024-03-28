@@ -1,0 +1,8 @@
+@import '../../../../theme/mixins';
+@import '../../../../theme/variables';
+
+.op {
+    @include custom-scrollbars;
+
+    max-height: 50rem;
+}
