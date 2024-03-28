@@ -1,0 +1,28 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.commonWrapper {
+    @include common-wrapper;
+
+    display: flex;
+    flex-direction: column;
+
+    .table {
+        [class~='p-datatable-wrapper'] {
+            @include custom-scrollbars;
+        }
+    
+        [class~='p-component-overlay'] {
+            background-color: $transparent-overlay-color !important;
+        }
+    }
+
+    .tableWrapper {
+        // height: calc(100vh - $topbar-height - 92px);
+        height: 60vh;
+
+        th {
+            border-top: 0;
+        }
+    }
+}

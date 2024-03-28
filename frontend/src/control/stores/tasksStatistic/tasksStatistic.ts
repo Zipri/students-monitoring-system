@@ -2,6 +2,7 @@ import { TUid } from '@api/types';
 import { Loading } from '@stores/common';
 import { StoreManager } from '@stores/manager';
 import { action, makeObservable, observable } from 'mobx';
+import { TProject } from 'model/api/projects/types';
 import {
   TTask,
   TTaskFilterParams,
@@ -29,6 +30,9 @@ class TasksStatisticStore {
 
   @observable
   projectsIds: TUid[] = [];
+
+  @observable
+  projects?: Record<TUid, TProject>;
 
   userInfo!: TUser;
 
@@ -59,7 +63,17 @@ class TasksStatisticStore {
         this.userInfo.role
       );
 
-      this.updateProjectsIds(response.map((project) => project.id));
+      const ids: TUid[] = [];
+      const projects: Record<TUid, TProject> = {};
+
+      response.forEach((project) => {
+        ids.push(project.id);
+        projects[project.id] = project;
+      });
+
+      this.updateProjectsIds(ids);
+      this.updateProjects(projects);
+
       await this.searchTasks();
     } catch (error) {
       this.manager.callBackendError(error, 'Ошибка метода getProjectsIds');
@@ -120,6 +134,11 @@ class TasksStatisticStore {
   @action
   updateProjectsIds = (data: TUid[]) => {
     this.projectsIds = data;
+  };
+
+  @action
+  updateProjects = (data: Record<TUid, TProject>) => {
+    this.projects = data;
   };
 }
 
