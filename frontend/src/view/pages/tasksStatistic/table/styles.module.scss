@@ -18,8 +18,7 @@
     }
 
     .tableWrapper {
-        // height: calc(100vh - $topbar-height - 92px);
-        height: 60vh;
+        height: calc(100vh - $topbar-height - 190px);
 
         th {
             border-top: 0;

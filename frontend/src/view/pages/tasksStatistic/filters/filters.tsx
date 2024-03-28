@@ -2,67 +2,65 @@ import { useEffect, useRef } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import {
-  ProjectsStatusesEnum,
-  TProjectSearchParams,
-} from 'model/api/projects/types';
-import { UsersRolesEnum } from 'model/api/users/types';
-import { Button } from 'primereact/button';
+  TTaskFilterParams,
+  TaskPriorityEnum,
+  TaskStatusEnum,
+} from 'model/api/tasks/types';
 import { Control, useForm } from 'react-hook-form';
 
 import { useStores } from '@control';
+import { useHorizontalScroll } from '@view/utils';
+
+import styles from './styles.module.scss';
 import {
   CalendarController,
   DropdownController,
   InputController,
 } from '@view/form';
+import { toJS } from 'mobx';
+import { Button } from 'primereact/button';
 
-import styles from './styles.module.scss';
-import { useHorizontalScroll } from '@view/utils';
-
-const options = Object.values(ProjectsStatusesEnum); // FIXME SKV вынести в конфиг
-
-const ProjectsFilters = () => {
-  const { projects } = useStores();
-  const {
-    teachers,
-    initialFormData,
-    loadingDropdown,
-    filterListData,
-    resetFilters,
-    getTeachers,
-  } = projects;
+const TasksStatisticFilters = () => {
+  const { tasksStatistic } = useStores();
+  const { loading, filters, updateFilters, searchTasks } = tasksStatistic;
 
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<TProjectSearchParams>({
+  } = useForm<TTaskFilterParams>({
     mode: 'onSubmit',
-    defaultValues: initialFormData,
+    defaultValues: filters,
   });
 
   const formRef = useRef<HTMLFormElement>(null);
   const formControl = control as unknown as Control<Record<string, any>>;
 
-  const onSubmit = (data: TProjectSearchParams) => {
-    filterListData(data);
+  const onSubmit = (data: TTaskFilterParams) => {
+    updateFilters(data);
+    searchTasks();
+  };
+
+  const resetFilters = () => {
+    updateFilters({});
+    searchTasks();
   };
 
   useEffect(() => {
-    reset(initialFormData);
-  }, [initialFormData]);
+    reset(filters);
+  }, [filters]);
 
-  useHorizontalScroll('table-projects-form-filters-wrapper');
+  useHorizontalScroll('TasksStatisticFilters-filters-wrapper');
 
   return (
     <div
-      id="table-projects-form-filters-wrapper"
+      id="TasksStatisticFilters-filters-wrapper"
       className={styles.formWrapper}
     >
       <form
         ref={formRef}
-        id="table-projects-form-filters"
+        id="table-TasksStatisticFilters-form-filters"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="flex align-items-center gap-2">
@@ -70,17 +68,35 @@ const ProjectsFilters = () => {
             name="title"
             control={formControl}
             errors={errors}
-            placeholder={'Название проекта'}
+            placeholder={'Название задачи'}
             inputProps={{ style: { width: '15rem' } }}
           />
           <DropdownController
             name="status"
             control={formControl}
-            options={options}
+            options={Object.values(TaskStatusEnum)}
             errors={errors}
             dropdownProps={{
               placeholder: 'Выберите статус',
-              style: { width: '15rem' },
+            }}
+          />
+          <DropdownController
+            name="priority"
+            control={formControl}
+            options={Object.values(TaskPriorityEnum)}
+            errors={errors}
+            dropdownProps={{
+              placeholder: 'Выберите приоритет',
+            }}
+          />
+          <CalendarController
+            name="startDate"
+            control={formControl}
+            errors={errors}
+            view="date"
+            calendarProps={{
+              placeholder: 'Выберите дату начала',
+              style: { width: '19rem' },
             }}
           />
           <CalendarController
@@ -89,23 +105,8 @@ const ProjectsFilters = () => {
             errors={errors}
             view="date"
             calendarProps={{
-              placeholder: 'Выберите дату',
-              style: { width: '15rem' },
-            }}
-          />
-          <DropdownController
-            name="assignedTeacher"
-            control={formControl}
-            options={teachers}
-            errors={errors}
-            dropdownProps={{
-              placeholder: UsersRolesEnum.teacher,
-              style: { width: '15rem' },
-              loading: loadingDropdown.value,
-              onShow: getTeachers,
-              filter: true,
-              optionLabel: 'username',
-              optionValue: 'id',
+              placeholder: 'Выберите дату завершения',
+              style: { width: '19rem' },
             }}
           />
           <div className="flex gap-2 align-items-center">
@@ -124,7 +125,7 @@ const ProjectsFilters = () => {
               icon="pi pi-search"
               tooltip="Для поиска можно также нажать Enter"
               tooltipOptions={{ position: 'top' }}
-              form={'table-projects-form-filters'}
+              form={'table-TasksStatisticFilters-form-filters'}
             />
           </div>
         </div>
@@ -133,4 +134,4 @@ const ProjectsFilters = () => {
   );
 };
 
-export default observer(ProjectsFilters);
+export default observer(TasksStatisticFilters);

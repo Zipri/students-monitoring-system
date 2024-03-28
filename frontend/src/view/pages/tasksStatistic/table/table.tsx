@@ -18,8 +18,10 @@ import { ChipList, EllipsisText } from '@view/common';
 import styles from './styles.module.scss';
 import {
   TasksStatisticTableChipItemWithArray,
+  TasksStatisticTableHeaderTemplate,
   TasksStatisticTableProjectTemplate,
 } from './templates';
+import { TTaskSortByEnum } from 'model/services/tasks/types';
 
 //#region функции для инфо-таблицы
 const tasksByStatus = (tasks: TTask[], status: TaskStatusEnum) => {
@@ -196,35 +198,60 @@ const TasksStatisticTable = () => {
   const tableColumns = useMemo(() => {
     return [
       {
-        header: 'Название',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Название"
+            field={TTaskSortByEnum.title}
+          />
+        ),
         style: { width: '25rem' },
         body: (record: TTask) => {
           return <EllipsisText>{record.title}</EllipsisText>;
         },
       },
       {
-        header: 'Статус',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Статус"
+            field={TTaskSortByEnum.status}
+          />
+        ),
         style: { width: '20rem' },
         body: (record: TTask) => {
           return <EllipsisText>{record.status}</EllipsisText>;
         },
       },
       {
-        header: 'Приоритет',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Приоритет"
+            field={TTaskSortByEnum.priority}
+          />
+        ),
         style: { width: '20rem' },
         body: (record: TTask) => {
           return <EllipsisText>{record.priority}</EllipsisText>;
         },
       },
       {
-        header: 'Начало выполнения',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Начало выполнения"
+            field={TTaskSortByEnum.startDate}
+          />
+        ),
         style: { width: '13rem' },
         body: (record: TTask) => {
           return <EllipsisText>{record.startDate}</EllipsisText>;
         },
       },
       {
-        header: 'Срок сдачи',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Срок сдачи"
+            field={TTaskSortByEnum.deadline}
+          />
+        ),
         style: { width: '13rem' },
         body: (record: TTask) => {
           return <EllipsisText>{record.deadline}</EllipsisText>;

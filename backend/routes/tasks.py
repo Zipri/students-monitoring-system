@@ -122,7 +122,7 @@ def search_tasks():
                 query[key] = request.args[key]
 
     # Разбор параметра сортировки
-    sort_params = request.args.get('sort', '')
+    sort_params = request.args.get('sort')
     sort_list = []
     if sort_params:
         for sort_param in sort_params.split(','):

@@ -25,10 +25,10 @@ const sortServiceToString = (
     .map((sortService) => {
       const sortBy = sortService.sort_by ?? 'unknown'; // Значение по умолчанию или обработка неопределенного sort_by
       const sortOrder =
-        sortService.sort_order === TTaskSortOrderEnum.asc ? 'asc' : 'desc';
+        sortService.sort_order === TTaskSortOrderEnum.asc ? '1' : '-1';
       return `${sortBy}:${sortOrder}`;
     })
-    .join(', ');
+    .join(',');
 };
 
 class TasksService {
