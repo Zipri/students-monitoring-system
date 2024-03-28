@@ -1,23 +1,25 @@
-import { observer } from 'mobx-react-lite';
-
-import { useStores } from '@control';
 import { useMemo } from 'react';
-import { TTask, TaskPriorityEnum, TaskStatusEnum } from 'model/api/tasks/types';
-import { ChipList, CustomDivider, EllipsisText } from '@view/common';
-import { Button } from 'primereact/button';
-import styles from './styles.module.scss';
-import { DataTable } from 'primereact/datatable';
+
 import { toJS } from 'mobx';
-import { ProgressSpinner } from 'primereact/progressspinner';
+import { observer } from 'mobx-react-lite';
+import { TaskPriorityEnum, TaskStatusEnum, TTask } from 'model/api/tasks/types';
+import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
+import { DataTable } from 'primereact/datatable';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import { Tooltip } from 'primereact/tooltip';
 import { ChipItem } from 'view/common/chipList/chipItem';
+
+import { TUid } from '@api/types';
+import { useStores } from '@control';
+import { ChipList, EllipsisText } from '@view/common';
+
+import styles from './styles.module.scss';
 import {
   TasksStatisticTableProjectTemplate,
   TasksStatisticTableSkippedTemplate,
   TasksStatisticTableWastedTemplate,
 } from './templates';
-import { Tooltip } from 'primereact/tooltip';
-import { TUid } from '@api/types';
 
 const countTasksByStatus = (tasks: TTask[]) => {
   return Object.values(TaskStatusEnum).map((status) => {
@@ -40,11 +42,11 @@ const countTasksByPriority = (tasks: TTask[]) => {
 };
 
 const TasksStatisticTable = () => {
-  const { tasksStatistic } = useStores();
-  const { tasks, loading, projects } = tasksStatistic;
+  const { tasksStatistic, taskModal } = useStores();
+  const { tasks, loading, projects, searchTasks } = tasksStatistic;
 
-  const handleOpenProject = (id: TUid) => {
-    window.open(`/tasks-kanban?projectId=${id}`, '_blank');
+  const handleOpenProject = (taskId: TUid, projectId: TUid) => {
+    taskModal.openEdit(searchTasks, taskId, projectId);
   };
 
   const handleOpenTimeline = (id: TUid) => {
@@ -190,17 +192,17 @@ const TasksStatisticTable = () => {
             <div className="flex w-min align-items-center gap-2">
               <Button
                 outlined
-                tooltip="Открыть таймлайн"
+                tooltip="Открыть таймлайн проекта"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-sliders-h"
                 onClick={() => handleOpenTimeline(record.projectId)}
               />
               <Button
                 outlined
-                tooltip="Открыть"
+                tooltip="Открыть задачу"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-external-link"
-                onClick={() => handleOpenProject(record.projectId)}
+                onClick={() => handleOpenProject(record.id, record.projectId)}
               />
             </div>
           );

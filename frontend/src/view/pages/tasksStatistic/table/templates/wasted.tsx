@@ -8,6 +8,7 @@ import { OverlayPanel } from 'primereact/overlaypanel';
 import { FC, useRef } from 'react';
 import { ChipItem } from 'view/common/chipList/chipItem';
 import styles from './styles.module.scss';
+import { useStores } from '@control';
 
 type Type = {
   tasks: TTask[];
@@ -29,6 +30,15 @@ const countOverdueTasks = (tasks: TTask[]) => {
 
 const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
   const overlayRef = useRef<OverlayPanel>(null);
+  const { tasksStatistic, taskModal } = useStores();
+
+  const handleOpenTaskModal = (taskId: TUid, projectId: TUid) => {
+    taskModal.openEdit(tasksStatistic.searchTasks, taskId, projectId);
+  };
+
+  const handleOpenKanban = (id: TUid) => {
+    window.open(`/tasks-kanban?projectId=${id}`, '_blank');
+  };
 
   const overdueTasks = countOverdueTasks(tasks);
 
@@ -49,10 +59,18 @@ const TasksStatisticTableWastedTemplate: FC<Type> = ({ tasks }) => {
                 <EllipsisText hardBreak>{task.description}</EllipsisText>
               </div>
               <div className="flex align-items-center gap-1 justify-content-end">
-                <Button text icon="pi pi-external-link">
+                <Button
+                  text
+                  icon="pi pi-external-link"
+                  onClick={() => handleOpenKanban(task.projectId)}
+                >
                   <div className="ml-2">Проект</div>
                 </Button>
-                <Button text icon="pi pi-external-link">
+                <Button
+                  text
+                  icon="pi pi-external-link"
+                  onClick={() => handleOpenTaskModal(task.id, task.projectId)}
+                >
                   <div className="ml-2">Задача</div>
                 </Button>
               </div>

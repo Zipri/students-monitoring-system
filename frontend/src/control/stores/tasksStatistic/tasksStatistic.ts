@@ -1,18 +1,14 @@
-import { TUid } from '@api/types';
-import { Loading } from '@stores/common';
-import { StoreManager } from '@stores/manager';
 import { action, makeObservable, observable } from 'mobx';
 import { TProject } from 'model/api/projects/types';
-import {
-  TTask,
-  TTaskFilterParams,
-  TTaskSortParams,
-} from 'model/api/tasks/types';
-import { TUser, UsersRolesEnum } from 'model/api/users/types';
+import { TTask, TTaskFilterParams } from 'model/api/tasks/types';
+import { TUser } from 'model/api/users/types';
 import { ProjectsService } from 'model/services/projects';
 import { TasksService } from 'model/services/tasks';
 import { TTaskSortService } from 'model/services/tasks/types';
-import Qs from 'qs';
+
+import { TUid } from '@api/types';
+import { Loading } from '@stores/common';
+import { StoreManager } from '@stores/manager';
 
 class TasksStatisticStore {
   private tasksService!: TasksService;

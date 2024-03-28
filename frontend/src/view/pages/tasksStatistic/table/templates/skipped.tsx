@@ -1,12 +1,15 @@
-import { TUid } from '@api/types';
-import { ChipList, CustomDivider, EllipsisText } from '@view/common';
+import { FC, useRef } from 'react';
+
 import { observer } from 'mobx-react-lite';
 import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
-import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
+import { TaskStatusEnum, TTask } from 'model/api/tasks/types';
 import { Button } from 'primereact/button';
 import { OverlayPanel } from 'primereact/overlaypanel';
-import { FC, useRef } from 'react';
 import { ChipItem } from 'view/common/chipList/chipItem';
+
+import { TUid } from '@api/types';
+import { CustomDivider, EllipsisText } from '@view/common';
+import { useStores } from '@control';
 
 type Type = {
   tasks: TTask[];
@@ -39,6 +42,15 @@ const countSkippedTasks = (
 
 const TasksStatisticTableSkippedTemplate: FC<Type> = ({ tasks, projects }) => {
   const overlayRef = useRef<OverlayPanel>(null);
+  const { tasksStatistic, taskModal } = useStores();
+
+  const handleOpenTaskModal = (taskId: TUid, projectId: TUid) => {
+    taskModal.openEdit(tasksStatistic.searchTasks, taskId, projectId);
+  };
+
+  const handleOpenKanban = (id: TUid) => {
+    window.open(`/tasks-kanban?projectId=${id}`, '_blank');
+  };
 
   const skippedTasks = countSkippedTasks(tasks, projects);
 
@@ -59,10 +71,18 @@ const TasksStatisticTableSkippedTemplate: FC<Type> = ({ tasks, projects }) => {
                 <EllipsisText hardBreak>{task.description}</EllipsisText>
               </div>
               <div className="flex align-items-center gap-1 justify-content-end">
-                <Button text icon="pi pi-external-link">
+                <Button
+                  text
+                  icon="pi pi-external-link"
+                  onClick={() => handleOpenKanban(task.projectId)}
+                >
                   <div className="ml-2">Проект</div>
                 </Button>
-                <Button text icon="pi pi-external-link">
+                <Button
+                  text
+                  icon="pi pi-external-link"
+                  onClick={() => handleOpenTaskModal(task.id, task.projectId)}
+                >
                   <div className="ml-2">Задача</div>
                 </Button>
               </div>
