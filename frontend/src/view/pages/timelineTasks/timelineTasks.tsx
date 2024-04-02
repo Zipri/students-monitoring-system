@@ -10,9 +10,11 @@ import { TimelineTasksPart } from './timeline';
 const TimelineTasks = () => {
   const {
     timelineTasks: { projectTasks, reset, getProjectTasks },
+    projectsStatistic,
   } = useStores();
 
   useEffect(() => {
+    projectsStatistic.getProjectsByGroup();
     return () => reset();
   }, []);
 
