@@ -39,10 +39,22 @@ def get_user_info(user_id):
         }
     return None
 
+def task_to_json(task):
+    return {
+        'id': str(task['_id']),
+        'projectId': str(task['projectId']),
+        'title': task['title'],
+        'description': task.get('description', 'No description provided'),
+        'status': task['status'],
+        'priority': task['priority'],
+        'deadline': task.get('deadline', 'No deadline provided'),
+        'startDate': task.get('startDate', 'No start date provided')
+    }
+
 def project_to_json(project):
     assignedTeacher_info = get_user_info(project.get('assignedTeacher'))
     assignedStudents_info = [get_user_info(student_id) for student_id in project.get('assignedStudents', [])]
-    return {
+    project_data = {
         'id': str(project['_id']),
         'title': project['title'],
         'description': project.get('description', 'No description provided'),
@@ -52,6 +64,12 @@ def project_to_json(project):
         'assignedStudents': assignedStudents_info,
         'assignedTeacher': assignedTeacher_info
     }
+    
+    # Проверяем, есть ли у проекта задачи, и если да, то добавляем их
+    if 'tasks' in project:
+        project_data['tasks'] = [task_to_json(task) for task in project['tasks']]
+    
+    return project_data
 
 
 ##region CRUD
@@ -148,15 +166,34 @@ def get_projects_by_student(student_id):
     return jsonify(result)
 
 ## Эндпоинт, который возвращает список проектов, назначенных студентам конкретной группы
-@app.route('/projects/group/<group_name>', methods=['GET'])
-def get_projects_by_group(group_name):
-    # Находим всех студентов в указанной группе
-    students = mongo.db.users.find({"group": group_name})
-    student_ids = [student['_id'] for student in students]
-    # Ищем проекты, назначенные найденным студентам
-    projects = mongo.db.projects.find({"assignedStudents": {"$in": student_ids}})
-    result = [project_to_json(project) for project in projects]
-    return jsonify(result)
+@app.route('/projects/group/<group_id>', methods=['GET'])
+def get_projects_by_group(group_id):
+    # Получаем группу по ID
+    group = mongo.groups.find_one({'_id': ObjectId(group_id)})
+    if not group:
+        return jsonify({'error': 'Group not found'}), 404
+
+    # Получаем список ID студентов из группы
+    student_ids = group['students']
+
+    # Получаем проекты, в которых участвуют эти студенты (без дубликатов)
+    projects = mongo.projects.find({'assignedStudents': {'$in': student_ids}})
+    unique_project_ids = {str(project['_id']) for project in projects}
+
+    # Собираем задачи для каждого проекта
+    projects_with_tasks = []
+    for project_id in unique_project_ids:
+        project = mongo.projects.find_one({'_id': ObjectId(project_id)})
+        tasks = list(mongo.tasks.find({'projectId': project_id}))
+
+        # Добавляем информацию о задачах в объект проекта
+        project['tasks'] = tasks
+        projects_with_tasks.append(project)
+
+    # Конвертируем проекты и задачи в JSON-сериализуемый формат
+    projects_with_tasks_json = [project_to_json(project) for project in projects_with_tasks]
+    
+    return jsonify(projects_with_tasks_json)
 
 ## Фильтр по всем полям
 @app.route('/projects/filter', methods=['GET'])
