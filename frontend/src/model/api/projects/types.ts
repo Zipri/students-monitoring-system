@@ -5,6 +5,7 @@ import {
   TResponseResult,
   TUid,
 } from '@api/types';
+import { TTask } from '../tasks/types';
 
 export enum ProjectsStatusesEnum {
   planning = 'В планировании',
@@ -35,6 +36,10 @@ export type TProject = {
   status: ProjectsStatusesEnum;
   assignedStudents?: TAssignedStudent[];
   assignedTeacher: TAssignedTeacher;
+};
+
+export type TProjectExtended = TProject & {
+  tasks: TTask[];
 };
 
 export type TProjectAdd = {
@@ -99,5 +104,5 @@ export type TGetListByTeacherProjectsResponse = TProject[];
 // Get list by assignedStudents
 export type TGetListByStudentsProjectsResponse = TProject[];
 
-// Get list by group_name
-export type TGetListByGroupProjectsResponse = TProject[];
+// Get list by group_id
+export type TGetListByGroupProjectsResponse = TProjectExtended[];

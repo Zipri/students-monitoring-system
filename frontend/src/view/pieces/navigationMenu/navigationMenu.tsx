@@ -84,7 +84,7 @@ const NavigationMenu = () => {
           isOpened={isOpened}
           tooltipLabel="Статистика выполнения проектов в группе"
           title="Статистика проектов"
-          link="projects-group-statistic"
+          link="projects-statistic"
           icon="pi pi-chart-bar"
         />
         <LinkButton

@@ -1,0 +1,46 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.wrapper {
+    @include common-wrapper;
+    padding: .5rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.acItem { 
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .label {
+        @include common-wrapper;
+        padding: .5rem 1rem;
+        border-radius: $main-radius $main-radius 0 0;
+    }
+
+    .progress { 
+        border-radius: 0 0 $main-radius $main-radius;
+        border: 1px solid $grey-border-color;
+        border-top: 0;
+    }
+
+    .progressContainer { 
+        background-color: lighten($main-color, 15);
+    }
+
+    .progressTemplate {
+        height: 18px;
+        width: 100%;
+
+        border-radius: 0 0 $main-radius $main-radius;
+        border: 1px solid $grey-border-color;
+        border-top: 0;
+
+        background: #e5e7eb;
+        text-align: center;
+    }
+}

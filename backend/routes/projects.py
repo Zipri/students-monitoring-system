@@ -169,22 +169,22 @@ def get_projects_by_student(student_id):
 @app.route('/projects/group/<group_id>', methods=['GET'])
 def get_projects_by_group(group_id):
     # Получаем группу по ID
-    group = mongo.groups.find_one({'_id': ObjectId(group_id)})
+    group = mongo.db.groups.find_one({'_id': ObjectId(group_id)})
     if not group:
         return jsonify({'error': 'Group not found'}), 404
 
     # Получаем список ID студентов из группы
-    student_ids = group['students']
+    student_ids = [student['id'] for student in group['students']]
 
     # Получаем проекты, в которых участвуют эти студенты (без дубликатов)
-    projects = mongo.projects.find({'assignedStudents': {'$in': student_ids}})
+    projects = mongo.db.projects.find({'assignedStudents': {'$in': student_ids}})
     unique_project_ids = {str(project['_id']) for project in projects}
 
     # Собираем задачи для каждого проекта
     projects_with_tasks = []
     for project_id in unique_project_ids:
-        project = mongo.projects.find_one({'_id': ObjectId(project_id)})
-        tasks = list(mongo.tasks.find({'projectId': project_id}))
+        project = mongo.db.projects.find_one({'_id': ObjectId(project_id)})
+        tasks = list(mongo.db.tasks.find({'projectId': project_id}))
 
         # Добавляем информацию о задачах в объект проекта
         project['tasks'] = tasks

@@ -79,6 +79,7 @@ class RootStore {
       services.tasks,
       services.projects,
       services.users,
+      services.groups,
       manager
     );
 

@@ -6,6 +6,7 @@ import { CustomToast } from '@view/common';
 import {
   Projects,
   ProjectsKanban,
+  ProjectsStatistic,
   TasksKanban,
   TasksStatistic,
   TimelineTasks,
@@ -38,6 +39,7 @@ const MainLayout = () => {
             <Route path="/projects-kanban" element={<ProjectsKanban />} />
             <Route path="/tasks-kanban" element={<TasksKanban />} />
             <Route path="/tasks-timeline" element={<TimelineTasks />} />
+            <Route path="/projects-statistic" element={<ProjectsStatistic />} />
             <Route path="/tasks-statistic" element={<TasksStatistic />} />
             <Route
               path="*"

@@ -1,3 +1,4 @@
+import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 import {
   ProjectsStatusesEnum,
   TFilterListProjectsParams,
@@ -10,7 +11,6 @@ import { UsersRolesEnum } from 'model/api/users/types';
 import { ProjectsApi } from '@api';
 import { TUid } from '@api/types';
 import { adaptBackendDate, getBackendDate } from '@view/utils';
-import { TProjectsKanbanModalStore } from 'control/stores/modals/projectsKanban/types';
 
 class ProjectsService {
   private baseApi!: ProjectsApi;
@@ -37,9 +37,9 @@ class ProjectsService {
     }
   };
 
-  getProjectsBuGroup = async (group: string) => {
+  getProjectsByGroup = async (groupId: TUid) => {
     try {
-      const response = await this.baseApi.searchListByGroupId(group);
+      const response = await this.baseApi.searchListByGroupId(groupId);
       return response;
     } catch (error) {
       throw error;

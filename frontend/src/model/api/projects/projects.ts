@@ -99,7 +99,7 @@ class ProjectsApi {
     return response.data;
   };
 
-  searchListByGroupId = async (group: string) => {
+  searchListByGroupId = async (group: TUid) => {
     const response = await axios.get<
       undefined,
       AxiosResponse<TGetListByGroupProjectsResponse>
