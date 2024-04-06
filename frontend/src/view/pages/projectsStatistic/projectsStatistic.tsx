@@ -1,32 +1,24 @@
-import { useStores } from '@control';
-import { observer } from 'mobx-react-lite';
-import { Accordion, AccordionTab } from 'primereact/accordion';
-import { Dropdown } from 'primereact/dropdown';
 import React, { useEffect, useState } from 'react';
-import { v4 } from 'uuid';
-import styles from './styles.module.scss';
-import { Button } from 'primereact/button';
-import { FormLabel } from '@view/form';
+
+import { observer } from 'mobx-react-lite';
 import { TGroup } from 'model/api/groups/types';
-import { TTask, TaskStatusEnum } from 'model/api/tasks/types';
-import { ProgressBar } from 'primereact/progressbar';
-import { ChipItem } from 'view/common/chipList/chipItem';
+import { Accordion, AccordionTab } from 'primereact/accordion';
+import { Button } from 'primereact/button';
+import { Dropdown } from 'primereact/dropdown';
+import { v4 } from 'uuid';
+
+import { projectsKanbanColorSchema } from '@config';
+import { useStores } from '@control';
+import { FormLabel } from '@view/form';
+
+import { ProjectsStatusesEnum } from '../../../model/api/projects/types';
+import { ProjectsStatisticItem } from './item';
+import styles from './styles.module.scss';
+
+const colorSchema = projectsKanbanColorSchema;
 
 const getNumbersArray = (length: number) => {
   return Array.from(Array(length).keys());
-};
-
-const getDoneTasksPercent = (tasks: TTask[]) => {
-  return Math.floor(Math.random() * 100);
-  if (!tasks.length) {
-    return 0;
-  }
-
-  const doneTasks = tasks.filter((task) => task.status === TaskStatusEnum.done);
-  if (!doneTasks.length) {
-    return 0;
-  }
-  return Math.round((doneTasks.length / tasks.length) * 100);
 };
 
 const ProjectsStatistic = () => {
@@ -78,6 +70,27 @@ const ProjectsStatistic = () => {
               caption="Управление проектами группы"
               bold
             />
+            <div className="flex flex-column">
+              <div className="flex">
+                <div className={styles.item}>Название проекта</div>
+                <div
+                  className={styles.item}
+                  style={{
+                    ...colorSchema[ProjectsStatusesEnum.processing].content,
+                    borderLeft: '0',
+                  }}
+                >
+                  Статус
+                </div>
+                <div className={styles.item}>Время выполнения</div>
+                <div className={styles.item}>Ответственный</div>
+                <div className={styles.item}>Студенты</div>
+                <div className={styles.item}>Задачи</div>
+              </div>
+              <div className={styles.progressTemplate}>
+                Прогресс выполнения задачи
+              </div>
+            </div>
             <div className="flex aign-items-center gap-2">
               <Button
                 label="Открыть все"
@@ -103,34 +116,12 @@ const ProjectsStatistic = () => {
                 key={v4()}
                 pt={{ content: { className: 'flex flex-column gap-2 p-2' } }}
               >
-                {statisticProjects.map((statisticProject) => {
-                  const percent = getDoneTasksPercent(statisticProject.tasks);
-                  const studentsIds = statisticProject.assignedStudents?.map(
-                    (i) => i.id
-                  );
-                  if (!studentsIds?.includes(student.id)) return;
-                  return (
-                    <div key={v4()} className={styles.acItem}>
-                      <div className={styles.label}>
-                        <ChipItem label={statisticProject.title} />
-                      </div>
-                      {!!percent && (
-                        <ProgressBar
-                          pt={{
-                            root: { className: styles.progress },
-                            value: { className: styles.progressContainer },
-                          }}
-                          value={getDoneTasksPercent(statisticProject.tasks)}
-                        />
-                      )}
-                      {!percent && (
-                        <div className={styles.progressTemplate}>
-                          В проекте нет завершенных задач
-                        </div>
-                      )}
-                    </div>
-                  );
-                })}
+                {statisticProjects.map((statisticProject) => (
+                  <ProjectsStatisticItem
+                    statisticProject={statisticProject}
+                    student={student}
+                  />
+                ))}
               </AccordionTab>
             ))}
           </Accordion>

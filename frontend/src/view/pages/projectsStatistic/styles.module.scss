@@ -9,6 +9,33 @@
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+
+    .item {
+        @include common-wrapper;
+
+        padding: .5rem 1rem;
+        text-align: center;
+        border-radius: 0;
+        border-left: 0;
+
+        &:first-child {
+            border-radius: $main-radius 0 0 0;
+            border-left: 1px solid $grey-border-color;
+        }
+
+        &:last-child {
+            border-radius: 0 $main-radius 0 0;
+        }
+    }
+
+    .progressTemplate {
+        height: 18px;
+        width: 100%;
+        color: $main-color;
+        background-color: $grey-border-color;
+        border-radius: 0 0 $main-radius $main-radius;
+        text-align: center;
+    }
 }
 
 .acItem { 
@@ -17,30 +44,58 @@
     width: 100%;
 
     .label {
+        @include custom-scrollbars;
         @include common-wrapper;
+        --scrollbar-size: 0px;
         padding: .5rem 1rem;
+
         border-radius: $main-radius $main-radius 0 0;
+        border: 1px solid $grey-border-color;
+        border-bottom: 0;
+
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        .item {
+            @include common-wrapper;
+            padding: .5rem;
+            text-align: center;
+            width: 15rem;
+            min-width: 15rem;
+        }
+
+        .chip {
+            min-width: 5rem;
+        }
+
+        .chips {
+            display: flex;
+            flex-wrap: nowrap !important;
+        }
     }
 
     .progress { 
         border-radius: 0 0 $main-radius $main-radius;
-        border: 1px solid $grey-border-color;
-        border-top: 0;
+        background-color: $grey-border-color;
     }
 
     .progressContainer { 
-        background-color: lighten($main-color, 15);
+        background-color: white;
+        border: 1px solid $main-color;
+        border-radius: 0 0 $main-radius $main-radius;
+
+        [class~='p-progressbar-label'] {
+            color: $main-color;
+        }
     }
 
     .progressTemplate {
         height: 18px;
         width: 100%;
-
+        color: $main-color;
+        background-color: $grey-border-color;
         border-radius: 0 0 $main-radius $main-radius;
-        border: 1px solid $grey-border-color;
-        border-top: 0;
-
-        background: #e5e7eb;
         text-align: center;
     }
 }

@@ -34,6 +34,7 @@ interface IChipList extends PropsWithChildren {
   fullWidthChipTooltip?: boolean;
   chipSize?: 's' | 'ms' | 'm' | 'l';
   className?: string;
+  chipClassName?: string;
   classNameIcon?: string;
 }
 
@@ -50,6 +51,7 @@ const ChipList: FC<IChipList> = ({
   fullWidthChipTooltip = true,
   chipSize = 'm',
   className,
+  chipClassName,
   classNameIcon,
   ...restProps
 }) => {
@@ -131,13 +133,13 @@ const ChipList: FC<IChipList> = ({
                 title={chipContent.name}
                 chipSize={chipSize}
                 fullWidth={fullWidthChipItem}
-                // className="cursor-pointer"
+                // className={chipClassName}
                 // onClick={() => handleItemClick(chipContent.name)}
                 template={
                   <>
                     <EllipsisText
                       maxLines={maxItemLines}
-                      className={styles.ellipsisText}
+                      className={classNames(chipClassName, styles.ellipsisText)}
                     >
                       {chipContent.name}
                     </EllipsisText>
