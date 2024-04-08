@@ -17,6 +17,7 @@
         text-align: center;
         border-radius: 0;
         border-left: 0;
+        border-bottom: 0 !important;
 
         &:first-child {
             border-radius: $main-radius 0 0 0;
@@ -32,8 +33,9 @@
         height: 18px;
         width: 100%;
         color: $main-color;
-        background-color: $grey-border-color;
+        background-color: white;
         border-radius: 0 0 $main-radius $main-radius;
+        border: 1px solid $main-color;
         text-align: center;
     }
 }
@@ -46,7 +48,6 @@
     .label {
         @include custom-scrollbars;
         @include common-wrapper;
-        --scrollbar-size: 0px;
         padding: .5rem 1rem;
 
         border-radius: $main-radius $main-radius 0 0;

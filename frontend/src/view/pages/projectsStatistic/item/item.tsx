@@ -11,11 +11,14 @@ import { projectsKanbanColorSchema } from '@config';
 import { ChipList, EllipsisText } from '@view/common';
 
 import styles from '../styles.module.scss';
+import { FormLabel } from '@view/form';
+import { TUid } from '@api/types';
+import { Button } from 'primereact/button';
 
 const colorSchema = projectsKanbanColorSchema;
 
 const getDoneTasksPercent = (tasks: TTask[]) => {
-  return Math.floor(Math.random() * 100);
+  // return Math.floor(Math.random() * 100);
   if (!tasks.length) {
     return 0;
   }
@@ -39,6 +42,14 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
   const percent = getDoneTasksPercent(statisticProject.tasks);
   const studentsIds = statisticProject.assignedStudents?.map((i) => i.id);
 
+  const handleOpenProject = (id: TUid) => {
+    window.open(`/tasks-kanban?projectId=${id}`, '_blank');
+  };
+
+  const handleOpenTimeline = (id: TUid) => {
+    window.open(`/tasks-timeline?projectId=${id}`, '_blank');
+  };
+
   //   useHorizontalScroll(`project-statistic-part-item-${statisticProject.id}`);
 
   if (!studentsIds?.includes(student.id)) return;
@@ -53,7 +64,14 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
           className={styles.item}
           // onClick={(e) => overlayRef.current?.toggle(e)}
         >
-          <EllipsisText hardBreak>{statisticProject.title}</EllipsisText>
+          <FormLabel
+            htmlFor="statisticProject.title"
+            caption=""
+            template={
+              <EllipsisText hardBreak>{statisticProject.title}</EllipsisText>
+            }
+            bold
+          />
         </div>
 
         <div
@@ -103,6 +121,25 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
           className={styles.chips}
           chipClassName={styles.chip}
         />
+
+        <div className="flex w-min align-items-center gap-2">
+          <Button
+            outlined
+            tooltip="Открыть таймлайн"
+            tooltipOptions={{ position: 'top' }}
+            icon="pi pi-sliders-h"
+            onClick={() => handleOpenTimeline(statisticProject.id)}
+            style={{ height: '29px', width: '29px' }}
+          />
+          <Button
+            outlined
+            tooltip="Открыть"
+            tooltipOptions={{ position: 'top' }}
+            icon="pi pi-external-link"
+            onClick={() => handleOpenProject(statisticProject.id)}
+            style={{ height: '29px', width: '29px' }}
+          />
+        </div>
       </div>
 
       {!!percent && (
@@ -116,7 +153,7 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
       )}
 
       {!percent && (
-        <div className={styles.progressTemplate}>
+        <div className={styles.progressTemplate} style={{ fontWeight: 'bold' }}>
           В проекте нет завершенных задач
         </div>
       )}

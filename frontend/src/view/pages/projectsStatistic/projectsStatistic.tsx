@@ -72,7 +72,13 @@ const ProjectsStatistic = () => {
             />
             <div className="flex flex-column">
               <div className="flex">
-                <div className={styles.item}>Название проекта</div>
+                <div className={styles.item}>
+                  <FormLabel
+                    htmlFor="statisticProject.title"
+                    caption="Название проекта"
+                    bold
+                  />
+                </div>
                 <div
                   className={styles.item}
                   style={{
@@ -112,7 +118,7 @@ const ProjectsStatistic = () => {
           >
             {students.map((student) => (
               <AccordionTab
-                header={student.name}
+                header={`${student.name} ${student.email}`}
                 key={v4()}
                 pt={{ content: { className: 'flex flex-column gap-2 p-2' } }}
               >

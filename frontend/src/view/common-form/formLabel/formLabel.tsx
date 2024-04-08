@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, ReactNode, memo } from 'react';
 
 import { classNames } from 'primereact/utils';
 
@@ -10,6 +10,7 @@ type TFormLabel = React.DetailedHTMLProps<
 > & {
   htmlFor: string;
   caption: string;
+  template?: ReactNode;
   required?: boolean;
   bold?: boolean;
   noWrap?: boolean;
@@ -19,6 +20,7 @@ type TFormLabel = React.DetailedHTMLProps<
 const FormLabel: FC<TFormLabel> = ({
   htmlFor,
   caption,
+  template,
   required,
   bold = false,
   noWrap = false,
@@ -38,7 +40,7 @@ const FormLabel: FC<TFormLabel> = ({
       )}
       htmlFor={htmlFor}
     >
-      {caption}
+      {template ? template : caption}
       {required && <span className={styles.star}>*</span>}
     </label>
   );

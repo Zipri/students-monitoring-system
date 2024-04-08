@@ -127,7 +127,7 @@ const ProjectsTable = () => {
   return (
     <div className={styles.tableWrapper}>
       <DataTable
-        key={`table-projects`}
+        key="table-projects"
         dataKey="id"
         value={projectsList.length ? toJS(projectsList) : undefined}
         style={{
