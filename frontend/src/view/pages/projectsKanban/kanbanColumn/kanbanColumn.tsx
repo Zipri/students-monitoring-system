@@ -7,6 +7,8 @@ import styles from './styles.module.scss';
 
 import { ProjectsKanbanItem } from './kanbanItem';
 import { Button } from 'primereact/button';
+import { useStores } from '@control';
+import { classNames } from 'primereact/utils';
 
 type TProjectsKanbanColumn = {
   columnId: string;
@@ -18,41 +20,52 @@ const ProjectsKanbanColumn: FC<TProjectsKanbanColumn> = ({
   columnId,
   title,
   projects,
-}) => (
-  <Droppable droppableId={columnId}>
-    {(provided, snapshot) => (
-      <div
-        className={styles.columnWrapper}
-        ref={provided.innerRef}
-        {...provided.droppableProps}
-      >
-        <div className={styles.header}>
-          {title}
-          {/* {title === ProjectsStatusesEnum.planning && (
-            <Button text icon="pi pi-plus" tooltip="Добавить проект" />
-          )} */}
-          {title === ProjectsStatusesEnum.planning && (
-            <Button outlined label="Добавить" />
-          )}
-        </div>
+}) => {
+  const { projectsKanbanModal, projectsKanban } = useStores();
 
-        <div className={styles.content}>
-          {/* {title === ProjectsStatusesEnum.planning && (
-            <Button style={{ width: '100%' }} outlined label="Добавить" />
-          )} */}
-          {projects.map((project, index) => (
-            <ProjectsKanbanItem
-              key={project.id}
-              project={project}
-              index={index}
-            />
-          ))}
-        </div>
+  return (
+    <Droppable droppableId={columnId}>
+      {(provided, snapshot) => (
+        <div
+          className={styles.columnWrapper}
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+        >
+          <div className={styles.header}>{title}</div>
 
-        {provided.placeholder}
-      </div>
-    )}
-  </Droppable>
-);
+          <div className={styles.contentWrapper}>
+            <div
+              className={classNames(styles.content, {
+                [styles.contentOfPlanning]:
+                  title === ProjectsStatusesEnum.planning,
+              })}
+            >
+              {projects.map((project, index) => (
+                <ProjectsKanbanItem
+                  key={project.id}
+                  project={project}
+                  index={index}
+                />
+              ))}
+            </div>
+
+            {title === ProjectsStatusesEnum.planning && (
+              <Button
+                onClick={() =>
+                  projectsKanbanModal.openCreate(projectsKanban.getUserProjects)
+                }
+                style={{ width: '100%' }}
+                severity="success"
+                label="Добавить проект"
+              />
+            )}
+          </div>
+
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  );
+};
 
 export default observer(ProjectsKanbanColumn);

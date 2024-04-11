@@ -68,7 +68,7 @@ export type TPostUsersResponse = TUser;
 // Put record: Ответ на обновление пользователя
 export type TPutUsersParams = { id: TUid; data: TUserUpdate };
 export type TPutUsersRequest = TUserUpdate;
-export type TPutUsersResponse = TResponseModifiedCount;
+export type TPutUsersResponse = TUser;
 
 // Delete record: Ответ на удаление пользователя
 export type TDeleteUsersResponse = TResponseDeletedCount;

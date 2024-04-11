@@ -11,10 +11,21 @@ import { ChipList, EllipsisText } from '@view/common';
 
 import styles from './styles.module.scss';
 import { observer } from 'mobx-react-lite';
+import { TUid } from '@api/types';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { Button } from 'primereact/button';
 
 const ProjectsTable = () => {
-  const { projects } = useStores();
+  const { projects, projectsKanbanModal } = useStores();
   const { projectsList, loading, getListData } = projects;
+
+  const handleOpenProject = (id: TUid) => {
+    window.open(`/tasks-kanban?projectId=${id}`, '_blank');
+  };
+
+  const handleOpenTimeline = (id: TUid) => {
+    window.open(`/tasks-timeline?projectId=${id}`, '_blank');
+  };
 
   const tableColumns = useMemo(() => {
     return [
@@ -82,6 +93,30 @@ const ProjectsTable = () => {
           );
         },
       },
+      {
+        header: 'Открыть',
+        style: { width: '8rem' },
+        body: (record: TProject) => {
+          return (
+            <div className="flex w-min align-items-center gap-2">
+              <Button
+                outlined
+                tooltip="Открыть таймлайн"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-sliders-h"
+                onClick={() => handleOpenTimeline(record.id)}
+              />
+              <Button
+                outlined
+                tooltip="Открыть"
+                tooltipOptions={{ position: 'top' }}
+                icon="pi pi-external-link"
+                onClick={() => handleOpenProject(record.id)}
+              />
+            </div>
+          );
+        },
+      },
     ];
   }, [projectsList]);
 
@@ -92,7 +127,7 @@ const ProjectsTable = () => {
   return (
     <div className={styles.tableWrapper}>
       <DataTable
-        key={`table-projects`}
+        key="table-projects"
         dataKey="id"
         value={projectsList.length ? toJS(projectsList) : undefined}
         style={{

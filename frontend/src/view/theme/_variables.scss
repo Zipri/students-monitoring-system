@@ -9,6 +9,7 @@ $accent-color: #FFC107;
 $accent-color-dark: #ff7707;
 
 $main-grey: #D1D3D4;
+$lighten-grey: lighten($main-grey, 15);
 $darken-grey: darken($main-grey, 3);
 
 // ----------------------------------------- layout -----------------------------------------

@@ -1,0 +1,73 @@
+@import '../../../../theme/mixins';
+@import '../../../../theme/variables';
+
+.tableWrapper {
+  @include custom-scrollbars;
+  margin-left: 17rem;
+  
+  .table {
+    border-collapse: collapse;
+
+    .today {
+      background: lighten($accent-color, 20) !important;
+    }
+
+    .todayTd {
+      background: lighten($accent-color, 40) !important;
+    }
+  
+    .th {
+      border: 1px solid $grey-border-color;
+      padding: .5rem;
+      background: lighten($main-grey, 15);
+    }
+
+    .td {
+      border: 1px solid $grey-border-color !important;
+      background: white;
+
+      .content {
+
+        .label {
+          display: flex;
+          align-items: center;
+          padding: .5rem;
+
+          background: white;
+
+          border: 1px solid $grey-border-color;
+          border-radius: $main-radius;
+        }
+
+        height: 3.5rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: .5rem;
+
+        .topBtn {
+          border-radius: $main-radius $main-radius 0 0 ;
+        }
+
+        .bottomBtn {
+          border-radius: 0 0 $main-radius $main-radius;
+          border-top: 0;
+        }
+
+        [class~='p-button'] {
+          min-width: 36px;
+          height: 10px;
+          
+          [class~='pi'] {
+            font-size: 1.3rem;
+          }
+        }
+      }
+    }
+
+    .filledTd {
+      background: wheat;
+    }
+  }
+}

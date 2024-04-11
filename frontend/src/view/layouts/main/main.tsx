@@ -1,35 +1,48 @@
 import { observer } from 'mobx-react-lite';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { RootModal } from 'view/modals';
 
-import { Projects, ProjectsKanban } from '@view/pages';
+import { CustomToast } from '@view/common';
+import {
+  Projects,
+  ProjectsKanban,
+  ProjectsStatistic,
+  Schedule,
+  TasksKanban,
+  TasksStatistic,
+  TimelineTasks,
+  UniSettings,
+  UserSettings,
+} from '@view/pages';
 import { NavigationMenu, TopBar } from '@view/pieces';
 
 import styles from './styles.module.scss';
-import { CustomToast } from '@view/common';
 
 const MainLayout = () => {
   return (
     <BrowserRouter>
       <CustomToast />
+      <RootModal />
+
       <div className={styles.wrapper}>
         <TopBar />
         <NavigationMenu />
+
         <div className={styles.content}>
           <Routes>
-            {/* <Route
-              path="/"
-              element={<Navigate replace to="/global-search" />}
-            /> */}
             <Route
               path="/"
-              element={
-                <div className="flex flex-column gap-2">
-                  <h1>V EduTrack V</h1>
-                </div>
-              }
+              element={<Navigate replace to="/projects-kanban" />}
             />
-            <Route path="/projects" element={<Projects />} />
+            <Route path="/uni-settings" element={<UniSettings />} />
+            <Route path="/user-settings" element={<UserSettings />} />
+            <Route path="/projects-search" element={<Projects />} />
             <Route path="/projects-kanban" element={<ProjectsKanban />} />
+            <Route path="/tasks-kanban" element={<TasksKanban />} />
+            <Route path="/tasks-timeline" element={<TimelineTasks />} />
+            <Route path="/projects-statistic" element={<ProjectsStatistic />} />
+            <Route path="/tasks-statistic" element={<TasksStatistic />} />
+            <Route path="/schedule" element={<Schedule />} />
             <Route
               path="*"
               element={

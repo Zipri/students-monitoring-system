@@ -1,0 +1,18 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.kanbanWrapper {
+    // @include common-wrapper;
+
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .columnWrapper {
+        height: 100%;
+    }
+}

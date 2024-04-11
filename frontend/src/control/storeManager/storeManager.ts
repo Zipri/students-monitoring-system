@@ -41,6 +41,14 @@ class StoreManager {
   getUserInfo = () => {
     return this.root.user.info;
   };
+
+  getUrlProjectId = () => {
+    return this.root.projectFiltersWithUrl.projectId;
+  };
+
+  getUrlProject = () => {
+    return this.root.projectFiltersWithUrl.project;
+  };
 }
 
 export default StoreManager;

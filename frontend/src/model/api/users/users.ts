@@ -53,7 +53,7 @@ class UsersApi {
     const response = await axios.delete<
       undefined,
       AxiosResponse<TDeleteUsersResponse>
-    >(`${LOCAL_URL}/update/${id}`);
+    >(`${LOCAL_URL}/delete/${id}`);
     return response.data;
   };
 

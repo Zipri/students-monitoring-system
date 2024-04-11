@@ -65,6 +65,23 @@ class ProjectsKanbanStore {
     }
   };
 
+  deleteProject = async (id: TUid) => {
+    try {
+      this.loading.start();
+      await this.projectsService.deleteRecord(id);
+      await this.getUserProjects();
+    } catch (error) {
+      this.manager.callBackendError(error, 'Ошибка метода deleteProject');
+    } finally {
+      this.loading.stop();
+    }
+  };
+
+  reset = () => {
+    this.updateUserProjects([]);
+    this.loading.stop();
+  };
+
   @action
   updateUserProjects = (data: TProject[]) => {
     this.userProjects = data;

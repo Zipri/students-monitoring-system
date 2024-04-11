@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 
 import { observer } from 'mobx-react-lite';
 import { ProjectsStatusesEnum, TProject } from 'model/api/projects/types';
+import { ConfirmDialog } from 'primereact/confirmdialog';
 import { DragDropContext, OnDragEndResponder } from 'react-beautiful-dnd';
 
 import { useStores } from '@control';
@@ -11,7 +12,7 @@ import styles from './styles.module.scss';
 
 const ProjectsKanban = () => {
   const { projectsKanban } = useStores();
-  const { userProjects, userInfo, getUserProjects, changeStatus } =
+  const { userProjects, userInfo, getUserProjects, changeStatus, reset } =
     projectsKanban;
 
   const onDragEnd: OnDragEndResponder = (result) => {
@@ -35,6 +36,8 @@ const ProjectsKanban = () => {
 
   useEffect(() => {
     getUserProjects();
+
+    return () => reset();
   }, []);
 
   return (

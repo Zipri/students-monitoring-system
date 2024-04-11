@@ -5,6 +5,9 @@ import { BACKEND_URL } from '@config/app';
 
 import {
   TDeleteProjectsResponse,
+  TFilterListProjectsParams,
+  TFilterListProjectsRequest,
+  TFilterListProjectsResponse,
   TGetListByGroupProjectsResponse,
   TGetListByStudentsProjectsResponse,
   TGetListByTeacherProjectsResponse,
@@ -52,7 +55,7 @@ class ProjectsApi {
     const response = await axios.delete<
       undefined,
       AxiosResponse<TDeleteProjectsResponse>
-    >(`${LOCAL_URL}/update/${id}`);
+    >(`${LOCAL_URL}/delete/${id}`);
     return response.data;
   };
 
@@ -72,6 +75,14 @@ class ProjectsApi {
     return response.data;
   };
 
+  filterList = async (params: TFilterListProjectsParams) => {
+    const response = await axios.get<
+      TFilterListProjectsRequest,
+      AxiosResponse<TFilterListProjectsResponse>
+    >(`${LOCAL_URL}/filter`, { params });
+    return response.data;
+  };
+
   searchListByTeacherId = async (id: TUid) => {
     const response = await axios.get<
       undefined,
@@ -88,7 +99,7 @@ class ProjectsApi {
     return response.data;
   };
 
-  searchListByGroupId = async (group: string) => {
+  searchListByGroupId = async (group: TUid) => {
     const response = await axios.get<
       undefined,
       AxiosResponse<TGetListByGroupProjectsResponse>

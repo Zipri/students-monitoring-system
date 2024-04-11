@@ -4,7 +4,7 @@
 .tableWrapper {
     @include common-wrapper;
 
-    height: calc(100vh - $topbar-height - 90px);
+    height: calc(100vh - $topbar-height - 92px);
 
     .table {
         [class~='p-datatable-wrapper'] {

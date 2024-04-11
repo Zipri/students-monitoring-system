@@ -8,6 +8,8 @@ import {
   RegisterOptions,
 } from 'react-hook-form';
 
+import { getFormErrorMessage } from '@view/utils';
+
 import { FormLabel } from '../';
 
 type TDropdownController = {
@@ -62,8 +64,8 @@ const DropdownController: FC<TDropdownController> = ({
                   bold
                   required={!!rules}
                 />
-                {/* {!!error?.message?.length &&
-                                getFormErrorMessage(errors, field.name)} */}
+                {!!error?.message?.length &&
+                  getFormErrorMessage(errors, field.name)}
               </div>
             )}
             <Dropdown

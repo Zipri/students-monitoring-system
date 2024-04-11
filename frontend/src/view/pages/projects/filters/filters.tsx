@@ -5,6 +5,7 @@ import {
   ProjectsStatusesEnum,
   TProjectSearchParams,
 } from 'model/api/projects/types';
+import { UsersRolesEnum } from 'model/api/users/types';
 import { Button } from 'primereact/button';
 import { Control, useForm } from 'react-hook-form';
 
@@ -16,7 +17,7 @@ import {
 } from '@view/form';
 
 import styles from './styles.module.scss';
-import { UsersRolesEnum } from 'model/api/users/types';
+import { useHorizontalScroll } from '@view/utils';
 
 const options = Object.values(ProjectsStatusesEnum); // FIXME SKV вынести в конфиг
 
@@ -52,15 +53,19 @@ const ProjectsFilters = () => {
     reset(initialFormData);
   }, [initialFormData]);
 
-  // TODO применить хук с горизонтальным скролом
+  useHorizontalScroll('table-projects-form-filters-wrapper');
+
   return (
-    <div className={styles.formWrapper}>
+    <div
+      id="table-projects-form-filters-wrapper"
+      className={styles.formWrapper}
+    >
       <form
         ref={formRef}
         id="table-projects-form-filters"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div className="flex flex-wrap align-items-center gap-2">
+        <div className="flex align-items-center gap-2">
           <InputController
             name="title"
             control={formControl}
@@ -106,13 +111,19 @@ const ProjectsFilters = () => {
           <div className="flex gap-2 align-items-center">
             <Button
               type="button"
-              severity="danger"
-              label={'Сбросить'}
+              outlined
+              severity="warning"
+              icon="pi pi-replay"
+              tooltip="Сбросить"
+              tooltipOptions={{ position: 'top' }}
               onClick={resetFilters}
             />
             <Button
               type="submit"
-              label={'Поиск'}
+              outlined
+              icon="pi pi-search"
+              tooltip="Для поиска можно также нажать Enter"
+              tooltipOptions={{ position: 'top' }}
               form={'table-projects-form-filters'}
             />
           </div>

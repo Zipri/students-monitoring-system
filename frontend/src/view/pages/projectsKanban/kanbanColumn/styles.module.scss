@@ -26,15 +26,9 @@
 
         border-radius: $main-radius $main-radius 0 0;
         padding: .5rem;
-
-        [class~='p-button'] {
-            padding: .5rem;
-        }
     }
 
-    .content {
-        @include custom-scrollbars;
-
+    .contentWrapper {
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -43,10 +37,26 @@
         width: 100%;
         height: 100%;
 
-        background-color: white;
-        border: 1px solid $darken-grey;
+        .content {
+            @include custom-scrollbars;
+    
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+    
+            width: 100%;
+            height: calc(100vh - $topbar-height - 4rem);
+    
+            background-color: white;
+            border: 1px solid $darken-grey;
+    
+            padding: 1rem;
+            border-radius: 0 0 $main-radius $main-radius;
+        }
 
-        padding: 1rem;
-        border-radius: 0 0 $main-radius $main-radius;
+        .contentOfPlanning {
+            height: calc(100vh - $topbar-height - 9rem);
+        }
     }
 }
