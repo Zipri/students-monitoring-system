@@ -1,0 +1,51 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.dialog {
+    [class~='p-dialog-content'] {
+        @include custom-scrollbars;
+    }
+
+    [class~='p-dialog-header-icon'] {
+        box-shadow: none !important;
+    }
+
+    [class~='p-blockui-container'] {
+        height: 100%;
+    }
+}
+
+.withoutFooter {
+    background-color: white;
+    // padding-bottom: 20px;
+}
+
+.headerDivider {
+    border-bottom: 1px solid $grey-border-color !important;
+}
+
+.footerDivider {
+    border-top: 1px solid $grey-border-color !important;
+    padding-top: $modal-padding !important;
+}
+
+.divider {
+    position: absolute;
+    bottom: 8px;
+    right: 0;
+
+    transform: rotate(135deg);
+
+    width: 1.5rem;
+    border-bottom: 1px solid #656565;
+}
+
+.divider:last-child {
+    right: 1px;
+    bottom: 5px;
+    width: 0.8rem;
+}
+
+.footer {
+    @include small-modal-footer;
+}

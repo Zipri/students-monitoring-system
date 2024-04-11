@@ -1,0 +1,12 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.formWrapper {
+    @include common-wrapper;
+
+    width: min-content;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}

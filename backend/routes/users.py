@@ -62,9 +62,12 @@ def update_user(id):
     if errors:
         return jsonify({'error': 'Validation failed', 'messages': errors}), 400
     result = mongo.db.users.update_one({'_id': ObjectId(id)}, {'$set': data})
-    if result.modified_count == 0:
-        return jsonify({'error': 'User not found or data not changed'}), 404
-    return jsonify({'modified_count': result.modified_count})
+    user = mongo.db.users.find_one({'_id': ObjectId(id)})
+    if user:
+        user_data = user_to_json(user)
+        return jsonify(user_data), 201
+    else:
+        return jsonify({'error': 'User was not added successfully'}), 500
 
 # Удаление пользователя по идентификатору
 @app.route('/users/delete/<id>', methods=['DELETE'])

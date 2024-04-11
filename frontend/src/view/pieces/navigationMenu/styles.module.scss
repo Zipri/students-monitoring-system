@@ -49,6 +49,24 @@
         }
     }
 
+    .activeButton {
+        color: $accent-color-dark !important;
+        border: 1px solid $accent-color-dark;
+        background-color: lighten(
+            $color: white,
+            $amount: 15
+        ) !important;
+    
+        &:hover {
+            background-color: transparent !important;
+            color: $accent-color !important;
+            border: 1px solid $accent-color !important;
+            [class~='pi'] {
+                color: $accent-color !important;
+            }
+        }
+    }
+
     &.opened {
         width: $navmenu-width-opened;
     }

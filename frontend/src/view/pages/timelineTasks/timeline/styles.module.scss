@@ -1,0 +1,8 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.wrapper {
+  @include common-wrapper;
+
+  width: calc(100% - 34rem);
+}

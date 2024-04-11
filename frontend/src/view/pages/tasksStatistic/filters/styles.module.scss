@@ -1,0 +1,8 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.formWrapper {
+    @include common-wrapper;
+    @include custom-scrollbars;
+    --scrollbar-size: 0px;
+}

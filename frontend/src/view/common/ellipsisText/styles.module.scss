@@ -1,0 +1,37 @@
+@mixin ellipsis($linesCount) {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: $linesCount;
+    line-clamp: $linesCount;
+    -webkit-box-orient: vertical;
+    width: 100%;
+    white-space: break-spaces !important;
+}
+
+.ellipsisText1Lines {
+    @include ellipsis(1);
+}
+
+.ellipsisText2Lines {
+    @include ellipsis(2);
+}
+
+.ellipsisText3Lines {
+    @include ellipsis(3);
+}
+
+.ellipsisText4Lines {
+    @include ellipsis(4);
+}
+
+.ellipsisText5Lines {
+    @include ellipsis(5);
+}
+
+.ellipsisText6Lines {
+    @include ellipsis(6);
+}
+
+.ellipsisBreakAll {
+    word-break: break-all;
+  }

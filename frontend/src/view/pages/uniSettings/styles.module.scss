@@ -1,0 +1,29 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.commonWrapper {
+    // @include common-wrapper;
+    width: 100%;
+
+    .list {
+        @include common-wrapper;
+        @include custom-scrollbars;
+
+        padding: 0 !important;
+        height: 25rem;
+
+
+        .item {
+            padding: 1rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+
+            &:nth-child(2n) {
+                background: lighten($main-grey, 10);
+            }
+        }
+    }
+}

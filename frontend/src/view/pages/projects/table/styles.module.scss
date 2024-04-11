@@ -1,0 +1,18 @@
+@import '../../../theme/mixins';
+@import '../../../theme/variables';
+
+.tableWrapper {
+    @include common-wrapper;
+
+    height: calc(100vh - $topbar-height - 92px);
+
+    .table {
+        [class~='p-datatable-wrapper'] {
+            @include custom-scrollbars;
+        }
+    
+        [class~='p-component-overlay'] {
+            background-color: $transparent-overlay-color !important;
+        }
+    }
+}

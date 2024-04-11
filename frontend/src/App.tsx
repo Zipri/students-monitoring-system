@@ -1,11 +1,8 @@
 import './view/theme/index.scss';
 
-import { useEffect } from 'react';
-
-import { configure, toJS } from 'mobx';
+import { configure } from 'mobx';
 import { observer } from 'mobx-react-lite';
 
-import { ProjectsApi, TasksApi } from '@api';
 import { useStores } from '@control';
 import { InitialLayout } from '@layouts/initial';
 import { LoginLayout } from '@layouts/login';
@@ -20,16 +17,6 @@ configure({
 const App = () => {
   const { user } = useStores();
   const { info } = user;
-
-  const projectsApi = new ProjectsApi();
-  const tasksApi = new TasksApi();
-
-  useEffect(() => {
-    projectsApi.getList();
-    tasksApi.getList();
-  }, []);
-
-  console.log('App', toJS(info));
 
   const currentLayout = () => {
     switch (true) {
