@@ -1,0 +1,10 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.label {
+    white-space: nowrap;
+}
+
+.box {
+    border-color: yellowgreen !important;
+}

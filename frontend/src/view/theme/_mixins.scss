@@ -75,7 +75,7 @@
     --scrollbar-foreground: #{var(--blue-300)};
     --scrollbar-background: #{var(--blue-100)};
     --scrollbar-size: 6px;
-    scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
+    // scrollbar-color: var(--scrollbar-foreground) var(--scrollbar-background);
 
     &::-webkit-scrollbar {
         width: var(--scrollbar-size);

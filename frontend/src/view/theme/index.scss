@@ -30,6 +30,17 @@ body {
     }
 }
 
+[class~='p-checkbox-box'] {
+    // font-weight: 800 !important;
+    // font-size: 1.2rem;
+
+    &:focus {
+        //border: none !important;
+        outline: none !important;
+        box-shadow: none !important;
+    }
+}
+
 [class~='p-accordion-header-link'] {
     &:focus {
         //border: none !important;

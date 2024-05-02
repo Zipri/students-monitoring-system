@@ -9,7 +9,7 @@ import { Draggable } from 'react-beautiful-dnd';
 import { TUid } from '@api/types';
 import { tasksPriorityColorSchema } from '@config';
 import { useStores } from '@control';
-import { CustomDivider, EllipsisText } from '@view/common';
+import { CustomDivider, EllipsisText, FakeCheckBox } from '@view/common';
 
 import styles from './styles.module.scss';
 
@@ -58,6 +58,7 @@ const TasksKanbanItem: FC<TTasksKanbanItem> = ({ task, index }) => {
             <EllipsisText hardBreak maxLines={1}>
               {task.title}
             </EllipsisText>
+            <FakeCheckBox />
           </div>
           <div
             className={styles.content}

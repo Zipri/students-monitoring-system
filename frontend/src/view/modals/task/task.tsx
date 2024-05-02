@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 
 import { useStores } from '@control';
-import { Modal } from '@view/common';
+import { FakeCheckBox, Modal } from '@view/common';
 
 import styles from './styles.module.scss';
 import TaskForm from './taskForm';
@@ -36,7 +36,10 @@ const TaskModal = () => {
       padding={{ content: 0 }}
       header={
         // isEditFormMode.value ? 'Редактирование проекта' : 'Создание проекта'
-        'Информация по задаче'
+        <div className="flex align-items-center gap-4">
+          Информация по задаче
+          <FakeCheckBox reverse />
+        </div>
       }
       maximizable
     >
