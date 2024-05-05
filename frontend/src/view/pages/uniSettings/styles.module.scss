@@ -26,4 +26,26 @@
             }
         }
     }
+
+    .listS {
+        @include common-wrapper;
+        @include custom-scrollbars;
+
+        padding: 0 !important;
+        height: 12rem;
+
+
+        .item {
+            padding: .5rem;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+
+            &:nth-child(2n) {
+                background: lighten($main-grey, 10);
+            }
+        }
+    }
 }

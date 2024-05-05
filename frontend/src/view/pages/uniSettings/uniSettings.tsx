@@ -8,6 +8,7 @@ import { UniSettingsGroupCollapse } from './groupCollapse';
 import { UniSettingsStudentsCollapse } from './studentsCollapse';
 import styles from './styles.module.scss';
 import { UniSettingsTeachersCollapse } from './teachersCollapse';
+import { UniSettingsCommonListsCollapse } from './commonListsCollapse';
 
 const UniSettings = () => {
   const { uniSettings } = useStores();
@@ -24,6 +25,11 @@ const UniSettings = () => {
         break;
 
       case 2:
+        getTeachers();
+        break;
+
+      case 3:
+        getStudents();
         getTeachers();
         break;
 
@@ -49,6 +55,12 @@ const UniSettings = () => {
           key="Управление списком преподавателей"
         >
           <UniSettingsTeachersCollapse />
+        </AccordionTab>
+        <AccordionTab
+          header="Управление общими списками вуза"
+          key="Управление общими списками вуза"
+        >
+          <UniSettingsCommonListsCollapse />
         </AccordionTab>
       </Accordion>
     </div>
