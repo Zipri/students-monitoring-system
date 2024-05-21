@@ -248,6 +248,11 @@ const TaskCommentsList = () => {
           icon="pi pi-plus"
           onClick={handleAddComment}
         />
+        <Button
+          severity="secondary"
+          icon="pi pi-paperclip"
+          onClick={handleAddComment}
+        />
       </div>
     </div>
   );

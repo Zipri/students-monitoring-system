@@ -10,6 +10,7 @@ import styles from './styles.module.scss';
 import { AutocompleteController, FormLabel, InputController } from '@view/form';
 import { Button } from 'primereact/button';
 import { Spin } from '@view/common';
+import { InputText } from 'primereact/inputtext';
 
 const UserSettings = () => {
   const { user } = useStores();
@@ -91,6 +92,22 @@ const UserSettings = () => {
                 }}
               />
             )}
+            <div className="flex flex-column gap-2">
+              <FormLabel
+                htmlFor={'Старый пароль'}
+                caption={'Старый пароль'}
+                bold
+              />
+              <InputText placeholder="Введите старый пароль" />
+            </div>
+            <div className="flex flex-column gap-2">
+              <FormLabel
+                htmlFor={'Новый пароль'}
+                caption={'Новый пароль'}
+                bold
+              />
+              <InputText disabled placeholder="Введите новый пароль" />
+            </div>
             <div className="flex align-items-center justify-content-end gap-2">
               <Button
                 onClick={() => reset(info)}
