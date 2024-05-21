@@ -1,6 +1,125 @@
 @import '../../theme/mixins';
 @import '../../theme/variables';
 
+.title {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.wr {
+    @include common-wrapper;
+}
+
 .wrapper {
     @include common-wrapper;
+    @include custom-scrollbars;
+
+    height: calc(100vh - $topbar-height - 100px);
+
+    .day {
+        border: 1px solid $grey-border-color;
+
+        border-radius: $main-radius 0 0 $main-radius;
+
+        border-right: 0;
+        padding: 1rem;
+
+        font-size: 1.5rem;
+        font-weight: 600;
+
+        width: 4.5rem;
+
+        display: flex;
+        justify-content: center;
+    }
+
+    .headerItem {
+        padding: 1rem;
+        border: 1px solid $grey-border-color;
+        border-left: 0;
+
+        font-size: 1.2rem;
+        font-weight: 600;
+
+        width: 9rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &:first-child {
+            border-left: 1px solid $grey-border-color;
+        }
+
+        &:nth-child(2) {
+            background-color: #9AE6B4;
+            width: 15rem;
+        }
+
+        &:nth-child(3) {
+            background-color: #9aaee6;  
+            width: 15rem;
+
+            border-radius: 0 $main-radius 0 0;
+        }
+    }
+
+    .time {
+        width: 9rem;
+
+        border: 1px solid $grey-border-color;
+        border-top: 0;
+
+        padding: 1rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .type {
+        border: 1px solid $grey-border-color;
+        border-left: 0;
+        border-top: 0;
+
+        padding: 1rem;
+
+        width: 15rem;
+        height: 5rem;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .type2 {
+        border: 1px solid $grey-border-color;
+        border-left: 0;
+        border-top: 0;
+
+        padding: 1rem;
+
+        width: 15rem;
+        height: 5rem;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .type3 {
+        border: 1px solid $grey-border-color;
+        border-left: 0;
+        border-top: 0;
+
+        padding: 1rem;
+
+        width: 30rem;
+        height: 5rem;
+
+        display: flex;
+        align-items: center;
+    }
+
+    .lastType {
+        border-radius: 0 0 $main-radius 0;
+    }
 }
