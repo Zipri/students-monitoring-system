@@ -60,12 +60,21 @@ const Methodologies = () => {
                   <InputText placeholder="Поиск по названию" />
                   <InputText placeholder="Поиск по авторам" />
                 </div>
-                <Button
-                  outlined
-                  label="Скачать архивом"
-                  icon="pi pi-download"
-                  style={{ height: '29px' }}
-                />
+                <div className="flex align-items-center gap-2">
+                  <Button
+                    outlined
+                    severity="success"
+                    label="Добавить файл"
+                    icon="pi pi-plus"
+                    style={{ height: '29px' }}
+                  />
+                  <Button
+                    outlined
+                    label="Скачать архивом"
+                    icon="pi pi-download"
+                    style={{ height: '29px' }}
+                  />
+                </div>
               </div>
               {subject.methodologies.map((methodology) => (
                 <div

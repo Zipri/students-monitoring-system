@@ -18,7 +18,7 @@ import { Button } from 'primereact/button';
 const colorSchema = projectsKanbanColorSchema;
 
 const getDoneTasksPercent = (tasks: TTask[]) => {
-  // return Math.floor(Math.random() * 100);
+  return Math.floor(Math.random() * 100);
   if (!tasks.length) {
     return 0;
   }
