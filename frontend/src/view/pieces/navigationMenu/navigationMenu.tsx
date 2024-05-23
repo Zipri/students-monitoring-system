@@ -98,7 +98,7 @@ const NavigationMenu = () => {
         <LinkButton
           isOpened={isOpened}
           title="Методические указания"
-          link="guides"
+          link="methodologies"
           icon="pi pi-book"
         />
         <LinkButton

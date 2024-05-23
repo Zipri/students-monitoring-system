@@ -1,3 +1,4 @@
+import { Methodologies } from './methodologies';
 import { Projects } from './projects';
 import { ProjectsKanban } from './projectsKanban';
 import { ProjectsStatistic } from './projectsStatistic';
@@ -9,6 +10,7 @@ import { UniSettings } from './uniSettings';
 import { UserSettings } from './userSettings';
 
 export {
+  Methodologies,
   Projects,
   ProjectsKanban,
   ProjectsStatistic,

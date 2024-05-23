@@ -1,0 +1,44 @@
+@import '../../theme/mixins';
+@import '../../theme/variables';
+
+.wrapper {
+    @include common-wrapper;
+    padding: .5rem 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+
+    .item {
+        @include common-wrapper;
+
+        padding: .5rem 1rem;
+        text-align: center;
+        border-radius: 0;
+        border-left: 0;
+        border-bottom: 0 !important;
+
+        &:first-child {
+            border-radius: $main-radius 0 0 0;
+            border-left: 1px solid $grey-border-color;
+        }
+
+        &:last-child {
+            border-radius: 0 $main-radius 0 0;
+        }
+    }
+}
+
+.mtd {
+    @include common-wrapper;
+
+    font-size: 1.1rem;
+    font-weight: 600;
+
+    color: $main-color;
+}
+
+.btn {
+    color: $main-color !important;
+}

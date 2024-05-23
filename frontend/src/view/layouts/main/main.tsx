@@ -4,6 +4,7 @@ import { RootModal } from 'view/modals';
 
 import { CustomToast } from '@view/common';
 import {
+  Methodologies,
   Projects,
   ProjectsKanban,
   ProjectsStatistic,
@@ -43,6 +44,7 @@ const MainLayout = () => {
             <Route path="/projects-statistic" element={<ProjectsStatistic />} />
             <Route path="/tasks-statistic" element={<TasksStatistic />} />
             <Route path="/schedule" element={<Schedule />} />
+            <Route path="/methodologies" element={<Methodologies />} />
             <Route
               path="*"
               element={
