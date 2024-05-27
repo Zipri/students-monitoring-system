@@ -444,7 +444,7 @@ const Schedule = () => {
           />
         </div>
       </div>
-      <div className={classNames(styles.wrapper, 'flex flex-column gap-6')}>
+      <div className={classNames(styles.wrapper, 'flex flex-column gap-4')}>
         <div className="flex align-items-center gap-6">
           {getDay('ПН', monday)}
           {getDay('ВТ', tuesday)}

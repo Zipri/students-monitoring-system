@@ -14,6 +14,8 @@ import { observer } from 'mobx-react-lite';
 import { TUid } from '@api/types';
 import { confirmDialog } from 'primereact/confirmdialog';
 import { Button } from 'primereact/button';
+import { TasksStatisticTableHeaderTemplate } from 'view/pages/tasksStatistic/table/templates';
+import { TTaskSortByEnum } from 'model/services/tasks/types';
 
 const ProjectsTable = () => {
   const { projects, projectsKanbanModal } = useStores();
@@ -41,28 +43,48 @@ const ProjectsTable = () => {
         },
       },
       {
-        header: 'Название',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Название"
+            field={TTaskSortByEnum.title}
+          />
+        ),
         style: { width: '25rem' },
         body: (record: TProject) => {
           return <EllipsisText>{record.title}</EllipsisText>;
         },
       },
       {
-        header: 'Срок сдачи',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Срок сдачи"
+            field={TTaskSortByEnum.title}
+          />
+        ),
         style: { width: '15rem' },
         body: (record: TProject) => {
           return <EllipsisText>{record.deadline}</EllipsisText>;
         },
       },
       {
-        header: 'Статус',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Статус"
+            field={TTaskSortByEnum.title}
+          />
+        ),
         style: { width: '15rem' },
         body: (record: TProject) => {
           return <EllipsisText>{record.status}</EllipsisText>;
         },
       },
       {
-        header: 'Ответственный',
+        header: (
+          <TasksStatisticTableHeaderTemplate
+            template="Ответственный"
+            field={TTaskSortByEnum.title}
+          />
+        ),
         style: { width: '25rem' },
         body: (record: TProject) => {
           return (
