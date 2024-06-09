@@ -65,7 +65,6 @@ const TasksStatisticFilters = () => {
       >
         <div className="flex align-items-center gap-2">
           <DropdownController
-            // FIXME ТОЛЬКО ДЛЯ ПРЕПОДАВАТЕЛЯ
             name="priority"
             control={formControl}
             options={Object.values(TaskPriorityEnum)}

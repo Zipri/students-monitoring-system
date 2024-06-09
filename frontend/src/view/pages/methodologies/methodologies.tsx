@@ -14,7 +14,7 @@ const getNumbersArray = (length: number) => {
 };
 
 const Methodologies = () => {
-  const [activeIndex, setActiveIndex] = useState<number | number[]>([1]);
+  const [activeIndex, setActiveIndex] = useState<number | number[]>([]);
   return (
     <div className="flex flex-column gap-2">
       <div className={styles.wrapper}>

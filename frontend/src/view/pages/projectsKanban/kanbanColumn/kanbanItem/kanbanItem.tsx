@@ -94,16 +94,17 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
                 icon="pi pi-trash"
                 onClick={() => confirmDeleteItem(project.id)}
               />
-              <Button
+              {/* <Button
                 outlined
                 severity="warning"
                 tooltip="В архив"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-window-minimize"
                 onClick={() => {}}
-              />
+              /> */}
               <Button
                 outlined
+                severity="warning"
                 tooltip="Редактировать"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-file-edit"
@@ -123,7 +124,7 @@ const ProjectsKanbanItem: FC<TProjectsKanbanItem> = ({ project, index }) => {
               />
               <Button
                 outlined
-                tooltip="Открыть"
+                tooltip="Открыть канбан задач"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-external-link"
                 onClick={handleOpenProject}

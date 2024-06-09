@@ -98,6 +98,17 @@ const ProjectsTable = () => {
       {
         header: 'Студенты',
         body: (record: TProject) => {
+          const filteredMap: any[] = [];
+
+          record.assignedStudents?.forEach((student) => {
+            if (student.username !== 'Сероштан Кирилл Владимирович') {
+              filteredMap.push({
+                id: student.id,
+                name: student.username,
+              });
+            }
+          });
+
           return (
             <ChipList
               key={`table-projects-Студенты-${record.id}`}
@@ -105,12 +116,7 @@ const ProjectsTable = () => {
               maxListChips={4}
               showTooltip
               disableMoreButton
-              chipItems={
-                record.assignedStudents?.map((i) => ({
-                  id: i.id,
-                  name: i.username,
-                })) || []
-              }
+              chipItems={filteredMap}
             />
           );
         },
@@ -130,7 +136,7 @@ const ProjectsTable = () => {
               />
               <Button
                 outlined
-                tooltip="Открыть"
+                tooltip="Открыть канбан"
                 tooltipOptions={{ position: 'top' }}
                 icon="pi pi-external-link"
                 onClick={() => handleOpenProject(record.id)}

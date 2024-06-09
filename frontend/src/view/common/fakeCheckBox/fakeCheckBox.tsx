@@ -7,7 +7,7 @@ type TFakeCheckBox = {
 };
 
 const FakeCheckBox: FC<TFakeCheckBox> = ({ reverse }) => {
-  const [check, setCheck] = useState(Math.random() > 0.5); // FIXME task accept
+  const [check, setCheck] = useState(true); // FIXME task accept
 
   if (reverse) {
     return (

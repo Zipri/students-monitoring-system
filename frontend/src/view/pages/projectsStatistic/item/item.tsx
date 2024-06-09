@@ -50,6 +50,21 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
     window.open(`/tasks-timeline?projectId=${id}`, '_blank');
   };
 
+  const getStudents = (assignedStudents: any[]) => {
+    const filteredMap: any[] = [];
+
+    assignedStudents?.forEach((student) => {
+      if (student.username !== 'Сероштан Кирилл Владимирович') {
+        filteredMap.push({
+          id: student.id,
+          name: student.username,
+        });
+      }
+    });
+
+    return filteredMap;
+  };
+
   //   useHorizontalScroll(`project-statistic-part-item-${statisticProject.id}`);
 
   if (!studentsIds?.includes(student.id)) return;
@@ -98,12 +113,7 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
 
         <ChipList
           id={v4()}
-          chipItems={
-            statisticProject.assignedStudents?.map((i) => ({
-              id: i.id,
-              name: i.username,
-            })) || []
-          }
+          chipItems={getStudents(statisticProject.assignedStudents || [])}
           maxListChips={1}
           className={styles.chips}
           chipClassName={styles.chip}
@@ -133,7 +143,7 @@ const ProjectsStatisticItem: FC<TProjectsStatisticItem> = ({
           />
           <Button
             outlined
-            tooltip="Открыть"
+            tooltip="Открыть канбан задач"
             tooltipOptions={{ position: 'top' }}
             icon="pi pi-external-link"
             onClick={() => handleOpenProject(statisticProject.id)}

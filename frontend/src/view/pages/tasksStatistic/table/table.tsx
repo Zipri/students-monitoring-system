@@ -46,7 +46,6 @@ const countSkippedTasks = (
     if (
       task.status === TaskStatusEnum.new &&
       currentDate > startDate &&
-      currentDate < deadline &&
       projects?.[task.projectId].status !== ProjectsStatusesEnum.postponed
     ) {
       skippedTasks.push(task);
